@@ -119,12 +119,6 @@ export default function LoginPage() {
                 </>
               )}
             </div>
-
-            <div className="text-xs text-gray-500 text-center pt-4 border-t">
-              <p className="mb-2">Use estas credenciais para testar:</p>
-              <p><strong>Admin:</strong> admin@fragrance.com</p>
-              <p><strong>Usuário:</strong> carlos@email.com</p>
-            </div>
           </form>
         </CardContent>
       </Card>

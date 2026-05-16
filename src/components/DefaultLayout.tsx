@@ -15,7 +15,7 @@ import {
   FlaskConical,
   Users,
 } from "lucide-react";
-import bgImage from "../assets/images/lovely-easter-white-lily-blooms-2jfhx5wifsoflo3j.jpg";
+import bgImage from "../images/lovely-easter-white-lily-blooms-2jfhx5wifsoflo3j.jpg";
 
 export default function DefaultLayout() {
   const [searchQuery, setSearchQuery] = useState("");

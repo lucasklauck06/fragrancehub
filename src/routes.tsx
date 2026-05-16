@@ -1,6 +1,12 @@
 import { createBrowserRouter } from "react-router";
 import DefaultLayout from "./components/DefaultLayout";
 import HomePage from "./pages/HomePage";
+import LoginPage from "./pages/LoginPage";
+import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
+import AdminPerfumesPage from "./pages/admin/AdminPerfumesPage";
+import AdminPerfumeFormPage from "./pages/admin/AdminPerfumeFormPage";
+import AdminPermissionsPage from "./pages/admin/AdminPermissionsPage";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 
 
@@ -14,6 +20,32 @@ export const router = createBrowserRouter([
                 Component: HomePage,
             },
 
+        ]
+    },
+    {
+        path: "/login",
+        Component: LoginPage,
+    },
+    {
+        path: "/admin",
+        element: <ProtectedRoute adminOnly={true} />,
+        children: [
+            {
+                path: "",
+                Component: AdminDashboardPage,
+            },
+            {
+                path: "perfumes",
+                Component: AdminPerfumesPage,
+            },
+            {
+                path: "perfumes/:id",
+                Component: AdminPerfumeFormPage,
+            },
+            {
+                path: "permissoes",
+                Component: AdminPermissionsPage,
+            },
         ]
     },
     {
