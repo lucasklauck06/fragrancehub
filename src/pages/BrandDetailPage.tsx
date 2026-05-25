@@ -6,6 +6,7 @@ import { Kanban, LayoutGrid, List, Mars, Star, Venus } from "lucide-react";
 import { perfumes } from "../data/mockData";
 import SidebarResenhasPerfumes from "../components/SidebarResenhasPerfumes";
 export default function BrandDetailPage() {
+  const navigate = useNavigate();
   const { id } = useParams();
   const brand = brands.find((b) => b.id === id);
   const [optionSelected, setOptionSelected] = useState("Novo");
@@ -40,21 +41,21 @@ export default function BrandDetailPage() {
             </div>
             <div className="flex gap-10 mt-4 border-b border-gray-300">
               <p
-                className={`flex gap-2 items-center border-b p-2 ${optionSelected === "Novo" ? "border-teal-600 bg-transparent hover:bg-transparent text-teal-600" : "border-transparent bg-transparent hover:bg-transparent text-gray-500"}`}
+                className={`flex cursor-pointer gap-2 items-center border-b p-2 ${optionSelected === "Novo" ? "border-teal-600 bg-transparent hover:bg-transparent text-teal-600" : "border-transparent bg-transparent hover:bg-transparent text-gray-500"}`}
                 onClick={() => setOptionSelected("Novo")}
               >
                 <Star className="w-5 h-5" />
                 Novo
               </p>
               <p
-                className={`flex gap-2 items-center border-b p-2 ${optionSelected === "Masculino" ? "border-teal-600 bg-transparent hover:bg-transparent text-teal-600" : "border-transparent bg-transparent hover:bg-transparent text-gray-500"}`}
+                className={`flex cursor-pointer gap-2 items-center border-b p-2 ${optionSelected === "Masculino" ? "border-teal-600 bg-transparent hover:bg-transparent text-teal-600" : "border-transparent bg-transparent hover:bg-transparent text-gray-500"}`}
                 onClick={() => setOptionSelected("Masculino")}
               >
                 <Mars className="w-5 h-5" />
                 Masculino
               </p>
               <p
-                className={`flex gap-2 items-center border-b p-2 ${optionSelected === "Feminino" ? "border-teal-600 bg-transparent hover:bg-transparent text-teal-600" : "border-transparent bg-transparent hover:bg-transparent text-gray-500"}`}
+                className={`flex cursor-pointer gap-2 items-center border-b p-2 ${optionSelected === "Feminino" ? "border-teal-600 bg-transparent hover:bg-transparent text-teal-600" : "border-transparent bg-transparent hover:bg-transparent text-gray-500"}`}
                 onClick={() => setOptionSelected("Feminino")}
               >
                 <Venus className="w-5 h-5" />
@@ -89,20 +90,35 @@ export default function BrandDetailPage() {
                   perfumesFiltrados.map((perfume) => (
                     <div
                       key={perfume.id}
-                      className="flex gap-4 mt-4 items-center"
+                      className={`flex-col gap-4 mt-4 items-center justify-center p-4 border border-gray-200 rounded-lg transition-all duration-300 cursor-pointer bg-gradient-to-b from-white ${
+                        perfume.gender === "Masculino"
+                          ? "to-blue-200 hover:border-blue-400 hover:shadow-lg hover:shadow-blue-200"
+                          : perfume.gender === "Feminino"
+                            ? "to-pink-200 hover:border-pink-400 hover:shadow-lg hover:shadow-pink-200"
+                            : "to-teal-200 hover:border-teal-400 hover:shadow-lg hover:shadow-teal-200"
+                      }`}
+                      onClick={() => navigate(`/perfume/${perfume.id}`)}
                     >
                       <img
                         src={perfume.image}
                         alt={perfume.name}
-                        className="w-16 h-16 rounded-md object-cover"
+                        className="w-50 h-50 rounded-md object-cover mx-auto"
                       />
-                      <div>
-                        <h3 className="font-bold text-gray-800">
+                      <div className="flex flex-col items-center mt-2 text-center">
+                        <h3 className="font-bold text-sm text-gray-800 text-center">
                           {perfume.name}
                         </h3>
-                        <p className="text-sm text-gray-600 line-clamp-2">
-                          {perfume.description}
+                        <p className="text-sm text-gray-600 line-clamp-2 text-center border-b border-black w-full">
+                          {perfume.brand}
                         </p>
+                      </div>
+                      <div className="flex justify-between items-center mt-2">
+                        <p className="text-sm text-black">{perfume.year}</p>
+                        <div
+                          className={`mt-2 px-2 py-1 rounded-full text-xs ${perfume.gender === "Masculino" ? "text-blue-700 bg-gradient-to-r from-blue-300 to-transparent" : perfume.gender === "Feminino" ? "text-pink-700 bg-gradient-to-r from-pink-300 to-transparent" : "text-teal-700 bg-gradient-to-r from-teal-300 to-transparent"}`}
+                        >
+                          <p className="font-bold">{perfume.gender}</p>
+                        </div>
                       </div>
                     </div>
                   ))
@@ -118,7 +134,8 @@ export default function BrandDetailPage() {
                   perfumesFiltrados.map((perfume) => (
                     <div
                       key={perfume.id}
-                      className="border-b border-teal-500 bg-white w-full pb-4 flex gap-4"
+                      className="border-b border-teal-500 hover:bg-gray-100 hover:rounded-lg bg-white w-full pb-4 hover:p-4 flex gap-4 transition-all duration-300 cursor-pointer"
+                      onClick={() => navigate(`/perfume/${perfume.id}`)}
                     >
                       <img
                         src={perfume.image}
