@@ -24,6 +24,10 @@ export default function DesignersHomePage() {
     navigate("/login");
   };
 
+  const perfumistsFiltrados = perfumists.filter((perfumist) =>
+    perfumist.name.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
+
   return (
     <>
       {/* Main Content */}
@@ -39,49 +43,89 @@ export default function DesignersHomePage() {
                 type="search"
                 placeholder="Buscar perfumistas..."
                 className="pl-10 pr-4 py-2 h-12 w-full "
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleSearch(e);
+                  }
+                }}
               />
             </div>
             <div className="flex flex-col">
-              {alfabet.map((letter) => (
-                <div key={letter}>
-                  <div className="text-black text-xl font-bold mt-4">{letter}</div>
-                  {perfumists.filter((perfumist) => perfumist.name.startsWith(letter)).length > 0 ? (
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mt-2">
-                      {perfumists.filter((perfumist) => perfumist.name.startsWith(letter)).map((perfumist) => (
-                        <span
-                          key={perfumist.name}
-                          className="text-teal-600 hover:text-teal-700 transition-colors duration-300 text-lg font-semibold flex items-center gap-2 group"
-                        >
-                          <div className="bg-gray-200 rounded-full w-16 h-16 overflow-hidden relative border-2 border-gray-300 group-hover:border-teal-700 transition-colors duration-300">
-                            {perfumist.photo ? (
-                              <img
-                                src={perfumist.photo}
-                                alt={perfumist.name}
-                                className="w-full h-full object-cover"
-                              />
-                            ) : (
-                              <div className="w-full h-full flex items-center justify-center text-gray-400">
-                                👤
-                              </div>
-                            )}
+              {searchQuery === ""
+                ? alfabet.map((letter) => (
+                    <div key={letter}>
+                      <div className="text-black text-xl font-bold mt-4">
+                        {letter}
+                      </div>
+                      {perfumistsFiltrados.filter((perfumist) =>
+                        perfumist.name.startsWith(letter),
+                      ).length > 0 ? (
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mt-2">
+                          {perfumistsFiltrados
+                            .filter((perfumist) =>
+                              perfumist.name.startsWith(letter),
+                            )
+                            .map((perfumist) => (
+                              <span
+                                key={perfumist.name}
+                                className="text-teal-600 hover:text-teal-700 transition-colors duration-300 text-lg font-semibold flex items-center gap-2 group"
+                              >
+                                <div className="bg-gray-200 rounded-full w-16 h-16 overflow-hidden relative border-2 border-gray-300 group-hover:border-teal-700 transition-colors duration-300">
+                                  {perfumist.photo ? (
+                                    <img
+                                      src={perfumist.photo}
+                                      alt={perfumist.name}
+                                      className="w-full h-full object-cover"
+                                    />
+                                  ) : (
+                                    <div className="w-full h-full flex items-center justify-center text-gray-400">
+                                      👤
+                                    </div>
+                                  )}
+                                </div>
+                                <Link
+                                  to={`/perfumista/${perfumist.id}`}
+                                  className="truncate"
+                                  title={perfumist.name}
+                                >
+                                  {perfumist.name}
+                                </Link>
+                              </span>
+                            ))}
+                        </div>
+                      ) : (
+                        <div className="flex justify-center gap-2">
+                          <span className="text-gray-500">
+                            Nenhum perfumista encontrado com a letra {letter}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  ))
+                : perfumistsFiltrados.map((perfumist) => (
+                    <Link
+                      key={perfumist.id}
+                      to={`/perfumista/${perfumist.id}`}
+                      className="text-teal-600 hover:text-teal-700 transition-colors duration-300 text-lg font-semibold flex items-center gap-2 group"
+                    >
+                      <div className="bg-gray-200 rounded-full w-16 h-16 overflow-hidden relative border-2 border-gray-300 group-hover:border-teal-700 transition-colors duration-300">
+                        {perfumist.photo ? (
+                          <img
+                            src={perfumist.photo}
+                            alt={perfumist.name}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-gray-400">
+                            👤
                           </div>
-                          <Link
-                            to={`/perfumista/${perfumist.id}`}
-                            className="truncate"
-                            title={perfumist.name}
-                          >
-                            {perfumist.name}
-                          </Link>
-                        </span>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="flex justify-center gap-2">
-                      <span className="text-gray-500">Nenhum perfumista encontrado com a letra {letter}</span>
-                    </div>
-                  )}
-                </div>
-              ))}
+                        )}
+                      </div>
+                      {perfumist.name}
+                    </Link>
+                  ))}
             </div>
           </div>
           <div>
