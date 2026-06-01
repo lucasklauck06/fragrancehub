@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {
@@ -15,9 +16,103 @@ model User {
   role      Role     @default(USER)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  reviews   Review[]
 }
 
 enum Role {
   USER
   ADMIN
+}
+
+model Brand {
+  id          String    @id @default(uuid())
+  name        String
+  country     String?
+  image       String?
+  description String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  perfumes    Perfume[]
+}
+
+model Perfumist {
+  id        String    @id @default(uuid())
+  name      String
+  country   String?
+  bio       String?   @db.Text
+  photo     String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  perfumes  Perfume[]
+}
+
+model Perfume {
+  id          String   @id @default(uuid())
+  name        String
+  collection  String?
+  gender      String
+  price       Float    @default(0)
+  image       String?
+  year        Int?
+  topNotes    String[]
+  heartNotes  String[]
+  baseNotes   String[]
+  description String?  @db.Text
+  
+  brandId     String
+  brand       Brand    @relation(fields: [brandId], references: [id])
+  
+  perfumistId String?
+  perfumist   Perfumist? @relation(fields: [perfumistId], references: [id])
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  reviews     Review[]
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  rating    Int      @default(5)
+  comment   String   @db.Text
+  date      DateTime @default(now())
+  
+  perfumeId String
+  perfume   Perfume  @relation(fields: [perfumeId], references: [id])
+  
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model News {
+  id        String   @id @default(uuid())
+  title     String
+  subtitle  String?
+  content   String   @db.Text
+  date      DateTime @default(now())
+  image     String?
+  autor     String?
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AromaticGroup {
+  id                     String   @id @default(uuid())
+  name                   String
+  color                  String?
+  gradient               String?
+  textColor              String?
+  icon                   String?
+  gender                 String?
+  description            String?  @db.Text
+  seasonality            String[]
+  characteristics        String[]
+  subGroups              String[]
+  representativePerfumes String[]
+  
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
 }

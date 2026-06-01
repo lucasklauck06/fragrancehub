@@ -7,6 +7,8 @@ import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
 import AdminPerfumesPage from "./pages/admin/AdminPerfumesPage";
 import AdminPerfumeFormPage from "./pages/admin/AdminPerfumeFormPage";
 import AdminPermissionsPage from "./pages/admin/AdminPermissionsPage";
+import AdminBrandsPage from "./pages/admin/AdminBrandsPage";
+import AdminBrandFormPage from "./pages/admin/AdminBrandFormPage";
 import BrandDetailPage from "./pages/BrandDetailPage";
 import SearchDesignersPage from "./pages/SearchDesignersPage";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -57,6 +59,14 @@ export const router = createBrowserRouter([
       {
         path: "perfumes/:id",
         Component: AdminPerfumeFormPage,
+      },
+      {
+        path: "marcas",
+        Component: AdminBrandsPage,
+      },
+      {
+        path: "marcas/:id",
+        Component: AdminBrandFormPage,
       },
       {
         path: "permissoes",
