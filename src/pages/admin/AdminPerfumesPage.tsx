@@ -158,7 +158,7 @@ export default function AdminPerfumesPage() {
                   <th
                     className="text-left py-3 px-4 font-semibold text-gray-700 select-none transition-colors"
                   >
-                    <span className="inline-flex items-center hover:text-teal-500 transition-all duration-200"
+                    <span className="inline-flex cursor-pointer items-center hover:text-teal-500 transition-all duration-200"
                       onClick={() => handleSort('id')}>
                       ID {getSortIcon('id')}
                     </span>
@@ -166,7 +166,7 @@ export default function AdminPerfumesPage() {
                   <th
                     className="text-left py-3 px-4 font-semibold text-gray-700 select-none transition-colors"
                   >
-                    <span className="inline-flex items-center hover:text-teal-500 transition-all duration-200"
+                    <span className="inline-flex cursor-pointer items-center hover:text-teal-500 transition-all duration-200"
                       onClick={() => handleSort('name')}>
                       Nome {getSortIcon('name')}
                     </span>
@@ -174,7 +174,7 @@ export default function AdminPerfumesPage() {
                   <th
                     className="text-left py-3 px-4 font-semibold text-gray-700 select-none transition-colors"
                   >
-                    <span className="inline-flex items-center hover:text-teal-500 transition-all duration-200"
+                    <span className="inline-flex cursor-pointer items-center hover:text-teal-500 transition-all duration-200"
                       onClick={() => handleSort('brand')}>
                       Marca {getSortIcon('brand')}
                     </span>
@@ -183,7 +183,7 @@ export default function AdminPerfumesPage() {
                     className="text-left py-3 px-4 font-semibold text-gray-700 select-none transition-colors"
 
                   >
-                    <span className="inline-flex items-center hover:text-teal-500 transition-all duration-200"
+                    <span className="inline-flex cursor-pointer items-center hover:text-teal-500 transition-all duration-200"
                       onClick={() => handleSort('perfumist')}>
                       Perfumista {getSortIcon('perfumist')}
                     </span>
@@ -191,7 +191,7 @@ export default function AdminPerfumesPage() {
                   <th
                     className="text-left py-3 px-4 font-semibold text-gray-700 select-none transition-colors"
                   >
-                    <span className="inline-flex items-center hover:text-teal-500 transition-all duration-200"
+                    <span className="inline-flex cursor-pointer items-center hover:text-teal-500 transition-all duration-200"
                       onClick={() => handleSort('price')}>
                       Preço {getSortIcon('price')}
                     </span>
