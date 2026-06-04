@@ -1,23 +1,74 @@
-import { useState } from 'react';
-import { users as initialUsers } from '../../data/mockData';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../components/ui/select';
 import { toast } from 'sonner';
 import AdminLayout from '../../components/AdminLayout';
 import { Shield, User } from 'lucide-react';
 
-export default function AdminPermissionsPage() {
-  const [users, setUsers] = useState(initialUsers);
+interface UserData {
+  id: string;
+  name: string;
+  email: string;
+  role: 'USER' | 'ADMIN';
+  createdAt: string;
+}
 
-  const handleRoleChange = (userId: string, newRole: 'USER' | 'ADMIN') => {
+export default function AdminPermissionsPage() {
+  const [users, setUsers] = useState<UserData[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const fetchUsers = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/api/users');
+      if (!response.ok) throw new Error('Failed to fetch users');
+      const data = await response.json();
+      setUsers(data);
+    } catch (error) {
+      console.error(error);
+      toast.error('Erro ao carregar usuários');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleRoleChange = async (userId: string, newRole: 'USER' | 'ADMIN') => {
     const user = users.find(u => u.id === userId);
     if (!user) return;
 
-    setUsers(users.map(u => u.id === userId ? { ...u, role: newRole } : u));
+    try {
+      const response = await fetch(`http://localhost:3000/api/users/${userId}/role`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ role: newRole }),
+      });
 
-    toast.success(`Permissões de ${user.name} atualizadas.`, {
-      className: 'bg-green-50 border-green-200',
-    });
+      if (!response.ok) throw new Error('Failed to update role');
+      
+      const updatedUser = await response.json();
+
+      setUsers(users.map(u => u.id === userId ? { ...u, role: updatedUser.role } : u));
+
+      toast.success(`Permissões de ${user.name} atualizadas.`, {
+        className: 'bg-green-50 border-green-200',
+      });
+    } catch (error) {
+      console.error(error);
+      toast.error('Erro ao atualizar permissão do usuário');
+    }
+  };
+
+  const formatDate = (dateString: string) => {
+    try {
+      return new Date(dateString).toLocaleDateString('pt-BR');
+    } catch {
+      return dateString;
+    }
   };
 
   return (
@@ -39,47 +90,61 @@ export default function AdminPermissionsPage() {
                 </tr>
               </thead>
               <tbody>
-                {users.map((user) => (
-                  <tr key={user.id} className="border-b hover:bg-gray-50 transition-colors">
-                    <td className="py-3 px-4 text-gray-600">{user.id}</td>
-                    <td className="py-3 px-4">
-                      <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
-                          <span className="text-purple-700 font-semibold text-sm">
-                            {user.name.charAt(0).toUpperCase()}
-                          </span>
-                        </div>
-                        <span className="font-medium">{user.name}</span>
-                      </div>
-                    </td>
-                    <td className="py-3 px-4 text-gray-700">{user.email}</td>
-                    <td className="py-3 px-4 text-gray-600">{user.createdAt}</td>
-                    <td className="py-3 px-4">
-                      <Select
-                        value={user.role}
-                        onValueChange={(value) => handleRoleChange(user.id, value as 'USER' | 'ADMIN')}
-                      >
-                        <SelectTrigger className="w-40">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="USER">
-                            <div className="flex items-center gap-2">
-                              <User className="w-4 h-4 text-blue-600" />
-                              <span>USER</span>
-                            </div>
-                          </SelectItem>
-                          <SelectItem value="ADMIN">
-                            <div className="flex items-center gap-2">
-                              <Shield className="w-4 h-4 text-purple-600" />
-                              <span>ADMIN</span>
-                            </div>
-                          </SelectItem>
-                        </SelectContent>
-                      </Select>
+                {isLoading ? (
+                  <tr>
+                    <td colSpan={5} className="py-8 text-center text-gray-500">
+                      Carregando usuários...
                     </td>
                   </tr>
-                ))}
+                ) : users.length === 0 ? (
+                  <tr>
+                    <td colSpan={5} className="py-8 text-center text-gray-500">
+                      Nenhum usuário encontrado.
+                    </td>
+                  </tr>
+                ) : (
+                  users.map((user) => (
+                    <tr key={user.id} className="border-b hover:bg-gray-50 transition-colors">
+                      <td className="py-3 px-4 text-gray-600 text-sm">{user.id.substring(0, 8)}...</td>
+                      <td className="py-3 px-4">
+                        <div className="flex items-center gap-2">
+                          <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
+                            <span className="text-purple-700 font-semibold text-sm">
+                              {user.name ? user.name.charAt(0).toUpperCase() : '?'}
+                            </span>
+                          </div>
+                          <span className="font-medium">{user.name}</span>
+                        </div>
+                      </td>
+                      <td className="py-3 px-4 text-gray-700">{user.email}</td>
+                      <td className="py-3 px-4 text-gray-600">{formatDate(user.createdAt)}</td>
+                      <td className="py-3 px-4">
+                        <Select
+                          value={user.role}
+                          onValueChange={(value) => handleRoleChange(user.id, value as 'USER' | 'ADMIN')}
+                        >
+                          <SelectTrigger className="w-40">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="USER">
+                              <div className="flex items-center gap-2">
+                                <User className="w-4 h-4 text-blue-600" />
+                                <span>USER</span>
+                              </div>
+                            </SelectItem>
+                            <SelectItem value="ADMIN">
+                              <div className="flex items-center gap-2">
+                                <Shield className="w-4 h-4 text-purple-600" />
+                                <span>ADMIN</span>
+                              </div>
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
