@@ -4,6 +4,8 @@ import dotenv from "dotenv";
 import authRoutes from "./routes/authRoutes";
 import brandRoutes from "./routes/brandRoutes";
 import userRoutes from "./routes/userRoutes";
+import perfumeRoutes from "./routes/perfumeRoutes";
+import dashboardRoutes from "./routes/dashboardRoutes";
 
 dotenv.config();
 
@@ -15,6 +17,8 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/brands", brandRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/perfumes", perfumeRoutes);
+app.use("/api/dashboard", dashboardRoutes);
 
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok" });

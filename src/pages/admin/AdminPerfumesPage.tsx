@@ -1,6 +1,5 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router';
-import { perfumes as initialPerfumes } from '../../data/mockData';
 import { Button } from '../../components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
 import { Pencil, Trash2, Plus, Search, ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react';
@@ -12,12 +11,29 @@ type SortField = 'id' | 'name' | 'brand' | 'perfumist' | 'price' | null;
 type SortDirection = 'asc' | 'desc';
 
 export default function AdminPerfumesPage() {
-  const [perfumes, setPerfumes] = useState(initialPerfumes);
+  const [perfumes, setPerfumes] = useState<any[]>([]);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [sortField, setSortField] = useState<SortField>(null);
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchPerfumes();
+  }, []);
+
+  const fetchPerfumes = async () => {
+    try {
+      const res = await fetch("http://localhost:3000/api/perfumes");
+      if (res.ok) {
+        const data = await res.json();
+        setPerfumes(data);
+      }
+    } catch (error) {
+      console.error("Error fetching perfumes", error);
+      toast.error("Erro ao carregar os perfumes");
+    }
+  };
 
   const handleSort = (field: SortField) => {
     const isNumeric = field === 'id' || field === 'price';
@@ -88,15 +104,32 @@ export default function AdminPerfumesPage() {
     return result;
   }, [perfumes, searchQuery, sortField, sortDirection]);
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (!deleteId) return;
 
     const perfume = perfumes.find(p => p.id === deleteId);
-    setPerfumes(perfumes.filter(p => p.id !== deleteId));
-    setDeleteId(null);
-    toast.success(`Perfume "${perfume?.name}" excluído com sucesso!`, {
-      className: 'bg-green-50 border-green-200',
-    });
+    
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(`http://localhost:3000/api/perfumes/${deleteId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      if (res.ok) {
+        setPerfumes(perfumes.filter(p => p.id !== deleteId));
+        setDeleteId(null);
+        toast.success(`Perfume "${perfume?.name}" excluído com sucesso!`, {
+          className: 'bg-green-50 border-green-200',
+        });
+      } else {
+        toast.error("Erro ao excluir o perfume");
+      }
+    } catch (error) {
+      toast.error("Erro ao excluir o perfume");
+    }
   };
 
   const getSortIcon = (field: SortField) => {

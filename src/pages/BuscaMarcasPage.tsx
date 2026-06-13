@@ -1,13 +1,11 @@
 import { useSearchParams, Link, useNavigate } from "react-router";
-import { perfumes } from "../data/mockData";
 import { Button } from "../components/ui/button";
 import { ArrowLeft, Kanban, LayoutGrid, List, Search } from "lucide-react";
 import { Card } from "../components/ui/card";
 import { Checkbox } from "../components/ui/checkbox";
 import { Label } from "../components/ui/label";
-import { brands } from "../data/mockData";
 import { Input } from "../components/ui/input";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import BottomBrandsParfums from "../components/BottomBrandsParfums";
 import {
   Select,
@@ -17,15 +15,23 @@ import {
   SelectValue,
 } from "../components/ui/select";
 import SidebarResenhasPerfumes from "../components/SidebarResenhasPerfumes";
-export default function SearchDesignersPage() {
+export default function BuscaMarcasPage() {
   const alfabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const [selectedLetter, setSelectedLetter] = useState("");
   const [selectedCountry, setSelectedCountry] = useState("todos");
+  const [brands, setBrands] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetch("http://localhost:3000/api/brands")
+      .then(res => res.json())
+      .then(data => setBrands(data))
+      .catch(err => console.error("Error fetching brands:", err));
+  }, []);
   const filteredBrandsByLetter = useMemo(() => {
     return brands.filter((brand) => brand.name.startsWith(selectedLetter));
-  }, [selectedLetter]);
+  }, [brands, selectedLetter]);
   const filteredBrandsByLetterAndCountry = useMemo(() => {
     if (selectedCountry === "todos") {
       return filteredBrandsByLetter;
@@ -63,7 +69,7 @@ export default function SearchDesignersPage() {
               <div className="w-full flex items-center relative">
                 <Search className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <Input
-                  placeholder="Buscar designers..."
+                  placeholder="Buscar marcas..."
                   className="pl-10"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
@@ -71,12 +77,12 @@ export default function SearchDesignersPage() {
               </div>
               <Select value={selectedCountry} onValueChange={setSelectedCountry}>
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Ver Designers do País" />
+                  <SelectValue placeholder="Ver Marcas do País" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem key="todos" value="todos">
-                      Todos os Países
-                    </SelectItem>
+                    Todos os Países
+                  </SelectItem>
                   {Array.from(
                     new Set(brands.map((brand) => brand.country)),
                   ).map((country) => (
@@ -89,7 +95,7 @@ export default function SearchDesignersPage() {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredBrandsByLetterAndCountryAndQuery.length === 0 ? (
-                <p className="text-center col-span-full">Nenhum designer encontrado</p>
+                <p className="text-center col-span-full">Nenhuma marca encontrada</p>
               ) : (
                 filteredBrandsByLetterAndCountryAndQuery.map((brand) => (
                   <Card

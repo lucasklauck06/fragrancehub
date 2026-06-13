@@ -1,20 +1,34 @@
 import { Button } from "../components/ui/button";
-import { brands } from "../data/mockData";
 import { useParams, Link, useNavigate } from "react-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Kanban, LayoutGrid, List, Mars, Star, Venus } from "lucide-react";
-import { perfumes } from "../data/mockData";
 import SidebarResenhasPerfumes from "../components/SidebarResenhasPerfumes";
 export default function BrandDetailPage() {
   const navigate = useNavigate();
   const { id } = useParams();
-  const brand = brands.find((b) => b.id === id);
+  const [brand, setBrand] = useState<any>(null);
+  const [perfumes, setPerfumes] = useState<any[]>([]);
   const [optionSelected, setOptionSelected] = useState("Novo");
   const [showPerfumesList, setShowPerfumesList] = useState("Lista");
   const [searchTerm, setSearchTerm] = useState("");
 
+  useEffect(() => {
+    if (id) {
+      // Fetch brand
+      fetch(`http://localhost:3000/api/brands/${id}`)
+        .then(res => res.json())
+        .then(data => setBrand(data))
+        .catch(err => console.error(err));
+
+      // Fetch perfumes for this brand
+      fetch(`http://localhost:3000/api/perfumes?brandId=${id}`)
+        .then(res => res.json())
+        .then(data => setPerfumes(data))
+        .catch(err => console.error(err));
+    }
+  }, [id]);
+
   const perfumesFiltrados = perfumes
-    .filter((p) => p.brand === brand?.name)
     .filter((p) => {
       if (optionSelected === "Masculino") return p.gender === "Masculino";
       if (optionSelected === "Feminino") return p.gender === "Feminino";

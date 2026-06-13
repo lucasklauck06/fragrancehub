@@ -87,7 +87,7 @@ export default function DefaultLayout() {
                         <button
                           onClick={() => {
                             setModalPerfumesOpen(false);
-                            navigate("/busca/designers");
+                            navigate("/marcas");
                           }}
                           className="flex items-center gap-4 hover:text-teal-600 transition-colors duration-200 "
                         >
