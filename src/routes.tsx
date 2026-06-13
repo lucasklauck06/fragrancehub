@@ -2,15 +2,15 @@ import { createBrowserRouter } from "react-router";
 import DefaultLayout from "./components/DefaultLayout";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
-import DesignersHomePage from "./pages/DesignersHomePage";
+import PerfumistasHomePage from "./pages/PerfumistasHomePage";
 import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
 import AdminPerfumesPage from "./pages/admin/AdminPerfumesPage";
 import AdminPerfumeFormPage from "./pages/admin/AdminPerfumeFormPage";
 import AdminPermissionsPage from "./pages/admin/AdminPermissionsPage";
 import AdminBrandsPage from "./pages/admin/AdminBrandsPage";
 import AdminBrandFormPage from "./pages/admin/AdminBrandFormPage";
-import BrandDetailPage from "./pages/BrandDetailPage";
-import SearchDesignersPage from "./pages/SearchDesignersPage";
+import BrandDetailPage from "./pages/MarcasDetailPage";
+import BuscaMarcasPage from "./pages/BuscaMarcasPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 export const router = createBrowserRouter([
@@ -24,15 +24,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/perfumistas",
-        Component: DesignersHomePage,
-      },
-      {
-        path: "/busca/designers",
-        Component: SearchDesignersPage,
+        Component: PerfumistasHomePage,
       },
       {
         path: "/marcas",
-        Component: SearchDesignersPage,
+        Component: BuscaMarcasPage,
       },
       {
         path: "/marca/:id",
