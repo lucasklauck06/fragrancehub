@@ -7,6 +7,7 @@ import AdminPerfumesPage from "./pages/admin/AdminPerfumesPage";
 import AdminPerfumeFormPage from "./pages/admin/AdminPerfumeFormPage";
 import AdminPermissionsPage from "./pages/admin/AdminPermissionsPage";
 import ProtectedRoute from "./components/ProtectedRoute";
+import PerfumistPage from "./pages/PerfumistPage";
 
 
 
@@ -18,6 +19,10 @@ export const router = createBrowserRouter([
             {
                 path: "/",
                 Component: HomePage,
+            },
+            {
+                path: "/perfumista/:id",
+                Component: PerfumistPage,
             },
 
         ]
