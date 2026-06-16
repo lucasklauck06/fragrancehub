@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router";
-import { perfumes } from "../data/mockData";
+import { useState, useEffect } from "react";
 import { Button } from "../components/ui/button";
 import BottomBrandsParfums from "../components/BottomBrandsParfums";
 import { Toggle } from "../components/ui/toggle";
@@ -17,10 +17,26 @@ import {
 } from "../components/ui/dropdown-menu";
 import { Tabs, TabsList, TabsTrigger } from "../components/ui/tabs";
 import SidebarResenhasPerfumes from "../components/SidebarResenhasPerfumes";
+
+interface Perfume {
+  id: string;
+  name: string;
+  brand: string;
+  image: string;
+  price: number;
+  year: number;
+}
+
 export default function HomePage() {
   const navigate = useNavigate();
+  const [perfumes, setPerfumes] = useState<Perfume[]>([]);
 
-  const newReleases = perfumes.filter((p) => p.year >= 2020).slice(0, 5);
+  useEffect(() => {
+    fetch("http://localhost:3000/api/perfumes")
+      .then((res) => res.json())
+      .then((data) => setPerfumes(data))
+      .catch((err) => console.error("Erro ao buscar perfumes:", err));
+  }, []);
 
   return (
     <>
@@ -173,6 +189,7 @@ export default function HomePage() {
               <div className="flex gap-4 overflow-x-auto scroll-smooth pb-2">
                 {perfumes
                   .sort((a, b) => b.year - a.year)
+                  .slice(0, 20)
                   .map((perfume) => (
                     <div key={perfume.id} className="flex-shrink-0">
                       <Card
