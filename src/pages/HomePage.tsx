@@ -5,8 +5,6 @@ import BottomBrandsParfums from "../components/BottomBrandsParfums";
 import { Toggle } from "../components/ui/toggle";
 import { Input } from "../components/ui/input";
 import { Card } from "../components/ui/card";
-import { type News } from "../data/mockData";
-import { news } from "../data/mockData";
 import { Sun, Moon, ChevronUp, SearchIcon, Car } from "lucide-react";
 import { Search, User, LogOut, ChevronDown } from "lucide-react";
 import {
@@ -27,15 +25,31 @@ interface Perfume {
   year: number;
 }
 
+interface News {
+  id: string;
+  title: string;
+  subtitle?: string;
+  content: string;
+  date: string;
+  image?: string;
+  autor: string;
+}
+
 export default function HomePage() {
   const navigate = useNavigate();
   const [perfumes, setPerfumes] = useState<Perfume[]>([]);
+  const [news, setNews] = useState<News[]>([]);
 
   useEffect(() => {
     fetch("http://localhost:3000/api/perfumes")
       .then((res) => res.json())
       .then((data) => setPerfumes(data))
       .catch((err) => console.error("Erro ao buscar perfumes:", err));
+
+    fetch("http://localhost:3000/api/news")
+      .then((res) => res.json())
+      .then((data) => setNews(data))
+      .catch((err) => console.error("Erro ao buscar notícias:", err));
   }, []);
 
   return (

@@ -1,10 +1,24 @@
+import { useState, useEffect } from "react";
 import { Navigate, useNavigate } from "react-router";
-import { perfumes } from "../data/mockData";
-import { brands } from "../data/mockData";
 import { Button } from "./ui/button";
 
 export default function BottomBrandsParfums() {
   const navigate = useNavigate();
+  const [perfumes, setPerfumes] = useState<any[]>([]);
+  const [brands, setBrands] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetch("http://localhost:3000/api/perfumes")
+      .then((res) => res.json())
+      .then((data) => setPerfumes(data))
+      .catch((err) => console.error("Erro ao buscar perfumes:", err));
+
+    fetch("http://localhost:3000/api/brands")
+      .then((res) => res.json())
+      .then((data) => setBrands(data))
+      .catch((err) => console.error("Erro ao buscar marcas:", err));
+  }, []);
+
   return (
     <div className="w-full max-w-7xl mx-auto px-4 py-8 bg-white backdrop-blur-sm rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300">
       <div className="flex flex-col">

@@ -15,7 +15,7 @@ export const getDashboardStats = async (req: Request, res: Response): Promise<vo
 
     const recentReviews = await prisma.review.findMany({
       take: 5,
-      orderBy: { date: 'desc' },
+      orderBy: { createdAt: 'desc' },
       include: {
         user: { select: { name: true } },
         perfume: { select: { name: true } }

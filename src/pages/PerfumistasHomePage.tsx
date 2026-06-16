@@ -1,16 +1,24 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router";
 import { useAuth } from "../contexts/AuthContext";
 import { Input } from "../components/ui/input";
-import { perfumists } from "../data/mockData";
 import { Search } from "lucide-react";
 import SidebarResenhasPerfumes from "../components/SidebarResenhasPerfumes";
+
 export default function DesignersHomePage() {
   const [searchQuery, setSearchQuery] = useState("");
   const { currentUser, logout, isAdmin } = useAuth();
   const [modalPerfumesOpen, setModalPerfumesOpen] = useState(false);
+  const [perfumists, setPerfumists] = useState<any[]>([]);
   const alfabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetch("http://localhost:3000/api/perfumists")
+      .then((res) => res.json())
+      .then((data) => setPerfumists(data))
+      .catch((err) => console.error("Erro ao buscar perfumistas:", err));
+  }, []);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();

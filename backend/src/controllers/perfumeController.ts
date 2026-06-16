@@ -75,3 +75,29 @@ export const deletePerfume = async (req: Request, res: Response): Promise<void> 
     res.status(500).json({ error: "Error deleting perfume" });
   }
 };
+
+export const createPerfume = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const perfume = await prisma.perfume.create({
+      data: req.body,
+    });
+    res.status(201).json(perfume);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error creating perfume" });
+  }
+};
+
+export const updatePerfume = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const perfume = await prisma.perfume.update({
+      where: { id: id as string },
+      data: req.body,
+    });
+    res.json(perfume);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error updating perfume" });
+  }
+};
