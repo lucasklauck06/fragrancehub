@@ -1,12 +1,10 @@
 import { Link, useNavigate } from "react-router";
-import { perfumes } from "../data/mockData";
+import { useState, useEffect } from "react";
 import { Button } from "../components/ui/button";
 import BottomBrandsParfums from "../components/BottomBrandsParfums";
 import { Toggle } from "../components/ui/toggle";
 import { Input } from "../components/ui/input";
 import { Card } from "../components/ui/card";
-import { type News } from "../data/mockData";
-import { news } from "../data/mockData";
 import { Sun, Moon, ChevronUp, SearchIcon, Car } from "lucide-react";
 import { Search, User, LogOut, ChevronDown } from "lucide-react";
 import {
@@ -17,10 +15,42 @@ import {
 } from "../components/ui/dropdown-menu";
 import { Tabs, TabsList, TabsTrigger } from "../components/ui/tabs";
 import SidebarResenhasPerfumes from "../components/SidebarResenhasPerfumes";
+
+interface Perfume {
+  id: string;
+  name: string;
+  brand: string;
+  image: string;
+  price: number;
+  year: number;
+}
+
+interface News {
+  id: string;
+  title: string;
+  subtitle?: string;
+  content: string;
+  date: string;
+  image?: string;
+  autor: string;
+}
+
 export default function HomePage() {
   const navigate = useNavigate();
+  const [perfumes, setPerfumes] = useState<Perfume[]>([]);
+  const [news, setNews] = useState<News[]>([]);
 
-  const newReleases = perfumes.filter((p) => p.year >= 2020).slice(0, 5);
+  useEffect(() => {
+    fetch("http://localhost:3000/api/perfumes")
+      .then((res) => res.json())
+      .then((data) => setPerfumes(data))
+      .catch((err) => console.error("Erro ao buscar perfumes:", err));
+
+    fetch("http://localhost:3000/api/news")
+      .then((res) => res.json())
+      .then((data) => setNews(data))
+      .catch((err) => console.error("Erro ao buscar notícias:", err));
+  }, []);
 
   return (
     <>
@@ -173,6 +203,7 @@ export default function HomePage() {
               <div className="flex gap-4 overflow-x-auto scroll-smooth pb-2">
                 {perfumes
                   .sort((a, b) => b.year - a.year)
+                  .slice(0, 20)
                   .map((perfume) => (
                     <div key={perfume.id} className="flex-shrink-0">
                       <Card
