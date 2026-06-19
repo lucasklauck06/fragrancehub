@@ -5,11 +5,14 @@ const prisma = new PrismaClient();
 
 export const getPerfumes = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { brandId } = req.query;
+    const { brandId, perfumistId } = req.query;
     
-    let whereClause = {};
+    let whereClause: any = {};
     if (brandId) {
-      whereClause = { brandId: brandId as string };
+      whereClause.brandId = brandId as string;
+    }
+    if (perfumistId) {
+      whereClause.perfumistId = perfumistId as string;
     }
     
     const perfumes = await prisma.perfume.findMany({

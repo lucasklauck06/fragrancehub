@@ -1,6 +1,5 @@
 import { useParams, Link, useNavigate } from "react-router";
-import { perfumists, perfumes } from "../data/mockData";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { Button } from "../components/ui/button";
 import {
@@ -14,11 +13,32 @@ import { ArrowLeft, ChevronDown, MapPin, Search } from "lucide-react";
 
 export default function PerfumistPage() {
   const { id } = useParams();
-  const perfumist = perfumists.find((p) => p.id === id);
+  const [perfumist, setPerfumist] = useState<any>(null);
+  const [perfumes, setPerfumes] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const { currentUser, logout, isAdmin } = useAuth();
   const [modalPerfumesOpen, setModalPerfumesOpen] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (id) {
+      setLoading(true);
+      Promise.all([
+        fetch(`http://localhost:3000/api/perfumists/${id}`).then((res) => {
+          if (!res.ok) throw new Error("Perfumista não encontrado");
+          return res.json();
+        }),
+        fetch(`http://localhost:3000/api/perfumes?perfumistId=${id}`).then((res) => res.json())
+      ])
+        .then(([perfumistData, perfumesData]) => {
+          setPerfumist(perfumistData);
+          setPerfumes(perfumesData);
+        })
+        .catch((err) => console.error(err))
+        .finally(() => setLoading(false));
+    }
+  }, [id]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,6 +52,14 @@ export default function PerfumistPage() {
     navigate("/login");
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-gray-600">Carregando...</p>
+      </div>
+    );
+  }
+
   if (!perfumist) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -40,9 +68,7 @@ export default function PerfumistPage() {
     );
   }
 
-  const perfumistWorks = perfumes
-    .filter((p) => p.perfumistId === id)
-    .sort((a, b) => b.year - a.year);
+  const perfumistWorks = perfumes.sort((a, b) => b.year - a.year);
 
   return (
     <>
@@ -136,12 +162,12 @@ export default function PerfumistPage() {
                           </Link>
                         </td>
                         <td className="py-3 px-4 text-gray-700 hover:text-teal-600 cursor-pointer"
-                        onClick={()=> navigate(`/marca/${perfume.brandId}`)}>
+                          onClick={() => navigate(`/marca/${perfume.brandId}`)}>
                           {perfume.brand}
                         </td>
                         <td className="py-3 px-4">
                           <span
-                            className={`${perfume.gender==="Masculino" ? "bg-blue-400 text-blue-800" : perfume.gender === "Feminino" ? "bg-pink-400 text-pink-800" : "bg-teal-400 text-teal-600"} px-2 py-1 rounded text-sm`}
+                            className={`${perfume.gender === "Masculino" ? "bg-blue-400 text-blue-800" : perfume.gender === "Feminino" ? "bg-pink-400 text-pink-800" : "bg-teal-400 text-teal-600"} px-2 py-1 rounded text-sm`}
                           >
                             {perfume.gender}
                           </span>
