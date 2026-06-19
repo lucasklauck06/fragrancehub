@@ -40,8 +40,8 @@ export default function DesignersHomePage() {
     <>
       {/* Main Content */}
       <main className="relative flex-1 w-full max-w-7xl mx-auto px-4 py-8 bg-white/40  backdrop-blur-sm rounded-lg shadow-sm">
-        <div className="flex gap-4">
-          <div className="flex-1">
+        <div className="flex flex-col md:flex-row gap-4">
+          <div className="w-full md:w-2/3">
             <div className="flex flex-col">
               <h1 className="flex justify-center text-2xl mb-4">Perfumistas</h1>
             </div>
@@ -136,7 +136,7 @@ export default function DesignersHomePage() {
                   ))}
             </div>
           </div>
-          <div>
+          <div className="w-full md:w-1/3">
             <SidebarResenhasPerfumes />
           </div>
         </div>
