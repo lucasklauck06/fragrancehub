@@ -13,7 +13,7 @@ export const getReviews = async (req: Request, res: Response): Promise<void> => 
       }
     });
     
-    const formattedReviews = reviews.map(r => ({
+    const formattedReviews = reviews.map((r: any) => ({
       id: r.id,
       userName: r.user.name,
       perfumeName: r.perfume.name,

@@ -90,7 +90,8 @@ export default function AdminPerfumeFormPage() {
     if (!formData.name.trim()) newErrors.name = 'Nome é obrigatório';
     if (!formData.brandId) newErrors.brandId = 'Marca é obrigatória';
     if (!formData.perfumistId) newErrors.perfumistId = 'Perfumista é obrigatório';
-    if (formData.price < 0) newErrors.price = 'Preço não pode ser negativo';
+    if (formData.price <= 0) newErrors.price = 'Preço deve ser maior que zero';
+    if (!formData.gender) newErrors.gender = 'Gênero é obrigatório';
     if (!formData.description.trim()) newErrors.description = 'Descrição é obrigatória';
 
     setErrors(newErrors);
