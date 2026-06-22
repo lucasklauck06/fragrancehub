@@ -15,6 +15,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import PerfumistPage from "./pages/PerfumistPage";
 import AdminPerfumistsPage from "./pages/admin/AdminPerfumistsPage";
 import AdminPerfumistFormPage from "./pages/admin/AdminPerfumistFormPage";
+import PerfumeDetailPage from "./pages/PerfumeDetailPage";
+import BuscaPerfumesPage from "./pages/BuscaPerfumesPage";
 
 export const router = createBrowserRouter([
   {
@@ -40,6 +42,14 @@ export const router = createBrowserRouter([
       {
         path: "/marca/:id",
         Component: BrandDetailPage,
+      },
+      {
+        path: "/busca",
+        Component: BuscaPerfumesPage,
+      },
+      {
+        path: "/perfume/:id",
+        Component: PerfumeDetailPage,
       },
     ],
   },
