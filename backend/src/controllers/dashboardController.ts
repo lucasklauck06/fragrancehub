@@ -22,7 +22,7 @@ export const getDashboardStats = async (req: Request, res: Response): Promise<vo
       }
     });
     
-    const formattedReviews = recentReviews.map(r => ({
+    const formattedReviews = recentReviews.map((r: any) => ({
       id: r.id,
       userName: r.user.name,
       perfumeName: r.perfume.name,
