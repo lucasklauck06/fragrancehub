@@ -13,6 +13,8 @@ import BrandDetailPage from "./pages/MarcasDetailPage";
 import BuscaMarcasPage from "./pages/BuscaMarcasPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import PerfumistPage from "./pages/PerfumistPage";
+import AdminPerfumistsPage from "./pages/admin/AdminPerfumistsPage";
+import AdminPerfumistFormPage from "./pages/admin/AdminPerfumistFormPage";
 import PerfumeDetailPage from "./pages/PerfumeDetailPage";
 import BuscaPerfumesPage from "./pages/BuscaPerfumesPage";
 
@@ -78,6 +80,14 @@ export const router = createBrowserRouter([
       {
         path: "marcas/:id",
         Component: AdminBrandFormPage,
+      },
+      {
+        path: "perfumistas",
+        Component: AdminPerfumistsPage,
+      },
+      {
+        path: "perfumistas/:id",
+        Component: AdminPerfumistFormPage,
       },
       {
         path: "permissoes",
