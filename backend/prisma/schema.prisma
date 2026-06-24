@@ -64,16 +64,18 @@ model Perfume {
 }
 
 model Review {
-  id        String   @id @default(uuid())
-  rating    Int      @default(5)
-  comment   String
-  date      DateTime @default(now())
-  perfumeId String
-  userId    String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  perfume   Perfume  @relation(fields: [perfumeId], references: [id], onDelete: Restrict, onUpdate: Cascade)
-  user      User     @relation(fields: [userId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  id          String   @id @default(uuid())
+  rating      Int      @default(5)
+  comment     String
+  longevidade Int?
+  rastro      Int?
+  date        DateTime @default(now())
+  perfumeId   String
+  userId      String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  perfume     Perfume  @relation(fields: [perfumeId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  user        User     @relation(fields: [userId], references: [id], onDelete: Restrict, onUpdate: Cascade)
 }
 
 model News {

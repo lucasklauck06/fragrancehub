@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router";
 import { Button } from "../components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
-import { ArrowLeft, Tag, User, Star, Clock, Send, Award, Layers } from "lucide-react";
+import { ArrowLeft, Tag, User, Star, Clock, Send, Award, Layers, Wind } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "../contexts/AuthContext";
 import SidebarResenhasPerfumes from "../components/SidebarResenhasPerfumes";
@@ -12,6 +12,8 @@ interface Review {
   userName: string;
   rating: number;
   comment: string;
+  longevidade?: number | null;
+  rastro?: number | null;
   date: string;
   userId: string;
 }
@@ -50,6 +52,8 @@ export default function PerfumeDetailPage() {
   // Review form state
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState("");
+  const [longevidade, setLongevidade] = useState(0);
+  const [rastro, setRastro] = useState(0);
   const [submittingReview, setSubmittingReview] = useState(false);
 
   useEffect(() => {
@@ -115,9 +119,10 @@ export default function PerfumeDetailPage() {
         },
         body: JSON.stringify({
           perfumeId: id,
-          userId: currentUser.id,
           rating,
-          comment
+          comment,
+          longevidade: longevidade > 0 ? longevidade : null,
+          rastro: rastro > 0 ? rastro : null,
         })
       });
 
@@ -125,6 +130,8 @@ export default function PerfumeDetailPage() {
         toast.success("Resenha publicada com sucesso!");
         setComment("");
         setRating(5);
+        setLongevidade(0);
+        setRastro(0);
         fetchPerfumeDetails(); // reload data
       } else {
         const errData = await res.json();
@@ -473,6 +480,50 @@ export default function PerfumeDetailPage() {
                     </div>
                   </div>
 
+                  {/* Longevidade técnica */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <p className="text-xs text-gray-500 font-semibold mb-1">Fixação / Longevidade:</p>
+                      <div className="flex gap-1">
+                        {[1, 2, 3, 4, 5].map((val) => (
+                          <button
+                            key={val}
+                            type="button"
+                            onClick={() => setLongevidade(longevidade === val ? 0 : val)}
+                            className="hover:scale-110 transition-transform cursor-pointer"
+                          >
+                            <Clock className={`w-5 h-5 ${val <= longevidade ? "text-teal-500 fill-teal-500" : "text-gray-300"}`} />
+                          </button>
+                        ))}
+                      </div>
+                      {longevidade > 0 && (
+                        <p className="text-[10px] text-teal-600 mt-0.5">
+                          {["Muito fraca", "Fraca", "Moderada", "Longa", "Eterna"][longevidade - 1]}
+                        </p>
+                      )}
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-500 font-semibold mb-1">Rastro / Silagem:</p>
+                      <div className="flex gap-1">
+                        {[1, 2, 3, 4, 5].map((val) => (
+                          <button
+                            key={val}
+                            type="button"
+                            onClick={() => setRastro(rastro === val ? 0 : val)}
+                            className="hover:scale-110 transition-transform cursor-pointer"
+                          >
+                            <Wind className={`w-5 h-5 ${val <= rastro ? "text-purple-500 fill-purple-500" : "text-gray-300"}`} />
+                          </button>
+                        ))}
+                      </div>
+                      {rastro > 0 && (
+                        <p className="text-[10px] text-purple-600 mt-0.5">
+                          {["Íntimo", "Suave", "Moderado", "Forte", "Enorme"][rastro - 1]}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
                   {/* Comment */}
                   <div className="space-y-1">
                     <textarea
@@ -513,6 +564,18 @@ export default function PerfumeDetailPage() {
                               <Star className="w-3 h-3 text-yellow-500 fill-yellow-500 mr-1" />
                               <span className="text-[10px] font-bold text-yellow-700">{review.rating}</span>
                             </div>
+                            {review.longevidade && (
+                              <div className="flex bg-teal-50 px-1.5 py-0.5 rounded border border-teal-100 items-center gap-0.5">
+                                <Clock className="w-3 h-3 text-teal-500 mr-0.5" />
+                                <span className="text-[10px] font-bold text-teal-700">{review.longevidade}/5</span>
+                              </div>
+                            )}
+                            {review.rastro && (
+                              <div className="flex bg-purple-50 px-1.5 py-0.5 rounded border border-purple-100 items-center gap-0.5">
+                                <Wind className="w-3 h-3 text-purple-500 mr-0.5" />
+                                <span className="text-[10px] font-bold text-purple-700">{review.rastro}/5</span>
+                              </div>
+                            )}
                           </div>
                           <span className="text-[10px] text-gray-400">
                             {new Date(review.date).toLocaleDateString("pt-BR", {
