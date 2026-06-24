@@ -169,7 +169,7 @@ export const updatePerfume = async (req: Request, res: Response): Promise<void> 
     const { id } = req.params;
     
     // Check if perfume exists
-    const perfumeExists = await prisma.perfume.findUnique({ where: { id } });
+    const perfumeExists = await prisma.perfume.findUnique({ where: { id: id as string } });
     if (!perfumeExists) {
       res.status(404).json({ error: "Perfume não encontrado." });
       return;

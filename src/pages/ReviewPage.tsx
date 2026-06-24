@@ -1,22 +1,40 @@
 import { Search } from "lucide-react";
 import BottomBrandsParfums from "../components/BottomBrandsParfums";
 import { Input } from "../components/ui/input";
-import { perfumes } from "../data/mockData";
-import { useState } from "react";
-import { reviews } from "../data/mockData";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
+import { toast } from "sonner";
 
 export default function ReviewPage() {
   const [query, setQuery] = useState("");
   const navigate = useNavigate();
+  const [perfumes, setPerfumes] = useState<any[]>([]);
+  const [reviews, setReviews] = useState<any[]>([]);
+
+  useEffect(() => {
+    Promise.all([
+      fetch("http://localhost:3000/api/perfumes"),
+      fetch("http://localhost:3000/api/reviews")
+    ])
+    .then(async ([resPerfumes, resReviews]) => {
+      if (resPerfumes.ok) setPerfumes(await resPerfumes.json());
+      if (resReviews.ok) setReviews(await resReviews.json());
+    })
+    .catch((err) => {
+      console.error(err);
+      toast.error("Erro ao carregar dados.");
+    });
+  }, []);
+
   const perfumesFitrado = perfumes.filter((perfume) => {
     return perfume.name.toLowerCase().includes(query.toLowerCase());
   });
+
   return (
     <>
       <main className="relative flex-1 w-full max-w-7xl mx-auto px-4 py-8 bg-white/40  backdrop-blur-sm rounded-lg shadow-sm">
         <div className="flex flex-col gap-4">
-          <h1 className="flex justify-center">
+          <h1 className="flex justify-center text-xl font-bold text-gray-800">
             {query === ""
               ? "Avaliações"
               : perfumesFitrado.length === 1 ? `Avaliações do "${perfumesFitrado[0].name}"`
@@ -54,19 +72,20 @@ export default function ReviewPage() {
                     <div className="flex flex-col flex-1 justify-between">
                       <div>
                         <div className="flex justify-between w-full">
-                          <p>{perfume.name}</p>
-                          <p>{perfume.year}</p>
+                          <p className="font-bold text-gray-900">{perfume.name}</p>
+                          <p className="text-gray-500">{perfume.year}</p>
                         </div>
-                        <p>{perfume.brand}</p>
+                        <p className="text-sm text-gray-600">{perfume.brand}</p>
                       </div>
                       <div
-                        className={`${perfume.gender === "Masculino" ? "text-blue-700 bg-gradient-to-r from-blue-300 to-transparent" : perfume.gender === "Feminino" ? "text-pink-700 bg-gradient-to-r from-pink-300 to-transparent" : "text-teal-700 bg-gradient-to-r from-teal-300 to-transparent"} rounded-full px-2 py-1 text-xs w-full mt-1 self-start`}
+                        className={`${perfume.gender === "Masculino" ? "text-blue-700 bg-gradient-to-r from-blue-300 to-transparent" : perfume.gender === "Feminino" ? "text-pink-700 bg-gradient-to-r from-pink-300 to-transparent" : "text-teal-700 bg-gradient-to-r from-teal-300 to-transparent"} rounded-full px-2 py-1 text-xs w-fit mt-1 self-start`}
                       >
                         <p className="font-bold">{perfume.gender}</p>
                       </div>
                     </div>
                   </div>
                 ))}
+                
                 {reviews
                   .filter((review) =>
                     perfumesFitrado.some((p) => p.id === review.perfumeId),
@@ -77,22 +96,23 @@ export default function ReviewPage() {
                       className="p-4 border rounded-md shadow-sm bg-white"
                     >
                       <div className="flex justify-between items-center mb-2">
-                        <span className="font-semibold">{review.userName}</span>
+                        <span className="font-semibold text-gray-800">{review.userName}</span>
                         <span className="text-yellow-500">
                           {"★".repeat(review.rating)}
                         </span>
                       </div>
                       <p className="text-gray-700">{review.comment}</p>
                       <span className="text-xs text-gray-400 mt-2 block">
-                        {review.date}
+                        {new Date(review.date).toLocaleDateString()}
                       </span>
                     </div>
                   ))}
+                  
                 {reviews.filter((review) =>
                   perfumesFitrado.some((p) => p.id === review.perfumeId),
-                ).length === 0 && (
+                ).length === 0 && perfumesFitrado.length > 0 && (
                     <p className="text-center text-gray-500 py-4">
-                      Nenhuma avaliação encontrada para este perfume.
+                      Nenhuma avaliação encontrada para este(s) perfume(s).
                     </p>
                   )}
               </div>
