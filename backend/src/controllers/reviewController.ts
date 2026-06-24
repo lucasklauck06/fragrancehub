@@ -19,6 +19,8 @@ export const getReviews = async (req: Request, res: Response): Promise<void> => 
       perfumeName: r.perfume.name,
       rating: r.rating,
       comment: r.comment,
+      longevidade: r.longevidade,
+      rastro: r.rastro,
       date: r.date,
       perfumeId: r.perfumeId,
       userId: r.userId
@@ -53,6 +55,8 @@ export const getReviewById = async (req: Request, res: Response): Promise<void> 
       perfumeName: review.perfume.name,
       rating: review.rating,
       comment: review.comment,
+      longevidade: review.longevidade,
+      rastro: review.rastro,
       date: review.date,
       perfumeId: review.perfumeId,
       userId: review.userId
@@ -63,12 +67,48 @@ export const getReviewById = async (req: Request, res: Response): Promise<void> 
   }
 };
 
+// ─── RF06: Criar resenha técnica — userId extraído do token (seguro) ──────────
 export const createReview = async (req: Request, res: Response): Promise<void> => {
   try {
+    // Segurança: userId sempre vem do token JWT, nunca do body
+    const userId = (req as any).user?.id;
+    if (!userId) {
+      res.status(401).json({ error: "Não autorizado" });
+      return;
+    }
+
+    const { perfumeId, rating, comment, longevidade, rastro } = req.body;
+
+    if (!perfumeId || !comment) {
+      res.status(400).json({ error: "perfumeId e comment são obrigatórios." });
+      return;
+    }
+
     const review = await prisma.review.create({
-      data: req.body,
+      data: {
+        perfumeId,
+        userId,
+        rating: rating ?? 5,
+        comment,
+        longevidade: longevidade ?? null,
+        rastro: rastro ?? null,
+      },
+      include: {
+        user: { select: { name: true } },
+      }
     });
-    res.status(201).json(review);
+
+    res.status(201).json({
+      id: review.id,
+      userName: review.user.name,
+      rating: review.rating,
+      comment: review.comment,
+      longevidade: review.longevidade,
+      rastro: review.rastro,
+      date: review.date,
+      perfumeId: review.perfumeId,
+      userId: review.userId,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Error creating review" });
@@ -78,9 +118,23 @@ export const createReview = async (req: Request, res: Response): Promise<void> =
 export const updateReview = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
+    const userId = (req as any).user?.id;
+
+    // Garante que o usuário só edita sua própria resenha
+    const existing = await prisma.review.findUnique({ where: { id: id as string } });
+    if (!existing) {
+      res.status(404).json({ error: "Review not found" });
+      return;
+    }
+    if (existing.userId !== userId) {
+      res.status(403).json({ error: "Você não tem permissão para editar esta resenha." });
+      return;
+    }
+
+    const { rating, comment, longevidade, rastro } = req.body;
     const review = await prisma.review.update({
       where: { id: id as string },
-      data: req.body,
+      data: { rating, comment, longevidade, rastro },
     });
     res.json(review);
   } catch (error) {
@@ -92,9 +146,21 @@ export const updateReview = async (req: Request, res: Response): Promise<void> =
 export const deleteReview = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
-    await prisma.review.delete({
-      where: { id: id as string },
-    });
+    const userId = (req as any).user?.id;
+    const userRole = (req as any).user?.role;
+
+    const existing = await prisma.review.findUnique({ where: { id: id as string } });
+    if (!existing) {
+      res.status(404).json({ error: "Review not found" });
+      return;
+    }
+    // Permite deleção pelo dono da resenha ou por admin
+    if (existing.userId !== userId && userRole !== "ADMIN") {
+      res.status(403).json({ error: "Você não tem permissão para deletar esta resenha." });
+      return;
+    }
+
+    await prisma.review.delete({ where: { id: id as string } });
     res.status(204).send();
   } catch (error) {
     console.error(error);
