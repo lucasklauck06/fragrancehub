@@ -17,6 +17,7 @@ import AdminPerfumistsPage from "./pages/admin/AdminPerfumistsPage";
 import AdminPerfumistFormPage from "./pages/admin/AdminPerfumistFormPage";
 import PerfumeDetailPage from "./pages/PerfumeDetailPage";
 import BuscaPerfumesPage from "./pages/BuscaPerfumesPage";
+import ReviewPage from "./pages/ReviewPage";
 
 export const router = createBrowserRouter([
   {
@@ -50,6 +51,10 @@ export const router = createBrowserRouter([
       {
         path: "/perfume/:id",
         Component: PerfumeDetailPage,
+      },
+      {
+        path: "/resenhas",
+        Component: ReviewPage,
       },
     ],
   },
