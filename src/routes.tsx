@@ -19,6 +19,11 @@ import PerfumeDetailPage from "./pages/PerfumeDetailPage";
 import BuscaPerfumesPage from "./pages/BuscaPerfumesPage";
 import ReviewPage from "./pages/ReviewPage";
 import ProfilePage from "./pages/ProfilePage";
+import ComparePage from "./pages/ComparePage";
+import FilteredParfumNotes from "./pages/FilteredParfumNotes";
+import GroupsPage from "./pages/GroupsPage";
+import NotesPage from "./pages/NotesPage";
+import SearchByNotesPage from "./pages/SearchByNotesPage";
 
 export const router = createBrowserRouter([
   {
@@ -60,6 +65,26 @@ export const router = createBrowserRouter([
       {
         path: "/perfil",
         Component: ProfilePage,
+      },
+      {
+        path: "/comparar",
+        Component: ComparePage,
+      },
+      {
+        path: "/grupos",
+        Component: GroupsPage,
+      },
+      {
+        path: "/busca-notas",
+        Component: SearchByNotesPage,
+      },
+      {
+        path: "/nota/:id",
+        Component: FilteredParfumNotes,
+      },
+      {
+        path: "/notas",
+        Component: NotesPage,
       },
     ],
   },
