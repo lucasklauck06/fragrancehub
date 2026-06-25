@@ -31,7 +31,7 @@ export default function SidebarResenhasPerfumes() {
         <div className="flex flex-col gap-4 text-sm text-gray-600">
           <div className="flex justify-between items-center border-b border-gray-100 pb-2">
             <p
-              onClick={() => navigate("/perfumes")}
+              onClick={() => navigate("/busca")}
               className="hover:text-teal-600 cursor-pointer"
             >
               Perfumes

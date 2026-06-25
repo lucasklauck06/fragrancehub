@@ -184,7 +184,7 @@ export default function BuscaPerfumesPage() {
       {/* Title block */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 leading-tight">
-          Catálogo Técnico de Fragrâncias
+          Perfumes
         </h1>
         <p className="text-sm text-gray-500 mt-1">
           Explore o portfólio completo da plataforma, refinando por gênero, valores e autoria profissional.
@@ -210,7 +210,7 @@ export default function BuscaPerfumesPage() {
                 </button>
               )}
             </div>
-            
+
             <div className="p-5 space-y-6">
               {/* Gender Filter */}
               <div className="space-y-2">
@@ -222,15 +222,14 @@ export default function BuscaPerfumesPage() {
                       <button
                         key={g}
                         onClick={() => handleGenderToggle(g)}
-                        className={`flex items-center justify-between text-xs px-3 py-2 rounded-lg border text-left font-medium transition-all duration-200 cursor-pointer ${
-                          isChecked
-                            ? g === "Masculino"
-                              ? "bg-blue-50 border-blue-200 text-blue-700 font-semibold"
-                              : g === "Feminino"
+                        className={`flex items-center justify-between text-xs px-3 py-2 rounded-lg border text-left font-medium transition-all duration-200 cursor-pointer ${isChecked
+                          ? g === "Masculino"
+                            ? "bg-blue-50 border-blue-200 text-blue-700 font-semibold"
+                            : g === "Feminino"
                               ? "bg-pink-50 border-pink-200 text-pink-700 font-semibold"
                               : "bg-teal-50 border-teal-200 text-teal-700 font-semibold"
-                            : "bg-gray-50/50 border-gray-200 text-gray-600 hover:bg-gray-50"
-                        }`}
+                          : "bg-gray-50/50 border-gray-200 text-gray-600 hover:bg-gray-50"
+                          }`}
                       >
                         <span>{g}</span>
                         {isChecked && <span className="text-[10px] uppercase font-bold">Ativo</span>}
@@ -243,7 +242,7 @@ export default function BuscaPerfumesPage() {
               {/* Price Filter */}
               <div className="space-y-2">
                 <label className="text-xs font-bold uppercase tracking-wider text-gray-400 block">Faixa de Preço</label>
-                
+
                 {/* Price presets */}
                 <div className="grid grid-cols-2 gap-1.5 mb-3">
                   {[
@@ -256,11 +255,10 @@ export default function BuscaPerfumesPage() {
                       key={preset.preset}
                       type="button"
                       onClick={() => handlePricePreset(preset.preset, preset.min as any, preset.max as any)}
-                      className={`text-[10px] font-bold p-1.5 rounded-lg border text-center transition-all duration-200 cursor-pointer ${
-                        priceRangePreset === preset.preset
-                          ? "bg-teal-600 border-teal-600 text-white"
-                          : "bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100"
-                      }`}
+                      className={`text-[10px] font-bold p-1.5 rounded-lg border text-center transition-all duration-200 cursor-pointer ${priceRangePreset === preset.preset
+                        ? "bg-teal-600 border-teal-600 text-white"
+                        : "bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100"
+                        }`}
                     >
                       {preset.label}
                     </button>
@@ -369,9 +367,9 @@ export default function BuscaPerfumesPage() {
                 </button>
               )}
             </div>
-            <Button type="submit" className="bg-teal-600 hover:bg-teal-700 px-6 rounded-xl font-bold shadow-sm cursor-pointer">
+            {/* <Button type="submit" className="bg-teal-600 hover:bg-teal-700 px-6 rounded-xl font-bold shadow-sm cursor-pointer">
               Pesquisar
-            </Button>
+            </Button> */}
           </form>
 
           {/* Results Metadata */}
@@ -405,12 +403,11 @@ export default function BuscaPerfumesPage() {
                       />
                       {/* Shine effect overlay */}
                       <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/10 to-white/0 opacity-0 group-hover:opacity-100 translate-x-[-100%] group-hover:translate-x-[100%] transition-all duration-1000 ease-out pointer-events-none"></div>
-                      
+
                       {/* Gender Badge */}
                       <div className="absolute top-3 left-3">
-                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full text-white shadow-sm ${
-                          perfume.gender === "Masculino" ? "bg-blue-500" : perfume.gender === "Feminino" ? "bg-pink-500" : "bg-teal-500"
-                        }`}>
+                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full text-white shadow-sm ${perfume.gender === "Masculino" ? "bg-blue-500" : perfume.gender === "Feminino" ? "bg-pink-500" : "bg-teal-500"
+                          }`}>
                           {perfume.gender}
                         </span>
                       </div>
