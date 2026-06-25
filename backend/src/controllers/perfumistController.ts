@@ -20,6 +20,9 @@ export const getPerfumistById = async (req: Request, res: Response): Promise<voi
     const { id } = req.params;
     const perfumist = await prisma.perfumist.findUnique({
       where: { id: id as string },
+      include: {
+        perfumes: { select: { id: true } }
+      }
     });
 
     if (!perfumist) {
@@ -36,8 +39,14 @@ export const getPerfumistById = async (req: Request, res: Response): Promise<voi
 
 export const createPerfumist = async (req: Request, res: Response): Promise<void> => {
   try {
+    const { perfumeIds, ...rest } = req.body;
+    const data: any = { ...rest };
+    if (perfumeIds && Array.isArray(perfumeIds)) {
+      data.perfumes = { connect: perfumeIds.map((id: string) => ({ id })) };
+    }
+    
     const perfumist = await prisma.perfumist.create({
-      data: req.body,
+      data,
     });
     res.status(201).json(perfumist);
   } catch (error) {
@@ -49,9 +58,15 @@ export const createPerfumist = async (req: Request, res: Response): Promise<void
 export const updatePerfumist = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
+    const { perfumeIds, ...rest } = req.body;
+    const data: any = { ...rest };
+    if (perfumeIds && Array.isArray(perfumeIds)) {
+      data.perfumes = { set: perfumeIds.map((id: string) => ({ id })) };
+    }
+
     const perfumist = await prisma.perfumist.update({
       where: { id: id as string },
-      data: req.body,
+      data,
     });
     res.json(perfumist);
   } catch (error) {

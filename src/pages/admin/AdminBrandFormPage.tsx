@@ -165,7 +165,11 @@ export default function AdminBrandFormPage() {
               >
                 Cancelar
               </Button>
-              <Button type="submit" className="bg-green-600 hover:bg-green-700">
+              <Button 
+                type="submit" 
+                className="bg-green-600 hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+                disabled={!isEditing && !formData.name.trim()}
+              >
                 {isEditing ? "Salvar Alterações" : "Criar Marca"}
               </Button>
             </div>

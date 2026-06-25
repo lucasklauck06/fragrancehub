@@ -4,6 +4,7 @@ import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
 import { Textarea } from "../../components/ui/textarea";
+import { Checkbox } from "../../components/ui/checkbox";
 import {
   Card,
   CardContent,
@@ -22,38 +23,59 @@ export default function AdminPerfumistFormPage() {
     country: "",
     photo: "",
     bio: "",
+    perfumeIds: [] as string[],
   });
-  
+
+  const [allPerfumes, setAllPerfumes] = useState<any[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [loadingInitial, setLoadingInitial] = useState(isEditing);
+  const [loadingInitial, setLoadingInitial] = useState(true);
 
   useEffect(() => {
-    if (isEditing) {
-      fetchPerfumist();
-    }
-  }, [id]);
+    const fetchData = async () => {
+      try {
+        const perfRes = await fetch("http://localhost:3000/api/perfumes");
+        if (perfRes.ok) {
+          setAllPerfumes(await perfRes.json());
+        }
 
-  const fetchPerfumist = async () => {
-    try {
-      const res = await fetch(`http://localhost:3000/api/perfumists/${id}`);
-      if (res.ok) {
-        const data = await res.json();
-        setFormData({
-          name: data.name || "",
-          country: data.country || "",
-          photo: data.photo || "",
-          bio: data.bio || "",
-        });
-      } else {
-        toast.error("Perfumista não encontrado.");
-        navigate("/admin/perfumistas");
+        if (isEditing) {
+          const res = await fetch(`http://localhost:3000/api/perfumists/${id}`);
+          if (res.ok) {
+            const data = await res.json();
+            setFormData({
+              name: data.name || "",
+              country: data.country || "",
+              photo: data.photo || "",
+              bio: data.bio || "",
+              perfumeIds: data.perfumes ? data.perfumes.map((p: any) => p.id) : [],
+            });
+          } else {
+            toast.error("Perfumista não encontrado.");
+            navigate("/admin/perfumistas");
+          }
+        }
+      } catch (error) {
+        toast.error("Erro ao carregar dados.");
+      } finally {
+        setLoadingInitial(false);
       }
-    } catch (error) {
-      toast.error("Erro ao buscar dados do perfumista.");
-    } finally {
-      setLoadingInitial(false);
-    }
+    };
+
+    fetchData();
+  }, [id, isEditing]);
+
+  const togglePerfume = (perfumeId: string) => {
+    setFormData(prev => {
+      const isSelected = prev.perfumeIds.includes(perfumeId);
+      if (isSelected) {
+        return { ...prev, perfumeIds: prev.perfumeIds.filter(i => i !== perfumeId) };
+      } else {
+        return { ...prev, perfumeIds: [...prev.perfumeIds, perfumeId] };
+      }
+    });
   };
+
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -155,6 +177,40 @@ export default function AdminPerfumistFormPage() {
             </div>
 
             <div className="space-y-2">
+              <Label>Perfumes Associados</Label>
+              <p className="text-xs text-gray-600 mb-2">Selecione os perfumes criados por este perfumista:</p>
+              <div className="border border-gray-200 rounded-md p-4 max-h-60 overflow-y-auto bg-gray-50/50">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {allPerfumes.length === 0 ? (
+                    <p className="text-sm text-gray-500 col-span-2">Nenhum perfume encontrado no sistema.</p>
+                  ) : (
+                    allPerfumes.map(perfume => (
+                      <div key={perfume.id} className="flex items-center space-x-3 bg-white p-2 rounded border border-gray-100 shadow-sm">
+                        <Checkbox
+                          id={`perfume-${perfume.id}`}
+                          checked={formData.perfumeIds.includes(perfume.id)}
+                          onCheckedChange={() => togglePerfume(perfume.id)}
+                          disabled={isSubmitting}
+                        />
+                        <div className="flex items-center gap-3 flex-1 min-w-0">
+                          {perfume.image ? (
+                            <img src={perfume.image} alt={perfume.name} className="w-8 h-8 object-contain mix-blend-multiply" />
+                          ) : (
+                            <div className="w-8 h-8 bg-gray-100 rounded flex items-center justify-center text-xs">P</div>
+                          )}
+                          <Label htmlFor={`perfume-${perfume.id}`} className="text-sm font-medium cursor-pointer truncate">
+                            {perfume.name}
+                            <span className="block text-[10px] text-gray-500 font-normal">{perfume.brand}</span>
+                          </Label>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-2">
               <Label htmlFor="photo">URL da Foto</Label>
               <Input
                 id="photo"
@@ -170,10 +226,10 @@ export default function AdminPerfumistFormPage() {
               {formData.photo && (
                 <div className="mt-3">
                   <p className="text-xs font-semibold text-gray-700 mb-1">Preview:</p>
-                  <img 
-                    src={formData.photo} 
-                    alt="Preview" 
-                    className="w-24 h-24 object-cover rounded-full border border-gray-200" 
+                  <img
+                    src={formData.photo}
+                    alt="Preview"
+                    className="w-24 h-24 object-cover rounded-full border border-gray-200"
                     onError={(e) => (e.currentTarget.style.display = 'none')}
                     onLoad={(e) => (e.currentTarget.style.display = 'block')}
                   />
@@ -204,10 +260,10 @@ export default function AdminPerfumistFormPage() {
               >
                 Cancelar
               </Button>
-              <Button 
-                type="submit" 
-                className="bg-green-600 hover:bg-green-700 disabled:bg-green-400"
-                disabled={isSubmitting}
+              <Button
+                type="submit"
+                className="bg-green-600 hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+                disabled={isSubmitting || (!isEditing && !formData.name.trim())}
               >
                 {isSubmitting ? "Salvando..." : isEditing ? "Salvar Alterações" : "Cadastrar Perfumista"}
               </Button>

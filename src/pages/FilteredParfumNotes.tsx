@@ -40,7 +40,7 @@ export default function FilteredParfumNotes() {
     <>
       <main className="relative flex-1 w-full max-w-7xl mx-auto px-4 py-8 bg-white/40  backdrop-blur-sm rounded-lg shadow-sm">
         <div className="flex gap-4">
-          <div className="flex-1">
+          <div className="flex-3">
             <div className="flex flex-col">
               <h1 className="flex justify-center text-2xl mb-4 font-bold text-gray-900">
                 {noteName}
@@ -164,7 +164,7 @@ export default function FilteredParfumNotes() {
               </div>
             </div>
           </div>
-          <div>
+          <div className="flex-1">
             <SidebarResenhasPerfumes />
           </div>
         </div>

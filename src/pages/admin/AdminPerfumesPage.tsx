@@ -185,87 +185,91 @@ export default function AdminPerfumesPage() {
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b">
-                  <th
-                    className="text-left py-3 px-4 font-semibold text-gray-700 select-none transition-colors"
-                  >
+            <table className="w-full text-sm text-left">
+              <thead className="text-xs text-gray-700 uppercase bg-gray-50 border-b">
+                <tr>
+                  <th className="px-6 py-4 font-medium select-none transition-colors">
                     <span className="inline-flex cursor-pointer items-center hover:text-teal-500 transition-all duration-200"
                       onClick={() => handleSort('id')}>
                       ID {getSortIcon('id')}
                     </span>
                   </th>
-                  <th
-                    className="text-left py-3 px-4 font-semibold text-gray-700 select-none transition-colors"
-                  >
+                  <th className="px-6 py-4 font-medium select-none transition-colors">
                     <span className="inline-flex cursor-pointer items-center hover:text-teal-500 transition-all duration-200"
                       onClick={() => handleSort('name')}>
                       Nome {getSortIcon('name')}
                     </span>
                   </th>
-                  <th
-                    className="text-left py-3 px-4 font-semibold text-gray-700 select-none transition-colors"
-                  >
+                  <th className="px-6 py-4 font-medium select-none transition-colors">
                     <span className="inline-flex cursor-pointer items-center hover:text-teal-500 transition-all duration-200"
                       onClick={() => handleSort('brand')}>
                       Marca {getSortIcon('brand')}
                     </span>
                   </th>
-                  <th
-                    className="text-left py-3 px-4 font-semibold text-gray-700 select-none transition-colors"
-
-                  >
+                  <th className="px-6 py-4 font-medium select-none transition-colors">
                     <span className="inline-flex cursor-pointer items-center hover:text-teal-500 transition-all duration-200"
                       onClick={() => handleSort('perfumist')}>
                       Perfumista {getSortIcon('perfumist')}
                     </span>
                   </th>
-                  <th
-                    className="text-left py-3 px-4 font-semibold text-gray-700 select-none transition-colors"
-                  >
+                  <th className="px-6 py-4 font-medium select-none transition-colors">
                     <span className="inline-flex cursor-pointer items-center hover:text-teal-500 transition-all duration-200"
                       onClick={() => handleSort('price')}>
                       Preço {getSortIcon('price')}
                     </span>
                   </th>
-                  <th className="text-right py-3 px-4 font-semibold text-gray-700">Ações</th>
+                  <th className="px-6 py-4 font-medium text-right">Ações</th>
                 </tr>
               </thead>
-              <tbody>
-                {filteredAndSortedPerfumes.length === 0 ? (
+              <tbody className="divide-y divide-gray-100">
+                {perfumes.length === 0 ? (
                   <tr>
                     <td colSpan={6} className="py-8 text-center text-gray-500">
-                      Nenhum perfume encontrado para "{searchQuery}"
+                      Carregando perfumes...
+                    </td>
+                  </tr>
+                ) : filteredAndSortedPerfumes.length === 0 ? (
+                  <tr>
+                    <td colSpan={6} className="py-8 text-center text-gray-500">
+                      {searchQuery
+                        ? `Nenhum perfume encontrado para "${searchQuery}"`
+                        : "Nenhum perfume cadastrado. Adicione um novo para começar!"}
                     </td>
                   </tr>
                 ) : (
                   filteredAndSortedPerfumes.map((perfume) => (
-                    <tr key={perfume.id} className="border-b hover:bg-gray-50 transition-colors">
-                      <td className="py-3 px-4 text-gray-600">{perfume.id}</td>
-                      <td className="py-3 px-4 font-medium">{perfume.name}</td>
-                      <td className="py-3 px-4 text-gray-700">{perfume.brand}</td>
-                      <td className="py-3 px-4 text-gray-700">{perfume.perfumist}</td>
-                      <td className="py-3 px-4 text-gray-700">R$ {perfume.price.toFixed(2)}</td>
-                      <td className="py-3 px-4">
-                        <div className="flex items-center justify-end gap-2">
+                    <tr key={perfume.id} className="hover:bg-gray-50/50 transition-colors">
+                      <td className="px-6 py-4 text-gray-600">{perfume.id}</td>
+                      <td className="px-6 py-4 font-medium text-gray-900 flex items-center gap-3">
+                        {perfume.image ? (
+                          <img src={perfume.image} alt={perfume.name} className="w-8 h-8 rounded-full object-cover border border-gray-200" />
+                        ) : (
+                          <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 text-xs font-bold border border-gray-300">
+                            {perfume.name.charAt(0).toUpperCase()}
+                          </div>
+                        )}
+                        {perfume.name}
+                      </td>
+                      <td className="px-6 py-4 text-gray-500">{perfume.brand}</td>
+                      <td className="px-6 py-4 text-gray-500">{perfume.perfumist || "Não informado"}</td>
+                      <td className="px-6 py-4 text-gray-500">R$ {perfume.price.toFixed(2)}</td>
+                      <td className="px-6 py-4 text-right">
+                        <div className="flex justify-end gap-2">
                           <Button
-                            size="sm"
-                            variant="outline"
+                            variant="ghost"
+                            size="icon"
                             onClick={() => navigate(`/admin/perfumes/${perfume.id}`)}
-                            className="gap-1 hover:text-teal-500 hover:bg-teal-50 transition-colors duration-200"
+                            className="h-8 w-8 text-blue-600 hover:text-blue-700 hover:bg-blue-50"
                           >
-                            <Pencil className="w-3 h-3" />
-                            Editar
+                            <Pencil size={16} />
                           </Button>
                           <Button
-                            size="sm"
-                            variant="outline"
+                            variant="ghost"
+                            size="icon"
                             onClick={() => setDeleteId(perfume.id)}
-                            className="gap-1 text-red-600 hover:text-red-700 hover:bg-red-50"
+                            className="h-8 w-8 text-red-600 hover:text-red-700 hover:bg-red-50"
                           >
-                            <Trash2 className="w-3 h-3" />
-                            Excluir
+                            <Trash2 size={16} />
                           </Button>
                         </div>
                       </td>

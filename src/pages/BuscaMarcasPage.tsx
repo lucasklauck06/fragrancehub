@@ -53,7 +53,7 @@ export default function BuscaMarcasPage() {
     <>
       <main className="relative flex-1 w-full max-w-7xl mx-auto px-4 py-8 bg-white/40 backdrop-blur-sm rounded-lg shadow-sm">
         <div className="flex gap-6">
-          <div className="flex-2">
+          <div className="flex-3">
             <div className="flex flex-wrap gap-1 mb-6 justify-center">
               {alfabet.map((letter) => (
                 <Button

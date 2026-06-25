@@ -9,7 +9,7 @@ export const getReviews = async (req: Request, res: Response): Promise<void> => 
       orderBy: { date: "desc" },
       include: {
         user: { select: { name: true } },
-        perfume: { select: { name: true, brand: true } }
+        perfume: { select: { name: true, brand: true, image: true, gender: true, price: true } }
       }
     });
     
@@ -17,6 +17,10 @@ export const getReviews = async (req: Request, res: Response): Promise<void> => 
       id: r.id,
       userName: r.user.name,
       perfumeName: r.perfume.name,
+      perfumeBrand: r.perfume.brand?.name || r.perfume.brand,
+      perfumeImage: r.perfume.image,
+      perfumeGender: r.perfume.gender,
+      perfumePrice: r.perfume.price,
       rating: r.rating,
       comment: r.comment,
       longevidade: r.longevidade,

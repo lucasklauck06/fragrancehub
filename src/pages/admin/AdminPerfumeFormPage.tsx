@@ -300,12 +300,16 @@ export default function AdminPerfumeFormPage() {
               {errors.description && <p className="text-sm text-red-600">{errors.description}</p>}
             </div>
 
-            <div className="flex gap-4">
-              <Button type="submit" className="bg-green-600 hover:bg-green-700">
-                Salvar
-              </Button>
+            <div className="flex justify-end gap-4 pt-4 border-t">
               <Button type="button" variant="outline" onClick={() => navigate('/admin/perfumes')}>
-                Voltar / Cancelar
+                Cancelar
+              </Button>
+              <Button 
+                type="submit" 
+                className="bg-green-600 hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+                disabled={!isEdit && (!formData.name.trim() || !formData.brandId || !formData.perfumistId || formData.price <= 0 || !formData.gender || !formData.description.trim())}
+              >
+                {isEdit ? "Salvar Alterações" : "Criar Perfume"}
               </Button>
             </div>
           </form>

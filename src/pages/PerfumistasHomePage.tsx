@@ -41,7 +41,7 @@ export default function DesignersHomePage() {
       {/* Main Content */}
       <main className="relative flex-1 w-full max-w-7xl mx-auto px-4 py-8 bg-white/40  backdrop-blur-sm rounded-lg shadow-sm">
         <div className="flex flex-col md:flex-row gap-4">
-          <div className="w-full md:w-2/3">
+          <div className="flex-3">
             <div className="flex flex-col">
               <h1 className="flex justify-center text-2xl mb-4">Perfumistas</h1>
             </div>
@@ -63,80 +63,80 @@ export default function DesignersHomePage() {
             <div className="flex flex-col">
               {searchQuery === ""
                 ? alfabet.map((letter) => (
-                    <div key={letter}>
-                      <div className="text-black text-xl font-bold mt-4">
-                        {letter}
-                      </div>
-                      {perfumistsFiltrados.filter((perfumist) =>
-                        perfumist.name.startsWith(letter),
-                      ).length > 0 ? (
-                        <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mt-2">
-                          {perfumistsFiltrados
-                            .filter((perfumist) =>
-                              perfumist.name.startsWith(letter),
-                            )
-                            .map((perfumist) => (
-                              <span
-                                key={perfumist.name}
-                                className="text-teal-600 hover:text-teal-700 transition-colors duration-300 text-lg font-semibold flex items-center gap-2 group"
+                  <div key={letter}>
+                    <div className="text-black text-xl font-bold mt-4">
+                      {letter}
+                    </div>
+                    {perfumistsFiltrados.filter((perfumist) =>
+                      perfumist.name.startsWith(letter),
+                    ).length > 0 ? (
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mt-2">
+                        {perfumistsFiltrados
+                          .filter((perfumist) =>
+                            perfumist.name.startsWith(letter),
+                          )
+                          .map((perfumist) => (
+                            <span
+                              key={perfumist.name}
+                              className="text-teal-600 hover:text-teal-700 transition-colors duration-300 text-lg font-semibold flex items-center gap-2 group"
+                            >
+                              <div className="bg-gray-200 rounded-full w-16 h-16 overflow-hidden relative border-2 border-gray-300 group-hover:border-teal-700 transition-colors duration-300">
+                                {perfumist.photo ? (
+                                  <img
+                                    src={perfumist.photo}
+                                    alt={perfumist.name}
+                                    className="w-full h-full object-cover"
+                                  />
+                                ) : (
+                                  <div className="w-full h-full flex items-center justify-center text-gray-400">
+                                    👤
+                                  </div>
+                                )}
+                              </div>
+                              <Link
+                                to={`/perfumista/${perfumist.id}`}
+                                className="truncate"
+                                title={perfumist.name}
                               >
-                                <div className="bg-gray-200 rounded-full w-16 h-16 overflow-hidden relative border-2 border-gray-300 group-hover:border-teal-700 transition-colors duration-300">
-                                  {perfumist.photo ? (
-                                    <img
-                                      src={perfumist.photo}
-                                      alt={perfumist.name}
-                                      className="w-full h-full object-cover"
-                                    />
-                                  ) : (
-                                    <div className="w-full h-full flex items-center justify-center text-gray-400">
-                                      👤
-                                    </div>
-                                  )}
-                                </div>
-                                <Link
-                                  to={`/perfumista/${perfumist.id}`}
-                                  className="truncate"
-                                  title={perfumist.name}
-                                >
-                                  {perfumist.name}
-                                </Link>
-                              </span>
-                            ))}
-                        </div>
+                                {perfumist.name}
+                              </Link>
+                            </span>
+                          ))}
+                      </div>
+                    ) : (
+                      <div className="flex justify-center gap-2">
+                        <span className="text-gray-500">
+                          Nenhum perfumista encontrado com a letra {letter}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                ))
+                : perfumistsFiltrados.map((perfumist) => (
+                  <Link
+                    key={perfumist.id}
+                    to={`/perfumista/${perfumist.id}`}
+                    className="text-teal-600 hover:text-teal-700 transition-colors duration-300 text-lg font-semibold flex items-center gap-2 group"
+                  >
+                    <div className="bg-gray-200 rounded-full w-16 h-16 overflow-hidden relative border-2 border-gray-300 group-hover:border-teal-700 transition-colors duration-300">
+                      {perfumist.photo ? (
+                        <img
+                          src={perfumist.photo}
+                          alt={perfumist.name}
+                          className="w-full h-full object-cover"
+                        />
                       ) : (
-                        <div className="flex justify-center gap-2">
-                          <span className="text-gray-500">
-                            Nenhum perfumista encontrado com a letra {letter}
-                          </span>
+                        <div className="w-full h-full flex items-center justify-center text-gray-400">
+                          👤
                         </div>
                       )}
                     </div>
-                  ))
-                : perfumistsFiltrados.map((perfumist) => (
-                    <Link
-                      key={perfumist.id}
-                      to={`/perfumista/${perfumist.id}`}
-                      className="text-teal-600 hover:text-teal-700 transition-colors duration-300 text-lg font-semibold flex items-center gap-2 group"
-                    >
-                      <div className="bg-gray-200 rounded-full w-16 h-16 overflow-hidden relative border-2 border-gray-300 group-hover:border-teal-700 transition-colors duration-300">
-                        {perfumist.photo ? (
-                          <img
-                            src={perfumist.photo}
-                            alt={perfumist.name}
-                            className="w-full h-full object-cover"
-                          />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center text-gray-400">
-                            👤
-                          </div>
-                        )}
-                      </div>
-                      {perfumist.name}
-                    </Link>
-                  ))}
+                    {perfumist.name}
+                  </Link>
+                ))}
             </div>
           </div>
-          <div className="w-full md:w-1/3">
+          <div className="flex-1">
             <SidebarResenhasPerfumes />
           </div>
         </div>
