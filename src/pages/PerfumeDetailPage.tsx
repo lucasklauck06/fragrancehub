@@ -663,18 +663,18 @@ export default function PerfumeDetailPage() {
             </CardHeader>
             <CardContent className="p-4">
               {brandPerfumes.length > 0 ? (
-                <div className="space-y-3">
-                  {brandPerfumes.slice(0, 5).map((p) => (
+                <div className="flex overflow-x-auto gap-4 pb-2 snap-x scrollbar-hide">
+                  {brandPerfumes.slice(0, 10).map((p) => (
                     <Link
                       key={p.id}
                       to={`/perfume/${p.id}`}
-                      className="flex gap-3 hover:bg-gray-50/80 p-2 rounded-lg border border-transparent hover:border-gray-100 transition-all duration-200"
+                      className="flex flex-col gap-2 hover:bg-gray-50/80 p-3 rounded-lg border border-transparent hover:border-gray-100 transition-all duration-200 min-w-[140px] snap-start"
                     >
-                      <img src={p.image} alt={p.name} className="w-12 h-16 object-cover rounded bg-gray-50 shrink-0" />
-                      <div className="flex flex-col justify-center min-w-0">
-                        <span className="text-xs font-bold text-gray-950 truncate block">{p.name}</span>
-                        <span className="text-[10px] text-gray-500 font-medium block">{p.gender} • {p.year}</span>
-                        <span className="text-xs text-teal-600 font-bold block mt-0.5">R$ {p.price.toFixed(2)}</span>
+                      <img src={p.image} alt={p.name} className="w-full h-32 object-cover rounded-md bg-gray-50 shrink-0 shadow-sm" />
+                      <div className="flex flex-col min-w-0">
+                        <span className="text-sm font-bold text-gray-950 truncate block">{p.name}</span>
+                        <span className="text-xs text-gray-500 font-medium block truncate">{p.gender} • {p.year}</span>
+                        <span className="text-sm text-teal-600 font-bold block mt-1">R$ {p.price.toFixed(2)}</span>
                       </div>
                     </Link>
                   ))}
@@ -696,18 +696,18 @@ export default function PerfumeDetailPage() {
               </CardHeader>
               <CardContent className="p-4">
                 {collectionPerfumes.length > 0 ? (
-                  <div className="space-y-3">
-                    {collectionPerfumes.slice(0, 5).map((p) => (
+                  <div className="flex overflow-x-auto gap-4 pb-2 snap-x scrollbar-hide">
+                    {collectionPerfumes.slice(0, 10).map((p) => (
                       <Link
                         key={p.id}
                         to={`/perfume/${p.id}`}
-                        className="flex gap-3 hover:bg-gray-50/80 p-2 rounded-lg border border-transparent hover:border-gray-100 transition-all duration-200"
+                        className="flex flex-col gap-2 hover:bg-gray-50/80 p-3 rounded-lg border border-transparent hover:border-gray-100 transition-all duration-200 min-w-[140px] snap-start"
                       >
-                        <img src={p.image} alt={p.name} className="w-12 h-16 object-cover rounded bg-gray-50 shrink-0" />
-                        <div className="flex flex-col justify-center min-w-0">
-                          <span className="text-xs font-bold text-gray-950 truncate block">{p.name}</span>
-                          <span className="text-[10px] text-gray-500 font-medium block">{p.brand}</span>
-                          <span className="text-xs text-teal-600 font-bold block mt-0.5">R$ {p.price.toFixed(2)}</span>
+                        <img src={p.image} alt={p.name} className="w-full h-32 object-cover rounded-md bg-gray-50 shrink-0 shadow-sm" />
+                        <div className="flex flex-col min-w-0">
+                          <span className="text-sm font-bold text-gray-950 truncate block">{p.name}</span>
+                          <span className="text-xs text-gray-500 font-medium block truncate">{p.brand}</span>
+                          <span className="text-sm text-teal-600 font-bold block mt-1">R$ {p.price.toFixed(2)}</span>
                         </div>
                       </Link>
                     ))}

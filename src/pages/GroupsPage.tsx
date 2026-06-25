@@ -3,6 +3,19 @@ import { Link } from 'react-router';
 import { X, Sun, Snowflake, Leaf, Flame, ChevronRight } from 'lucide-react';
 import { toast } from "sonner";
 
+// Tailwind Safelist para os gradients dinâmicos vindos do banco
+const bgGradients = [
+  "from-yellow-700", "to-amber-800",
+  "from-emerald-400", "to-teal-500",
+  "from-stone-400", "to-stone-600",
+  "from-pink-300", "to-rose-400",
+  "from-violet-400", "to-purple-500",
+  "from-sky-300", "to-cyan-400",
+  "from-yellow-500", "to-amber-600",
+  "from-amber-400", "to-orange-500",
+  "bg-gradient-to-br"
+];
+
 export type AromaticGroup = {
   id: string;
   name: string;
