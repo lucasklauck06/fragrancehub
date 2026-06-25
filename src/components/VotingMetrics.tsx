@@ -5,6 +5,16 @@ interface SliderProps {
   onChange: (val: number) => void;
 }
 
+export const occasionOptions = [
+  { id: "Inverno", icon: Snowflake, color: "text-blue-500", bg: "bg-blue-50", border: "border-blue-100" },
+  { id: "Primavera", icon: Leaf, color: "text-green-500", bg: "bg-green-50", border: "border-green-100" },
+  { id: "Verão", icon: Umbrella, color: "text-red-500", bg: "bg-red-50", border: "border-red-100" },
+  { id: "Outono", icon: CloudRain, color: "text-orange-500", bg: "bg-orange-50", border: "border-orange-100" },
+  { id: "Dia", icon: Sun, color: "text-yellow-500", bg: "bg-yellow-50", border: "border-yellow-100" },
+  { id: "Noite", icon: Moon, color: "text-sky-300", bg: "bg-sky-50", border: "border-sky-100" },
+  { id: "Assinatura", icon: Star, color: "text-amber-500", bg: "bg-amber-50", border: "border-amber-100" },
+];
+
 export const LongevitySlider = ({ value, onChange }: SliderProps) => {
   const labels = ["sem voto", "muito fraca", "fraca", "moderada", "longa", "eterna"];
   
@@ -83,19 +93,9 @@ export const SillageSlider = ({ value, onChange }: SliderProps) => {
 };
 
 export const OccasionSelector = ({ selected, onChange }: { selected: string, onChange: (val: string) => void }) => {
-  const occasions = [
-    { id: "Inverno", icon: Snowflake, color: "text-blue-500" },
-    { id: "Primavera", icon: Leaf, color: "text-green-500" },
-    { id: "Verão", icon: Umbrella, color: "text-red-500" },
-    { id: "Outono", icon: CloudRain, color: "text-orange-500" },
-    { id: "Dia", icon: Sun, color: "text-yellow-500" },
-    { id: "Noite", icon: Moon, color: "text-sky-300" },
-    { id: "Assinatura", icon: Star, color: "text-amber-500" },
-  ];
-  
   return (
     <div className="flex flex-wrap justify-center gap-6 py-2">
-      {occasions.map(occ => {
+      {occasionOptions.map(occ => {
         const Icon = occ.icon;
         const isSingleActive = selected === occ.id;
         

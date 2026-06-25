@@ -9,7 +9,6 @@ import {
   User,
   Mail,
   Lock,
-  Save,
   Star,
   Clock,
   ChevronRight,
@@ -18,6 +17,7 @@ import {
   EyeOff,
 } from "lucide-react";
 import { toast } from "sonner";
+import { occasionOptions } from "../components/VotingMetrics";
 
 const API_URL = "http://localhost:3000/api";
 
@@ -334,10 +334,25 @@ export default function ProfilePage() {
                           <StarRow value={review.longevidade} label="Fixação" />
                           <StarRow value={review.rastro} label="Rastro" />
                           {review.quandoUsar && (
-                            <div className="flex items-center gap-1.5">
-                              <span className="text-xs text-gray-500">Ocasião:</span>
-                              <span className="text-[10px] font-bold text-orange-700 bg-orange-50 px-1.5 py-0.5 rounded border border-orange-100">{review.quandoUsar}</span>
-                            </div>
+                            (() => {
+                              const occInfo = occasionOptions.find(o => o.id === review.quandoUsar);
+                              if (occInfo) {
+                                const Icon = occInfo.icon;
+                                return (
+                                  <div className="flex items-center">
+                                    <span className={`flex items-center gap-1 text-[10px] font-bold ${occInfo.color} ${occInfo.bg} px-1.5 py-0.5 rounded border ${occInfo.border}`}>
+                                      <Icon className="w-3 h-3" />
+                                      {review.quandoUsar}
+                                    </span>
+                                  </div>
+                                );
+                              }
+                              return (
+                                <div className="flex items-center">
+                                  <span className="text-[10px] font-bold text-orange-700 bg-orange-50 px-1.5 py-0.5 rounded border border-orange-100">{review.quandoUsar}</span>
+                                </div>
+                              );
+                            })()
                           )}
                         </div>
                         <p className="text-xs text-gray-500 mt-1 line-clamp-2">{review.comment}</p>

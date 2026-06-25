@@ -6,7 +6,7 @@ import { ArrowLeft, Star, Clock, Wind, Calendar, User, Edit2 } from "lucide-reac
 import { toast } from "sonner";
 import SidebarResenhasPerfumes from "../components/SidebarResenhasPerfumes";
 import { useAuth } from "../contexts/AuthContext";
-import { LongevitySlider, SillageSlider, OccasionSelector } from "../components/VotingMetrics";
+import { LongevitySlider, SillageSlider, OccasionSelector, occasionOptions } from "../components/VotingMetrics";
 
 export default function ReviewDetailPage() {
   const { id } = useParams();
@@ -230,13 +230,30 @@ export default function ReviewDetailPage() {
                       </div>
                     )}
                     {review.quandoUsar != null ? (
-                      <div className="flex bg-orange-50 px-4 py-2 rounded-lg border border-orange-100 items-center gap-2 flex-1 min-w-[140px]">
-                        <Calendar className="w-5 h-5 text-orange-600" />
-                        <div>
-                          <p className="text-[10px] text-orange-600/80 uppercase font-bold tracking-wider">Ocasião</p>
-                          <p className="font-bold text-orange-800">{review.quandoUsar}</p>
-                        </div>
-                      </div>
+                      (() => {
+                        const occInfo = occasionOptions.find(o => o.id === review.quandoUsar);
+                        if (occInfo) {
+                          const Icon = occInfo.icon;
+                          return (
+                            <div className={`flex ${occInfo.bg} px-4 py-2 rounded-lg border ${occInfo.border} items-center gap-2 flex-1 min-w-[140px]`}>
+                              <Icon className={`w-5 h-5 ${occInfo.color}`} />
+                              <div>
+                                <p className={`text-[10px] ${occInfo.color} opacity-80 uppercase font-bold tracking-wider`}>Ocasião</p>
+                                <p className={`font-bold ${occInfo.color}`}>{review.quandoUsar}</p>
+                              </div>
+                            </div>
+                          );
+                        }
+                        return (
+                          <div className="flex bg-orange-50 px-4 py-2 rounded-lg border border-orange-100 items-center gap-2 flex-1 min-w-[140px]">
+                            <Calendar className="w-5 h-5 text-orange-600" />
+                            <div>
+                              <p className="text-[10px] text-orange-600/80 uppercase font-bold tracking-wider">Ocasião</p>
+                              <p className="font-bold text-orange-800">{review.quandoUsar}</p>
+                            </div>
+                          </div>
+                        );
+                      })()
                     ) : (
                       <div className="flex bg-orange-50 px-4 py-2 rounded-lg border border-orange-100 items-center gap-2 flex-1 min-w-[140px]">
                         <p className="text-[10px] text-orange-600/80 uppercase font-bold tracking-wider">Sem ocasião</p>

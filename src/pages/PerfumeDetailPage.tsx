@@ -6,7 +6,7 @@ import { ArrowLeft, Tag, User, Star, Clock, Send, Award, Layers, Wind } from "lu
 import { toast } from "sonner";
 import { useAuth } from "../contexts/AuthContext";
 import SidebarResenhasPerfumes from "../components/SidebarResenhasPerfumes";
-import { LongevitySlider, SillageSlider, OccasionSelector } from "../components/VotingMetrics";
+import { LongevitySlider, SillageSlider, OccasionSelector, occasionOptions } from "../components/VotingMetrics";
 
 interface Review {
   id: string;
@@ -479,7 +479,21 @@ export default function PerfumeDetailPage() {
                 <div className="space-y-2">
                   <div className="flex justify-between items-center text-sm font-semibold text-gray-700">
                     <span>Ocasião / Estação (Quando Usar)</span>
-                    <span className="text-xs text-orange-700 font-bold bg-orange-50 px-2 py-0.5 rounded">{mostCommonOcasião}</span>
+                    {(() => {
+                      const occInfo = occasionOptions.find(o => o.id === mostCommonOcasião);
+                      if (occInfo) {
+                        const Icon = occInfo.icon;
+                        return (
+                          <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md border ${occInfo.bg} ${occInfo.border}`}>
+                            <Icon className={`w-3.5 h-3.5 ${occInfo.color}`} />
+                            <span className={`text-xs font-bold ${occInfo.color}`}>{mostCommonOcasião}</span>
+                          </div>
+                        );
+                      }
+                      return (
+                        <span className="text-xs text-orange-700 font-bold bg-orange-50 px-2 py-0.5 rounded border border-orange-100">{mostCommonOcasião}</span>
+                      );
+                    })()}
                   </div>
                 </div>
 
@@ -594,9 +608,23 @@ export default function PerfumeDetailPage() {
                               </div>
                             )}
                             {review.quandoUsar && (
-                              <div className="flex bg-orange-50 px-1.5 py-0.5 rounded border border-orange-100 items-center gap-0.5">
-                                <span className="text-[10px] font-bold text-orange-700">{review.quandoUsar}</span>
-                              </div>
+                              (() => {
+                                const occInfo = occasionOptions.find(o => o.id === review.quandoUsar);
+                                if (occInfo) {
+                                  const Icon = occInfo.icon;
+                                  return (
+                                    <div className={`flex ${occInfo.bg} px-1.5 py-0.5 rounded border ${occInfo.border} items-center gap-0.5`}>
+                                      <Icon className={`w-3 h-3 ${occInfo.color} mr-0.5`} />
+                                      <span className={`text-[10px] font-bold ${occInfo.color}`}>{review.quandoUsar}</span>
+                                    </div>
+                                  );
+                                }
+                                return (
+                                  <div className="flex bg-orange-50 px-1.5 py-0.5 rounded border border-orange-100 items-center gap-0.5">
+                                    <span className="text-[10px] font-bold text-orange-700">{review.quandoUsar}</span>
+                                  </div>
+                                );
+                              })()
                             )}
                           </div>
                           <span className="text-[10px] text-gray-400">
