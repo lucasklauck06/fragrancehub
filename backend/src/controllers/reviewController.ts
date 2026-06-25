@@ -25,6 +25,7 @@ export const getReviews = async (req: Request, res: Response): Promise<void> => 
       comment: r.comment,
       longevidade: r.longevidade,
       rastro: r.rastro,
+      quandoUsar: r.quandoUsar,
       date: r.date,
       perfumeId: r.perfumeId,
       userId: r.userId
@@ -65,6 +66,7 @@ export const getReviewById = async (req: Request, res: Response): Promise<void> 
       comment: review.comment,
       longevidade: review.longevidade,
       rastro: review.rastro,
+      quandoUsar: review.quandoUsar,
       date: review.date,
       perfumeId: review.perfumeId,
       userId: review.userId
@@ -85,7 +87,7 @@ export const createReview = async (req: Request, res: Response): Promise<void> =
       return;
     }
 
-    const { perfumeId, rating, comment, longevidade, rastro } = req.body;
+    const { perfumeId, rating, comment, longevidade, rastro, quandoUsar } = req.body;
 
     if (!perfumeId || !comment) {
       res.status(400).json({ error: "perfumeId e comment são obrigatórios." });
@@ -100,6 +102,7 @@ export const createReview = async (req: Request, res: Response): Promise<void> =
         comment,
         longevidade: longevidade ?? null,
         rastro: rastro ?? null,
+        quandoUsar: quandoUsar ?? null,
       },
       include: {
         user: { select: { name: true } },
@@ -113,6 +116,7 @@ export const createReview = async (req: Request, res: Response): Promise<void> =
       comment: review.comment,
       longevidade: review.longevidade,
       rastro: review.rastro,
+      quandoUsar: review.quandoUsar,
       date: review.date,
       perfumeId: review.perfumeId,
       userId: review.userId,
@@ -139,10 +143,10 @@ export const updateReview = async (req: Request, res: Response): Promise<void> =
       return;
     }
 
-    const { rating, comment, longevidade, rastro } = req.body;
+    const { rating, comment, longevidade, rastro, quandoUsar } = req.body;
     const review = await prisma.review.update({
       where: { id: id as string },
-      data: { rating, comment, longevidade, rastro },
+      data: { rating, comment, longevidade, rastro, quandoUsar },
     });
     res.json(review);
   } catch (error) {

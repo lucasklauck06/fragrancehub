@@ -6,6 +6,7 @@ import { ArrowLeft, Tag, User, Star, Clock, Send, Award, Layers, Wind } from "lu
 import { toast } from "sonner";
 import { useAuth } from "../contexts/AuthContext";
 import SidebarResenhasPerfumes from "../components/SidebarResenhasPerfumes";
+import { LongevitySlider, SillageSlider, OccasionSelector } from "../components/VotingMetrics";
 
 interface Review {
   id: string;
@@ -14,6 +15,7 @@ interface Review {
   comment: string;
   longevidade?: number | null;
   rastro?: number | null;
+  quandoUsar?: string | null;
   date: string;
   userId: string;
 }
@@ -43,17 +45,18 @@ export default function PerfumeDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { currentUser, logout } = useAuth();
-  
+
   const [perfume, setPerfume] = useState<Perfume | null>(null);
   const [brandPerfumes, setBrandPerfumes] = useState<any[]>([]);
   const [collectionPerfumes, setCollectionPerfumes] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  
+
   // Review form state
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState("");
   const [longevidade, setLongevidade] = useState(0);
   const [rastro, setRastro] = useState(0);
+  const [quandoUsar, setQuandoUsar] = useState("");
   const [submittingReview, setSubmittingReview] = useState(false);
 
   useEffect(() => {
@@ -115,6 +118,10 @@ export default function PerfumeDetailPage() {
       toast.error("Por favor, avalie a projeção (rastro).");
       return;
     }
+    if (!quandoUsar) {
+      toast.error("Por favor, selecione a ocasião ou estação recomendada (quando usar).");
+      return;
+    }
 
     setSubmittingReview(true);
     try {
@@ -133,6 +140,7 @@ export default function PerfumeDetailPage() {
           comment,
           longevidade,
           rastro,
+          quandoUsar,
         })
       });
 
@@ -149,6 +157,7 @@ export default function PerfumeDetailPage() {
         setRating(5);
         setLongevidade(0);
         setRastro(0);
+        setQuandoUsar("");
         fetchPerfumeDetails(); // reload data
       } else {
         const errData = await res.json();
@@ -278,6 +287,23 @@ export default function PerfumeDetailPage() {
     ? (perfume.reviews.reduce((sum, r) => sum + r.rating, 0) / totalReviews).toFixed(1)
     : "0.0";
 
+  let mostCommonOcasião = "Não avaliado";
+  if (totalReviews > 0) {
+    const counts: Record<string, number> = {};
+    perfume.reviews.forEach(r => {
+      if (r.quandoUsar) {
+        counts[r.quandoUsar] = (counts[r.quandoUsar] || 0) + 1;
+      }
+    });
+    let max = 0;
+    for (const [key, val] of Object.entries(counts)) {
+      if (val > max) {
+        max = val;
+        mostCommonOcasião = key;
+      }
+    }
+  }
+
   return (
     <main className="relative flex-1 w-full max-w-7xl mx-auto px-4 py-8 bg-white/40 backdrop-blur-sm rounded-lg shadow-sm">
       <Button
@@ -304,9 +330,8 @@ export default function PerfumeDetailPage() {
                     className="h-full object-contain hover:scale-105 transition-transform duration-500"
                   />
                   <div className="absolute top-3 left-3">
-                    <span className={`text-xs font-bold px-3 py-1 rounded-full text-white shadow-sm tracking-wide ${
-                      perfume.gender === "Masculino" ? "bg-blue-500" : perfume.gender === "Feminino" ? "bg-pink-500" : "bg-teal-500"
-                    }`}>
+                    <span className={`text-xs font-bold px-3 py-1 rounded-full text-white shadow-sm tracking-wide ${perfume.gender === "Masculino" ? "bg-blue-500" : perfume.gender === "Feminino" ? "bg-pink-500" : "bg-teal-500"
+                      }`}>
                       {perfume.gender}
                     </span>
                   </div>
@@ -333,7 +358,7 @@ export default function PerfumeDetailPage() {
                   <h1 className="text-3xl font-bold text-gray-900 leading-tight mb-2">
                     {perfume.name}
                   </h1>
-                  
+
                   {/* Perfumist link */}
                   <div className="flex items-center gap-2 mb-4 bg-purple-50/50 p-2 rounded-lg border border-purple-100/50 w-fit">
                     <Award className="w-4 h-4 text-purple-600" />
@@ -450,6 +475,14 @@ export default function PerfumeDetailPage() {
                   </div>
                 </div>
 
+                {/* Ocasião Recomendada */}
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center text-sm font-semibold text-gray-700">
+                    <span>Ocasião / Estação (Quando Usar)</span>
+                    <span className="text-xs text-orange-700 font-bold bg-orange-50 px-2 py-0.5 rounded">{mostCommonOcasião}</span>
+                  </div>
+                </div>
+
                 {/* Summary Evaluation */}
                 <div className="bg-gray-50/70 p-4 rounded-xl border border-gray-100 mt-4 flex items-center gap-3">
                   <div className="w-12 h-12 rounded-full bg-yellow-100 flex items-center justify-center shrink-0">
@@ -479,7 +512,7 @@ export default function PerfumeDetailPage() {
               {currentUser ? (
                 <form onSubmit={handleReviewSubmit} className="bg-gray-50/50 p-4 rounded-xl border border-gray-100 space-y-4">
                   <h4 className="text-sm font-bold text-gray-800">Compartilhe sua Avaliação Técnica</h4>
-                  
+
                   {/* Rating selection */}
                   <div className="flex items-center gap-2">
                     <span className="text-xs text-gray-500 font-semibold">Sua Nota:</span>
@@ -497,48 +530,15 @@ export default function PerfumeDetailPage() {
                     </div>
                   </div>
 
-                  {/* Longevidade técnica */}
-                  <div className="grid grid-cols-2 gap-3">
-                    <div>
-                      <p className="text-xs text-gray-500 font-semibold mb-1">Fixação / Longevidade:</p>
-                      <div className="flex gap-1">
-                        {[1, 2, 3, 4, 5].map((val) => (
-                          <button
-                            key={val}
-                            type="button"
-                            onClick={() => setLongevidade(longevidade === val ? 0 : val)}
-                            className="hover:scale-110 transition-transform cursor-pointer"
-                          >
-                            <Clock className={`w-5 h-5 ${val <= longevidade ? "text-teal-500 fill-teal-500" : "text-gray-300"}`} />
-                          </button>
-                        ))}
-                      </div>
-                      {longevidade > 0 && (
-                        <p className="text-[10px] text-teal-600 mt-0.5">
-                          {["Muito fraca", "Fraca", "Moderada", "Longa", "Eterna"][longevidade - 1]}
-                        </p>
-                      )}
-                    </div>
-                    <div>
-                      <p className="text-xs text-gray-500 font-semibold mb-1">Rastro / Silagem:</p>
-                      <div className="flex gap-1">
-                        {[1, 2, 3, 4, 5].map((val) => (
-                          <button
-                            key={val}
-                            type="button"
-                            onClick={() => setRastro(rastro === val ? 0 : val)}
-                            className="hover:scale-110 transition-transform cursor-pointer"
-                          >
-                            <Wind className={`w-5 h-5 ${val <= rastro ? "text-purple-500 fill-purple-500" : "text-gray-300"}`} />
-                          </button>
-                        ))}
-                      </div>
-                      {rastro > 0 && (
-                        <p className="text-[10px] text-purple-600 mt-0.5">
-                          {["Íntimo", "Suave", "Moderado", "Forte", "Enorme"][rastro - 1]}
-                        </p>
-                      )}
-                    </div>
+                  {/* Longevidade técnica e Rastro */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 bg-white p-4 rounded-xl border border-gray-100">
+                    <LongevitySlider value={longevidade} onChange={setLongevidade} />
+                    <SillageSlider value={rastro} onChange={setRastro} />
+                  </div>
+
+                  {/* Quando usar */}
+                  <div className="bg-white p-4 rounded-xl border border-gray-100">
+                    <OccasionSelector selected={quandoUsar} onChange={setQuandoUsar} />
                   </div>
 
                   {/* Comment */}
@@ -572,7 +572,7 @@ export default function PerfumeDetailPage() {
               <div className="space-y-4">
                 {perfume.reviews && perfume.reviews.length > 0 ? (
                   perfume.reviews.map((review) => (
-                    <div key={review.id} className="border-b border-gray-100 pb-4 last:border-0 last:pb-0">
+                    <div key={review.id} onClick={() => navigate(`/resenha/${review.id}`)} className="border-b border-teal-500 hover:rounded-md transition-all duration-500 ease-in-out hover:border-teal-200 hover:p-2 cursor-pointer hover:bg-teal-200 pb-4 last:border-0 last:pb-0">
                       <div className="flex justify-between items-start">
                         <div>
                           <div className="flex items-center gap-2">
@@ -591,6 +591,11 @@ export default function PerfumeDetailPage() {
                               <div className="flex bg-purple-50 px-1.5 py-0.5 rounded border border-purple-100 items-center gap-0.5">
                                 <Wind className="w-3 h-3 text-purple-500 mr-0.5" />
                                 <span className="text-[10px] font-bold text-purple-700">{review.rastro}/5</span>
+                              </div>
+                            )}
+                            {review.quandoUsar && (
+                              <div className="flex bg-orange-50 px-1.5 py-0.5 rounded border border-orange-100 items-center gap-0.5">
+                                <span className="text-[10px] font-bold text-orange-700">{review.quandoUsar}</span>
                               </div>
                             )}
                           </div>

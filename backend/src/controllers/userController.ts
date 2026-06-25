@@ -76,6 +76,7 @@ export const getMe = async (req: Request, res: Response): Promise<void> => {
             comment: true,
             longevidade: true,
             rastro: true,
+            quandoUsar: true,
             date: true,
             perfume: { select: { id: true, name: true, image: true } },
           },

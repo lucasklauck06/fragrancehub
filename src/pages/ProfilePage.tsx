@@ -27,6 +27,7 @@ interface MyReview {
   comment: string;
   longevidade?: number | null;
   rastro?: number | null;
+  quandoUsar?: string | null;
   date: string;
   perfume: { id: string; name: string; image: string };
 }
@@ -311,7 +312,7 @@ export default function ProfilePage() {
                   {myReviews.map((review) => (
                     <Link
                       key={review.id}
-                      to={`/perfume/${review.perfume.id}`}
+                      to={`/resenha/${review.id}`}
                       className="flex gap-3 p-3 rounded-lg hover:bg-gray-50 border border-transparent hover:border-gray-100 transition-all duration-200 group"
                     >
                       <img
@@ -332,6 +333,12 @@ export default function ProfilePage() {
                         <div className="mt-1 space-y-0.5">
                           <StarRow value={review.longevidade} label="Fixação" />
                           <StarRow value={review.rastro} label="Rastro" />
+                          {review.quandoUsar && (
+                            <div className="flex items-center gap-1.5">
+                              <span className="text-xs text-gray-500">Ocasião:</span>
+                              <span className="text-[10px] font-bold text-orange-700 bg-orange-50 px-1.5 py-0.5 rounded border border-orange-100">{review.quandoUsar}</span>
+                            </div>
+                          )}
                         </div>
                         <p className="text-xs text-gray-500 mt-1 line-clamp-2">{review.comment}</p>
                         <span className="text-[10px] text-gray-400 mt-0.5 block">

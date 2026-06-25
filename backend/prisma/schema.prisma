@@ -69,6 +69,7 @@ model Review {
   comment     String
   longevidade Int?
   rastro      Int?
+  quandoUsar  String?
   date        DateTime @default(now())
   perfumeId   String
   userId      String

@@ -89,6 +89,9 @@ export const getPerfumeById = async (req: Request, res: Response): Promise<void>
         userName: r.user.name,
         rating: r.rating,
         comment: r.comment,
+        longevidade: r.longevidade,
+        rastro: r.rastro,
+        quandoUsar: r.quandoUsar,
         date: r.date,
         perfumeId: r.perfumeId,
         userId: r.userId
