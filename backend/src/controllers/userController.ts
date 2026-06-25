@@ -53,7 +53,7 @@ export const updateUserRole = async (req: Request, res: Response) => {
 // ─── RF05: Retorna dados do próprio usuário autenticado ───────────────────────
 export const getMe = async (req: Request, res: Response): Promise<void> => {
   try {
-    const userId = (req as any).user?.id;
+    const userId = (req as any).user?.userId;
     if (!userId) {
       res.status(401).json({ error: "Não autorizado" });
       return;
@@ -98,7 +98,7 @@ export const getMe = async (req: Request, res: Response): Promise<void> => {
 // ─── RF05: Atualiza dados cadastrais do próprio usuário ───────────────────────
 export const updateMe = async (req: Request, res: Response): Promise<void> => {
   try {
-    const userId = (req as any).user?.id;
+    const userId = (req as any).user?.userId;
     if (!userId) {
       res.status(401).json({ error: "Não autorizado" });
       return;

@@ -71,7 +71,7 @@ export const getReviewById = async (req: Request, res: Response): Promise<void> 
 export const createReview = async (req: Request, res: Response): Promise<void> => {
   try {
     // Segurança: userId sempre vem do token JWT, nunca do body
-    const userId = (req as any).user?.id;
+    const userId = (req as any).user?.userId;
     if (!userId) {
       res.status(401).json({ error: "Não autorizado" });
       return;
@@ -118,7 +118,7 @@ export const createReview = async (req: Request, res: Response): Promise<void> =
 export const updateReview = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
-    const userId = (req as any).user?.id;
+    const userId = (req as any).user?.userId;
 
     // Garante que o usuário só edita sua própria resenha
     const existing = await prisma.review.findUnique({ where: { id: id as string } });
@@ -146,7 +146,7 @@ export const updateReview = async (req: Request, res: Response): Promise<void> =
 export const deleteReview = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
-    const userId = (req as any).user?.id;
+  const userId = (req as any).user?.userId;
     const userRole = (req as any).user?.role;
 
     const existing = await prisma.review.findUnique({ where: { id: id as string } });

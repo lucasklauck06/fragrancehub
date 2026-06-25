@@ -4,6 +4,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { toast } from 'sonner';
 import AdminLayout from '../../components/AdminLayout';
 import { Shield, User } from 'lucide-react';
+import { useAuth } from '../../contexts/AuthContext';
+import { useNavigate } from 'react-router';
 
 interface UserData {
   id: string;
@@ -16,6 +18,8 @@ interface UserData {
 export default function AdminPermissionsPage() {
   const [users, setUsers] = useState<UserData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { logout } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchUsers();
@@ -23,13 +27,32 @@ export default function AdminPermissionsPage() {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/users');
-      if (!response.ok) throw new Error('Failed to fetch users');
+      let token = localStorage.getItem('token') || '';
+      token = token.replace(/['"]+/g, ''); // Remove quotes if any
+
+      const response = await fetch('http://localhost:3000/api/users', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      
+      if (response.status === 401) {
+        toast.error("Sua sessão expirou. Por favor, faça login novamente.");
+        logout();
+        navigate('/login');
+        return;
+      }
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+      }
+      
       const data = await response.json();
       setUsers(data);
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
-      toast.error('Erro ao carregar usuários');
+      toast.error(`Erro ao carregar usuários: ${error.message}`);
     } finally {
       setIsLoading(false);
     }
@@ -40,10 +63,12 @@ export default function AdminPermissionsPage() {
     if (!user) return;
 
     try {
+      const token = localStorage.getItem('token');
       const response = await fetch(`http://localhost:3000/api/users/${userId}/role`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
         },
         body: JSON.stringify({ role: newRole }),
       });

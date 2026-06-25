@@ -42,7 +42,7 @@ interface Perfume {
 export default function PerfumeDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { currentUser } = useAuth();
+  const { currentUser, logout } = useAuth();
   
   const [perfume, setPerfume] = useState<Perfume | null>(null);
   const [brandPerfumes, setBrandPerfumes] = useState<any[]>([]);
@@ -110,7 +110,9 @@ export default function PerfumeDetailPage() {
 
     setSubmittingReview(true);
     try {
-      const token = localStorage.getItem("token");
+      let token = localStorage.getItem('token') || '';
+      token = token.replace(/['"]+/g, ''); // Remove quotes if any
+
       const res = await fetch("http://localhost:3000/api/reviews", {
         method: "POST",
         headers: {
@@ -125,6 +127,13 @@ export default function PerfumeDetailPage() {
           rastro: rastro > 0 ? rastro : null,
         })
       });
+
+      if (res.status === 401) {
+        toast.error("Sua sessão expirou. Por favor, faça login novamente.");
+        logout();
+        navigate('/login');
+        return;
+      }
 
       if (res.ok) {
         toast.success("Resenha publicada com sucesso!");

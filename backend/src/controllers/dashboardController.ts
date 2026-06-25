@@ -18,7 +18,7 @@ export const getDashboardStats = async (req: Request, res: Response): Promise<vo
       orderBy: { createdAt: 'desc' },
       include: {
         user: { select: { name: true } },
-        perfume: { select: { name: true } }
+        perfume: { select: { name: true, image: true } }
       }
     });
     
@@ -26,6 +26,7 @@ export const getDashboardStats = async (req: Request, res: Response): Promise<vo
       id: r.id,
       userName: r.user.name,
       perfumeName: r.perfume.name,
+      perfumeImage: r.perfume.image,
       rating: r.rating,
       comment: r.comment,
       date: r.date

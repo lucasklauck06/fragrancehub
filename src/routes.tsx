@@ -7,6 +7,7 @@ import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
 import AdminPerfumesPage from "./pages/admin/AdminPerfumesPage";
 import AdminPerfumeFormPage from "./pages/admin/AdminPerfumeFormPage";
 import AdminPermissionsPage from "./pages/admin/AdminPermissionsPage";
+import AdminUsersPage from "./pages/admin/AdminUsersPage";
 import AdminBrandsPage from "./pages/admin/AdminBrandsPage";
 import AdminBrandFormPage from "./pages/admin/AdminBrandFormPage";
 import BrandDetailPage from "./pages/MarcasDetailPage";
@@ -127,6 +128,10 @@ export const router = createBrowserRouter([
       {
         path: "permissoes",
         Component: AdminPermissionsPage,
+      },
+      {
+        path: "usuarios",
+        Component: AdminUsersPage,
       },
     ],
   },
