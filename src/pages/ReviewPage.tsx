@@ -16,14 +16,14 @@ export default function ReviewPage() {
       fetch("http://localhost:3000/api/perfumes"),
       fetch("http://localhost:3000/api/reviews")
     ])
-    .then(async ([resPerfumes, resReviews]) => {
-      if (resPerfumes.ok) setPerfumes(await resPerfumes.json());
-      if (resReviews.ok) setReviews(await resReviews.json());
-    })
-    .catch((err) => {
-      console.error(err);
-      toast.error("Erro ao carregar dados.");
-    });
+      .then(async ([resPerfumes, resReviews]) => {
+        if (resPerfumes.ok) setPerfumes(await resPerfumes.json());
+        if (resReviews.ok) setReviews(await resReviews.json());
+      })
+      .catch((err) => {
+        console.error(err);
+        toast.error("Erro ao carregar dados.");
+      });
   }, []);
 
   const perfumesFitrado = perfumes.filter((perfume) => {
@@ -85,7 +85,7 @@ export default function ReviewPage() {
                     </div>
                   </div>
                 ))}
-                
+
                 {reviews
                   .filter((review) =>
                     perfumesFitrado.some((p) => p.id === review.perfumeId),
@@ -93,7 +93,8 @@ export default function ReviewPage() {
                   .map((review) => (
                     <div
                       key={review.id}
-                      className="p-4 border rounded-md shadow-sm bg-white"
+                      className="p-4 border rounded-md shadow-sm bg-white cursor-pointer hover:bg-gray-50 transition-colors"
+                      onClick={() => navigate(`/resenha/${review.id}`)}
                     >
                       <div className="flex justify-between items-center mb-2">
                         <span className="font-semibold text-gray-800">{review.userName}</span>
@@ -107,7 +108,7 @@ export default function ReviewPage() {
                       </span>
                     </div>
                   ))}
-                  
+
                 {reviews.filter((review) =>
                   perfumesFitrado.some((p) => p.id === review.perfumeId),
                 ).length === 0 && perfumesFitrado.length > 0 && (

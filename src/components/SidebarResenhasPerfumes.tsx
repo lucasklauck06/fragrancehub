@@ -76,7 +76,11 @@ export default function SidebarResenhasPerfumes() {
 
         <div className="flex flex-col gap-4">
           {dashboardData.recentReviews.map((review: any) => (
-            <div key={review.id} className="flex items-center gap-4 group cursor-pointer border-b border-gray-100 pb-4 last:border-0 last:pb-0">
+            <div
+              key={review.id}
+              onClick={() => navigate(`/resenha/${review.id}`)}
+              className="flex items-center gap-4 group cursor-pointer border-b border-gray-100 pb-4 last:border-0 last:pb-0 hover:bg-teal-100 p-2 rounded-lg transition-colors"
+            >
               <div className="w-14 h-14 bg-gray-50 rounded-lg overflow-hidden shrink-0 flex items-center justify-center p-1">
                 {review.perfumeImage ? (
                   <img src={review.perfumeImage} alt={review.perfumeName} className="w-full h-full object-cover rounded" />

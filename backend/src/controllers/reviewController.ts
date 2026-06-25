@@ -40,7 +40,7 @@ export const getReviewById = async (req: Request, res: Response): Promise<void> 
       where: { id: id as string },
       include: {
         user: { select: { name: true } },
-        perfume: { select: { name: true } }
+        perfume: { select: { name: true, brand: true, image: true, gender: true, price: true } }
       }
     });
 
@@ -53,6 +53,10 @@ export const getReviewById = async (req: Request, res: Response): Promise<void> 
       id: review.id,
       userName: review.user.name,
       perfumeName: review.perfume.name,
+      perfumeBrand: review.perfume.brand?.name,
+      perfumeImage: review.perfume.image,
+      perfumeGender: review.perfume.gender,
+      perfumePrice: review.perfume.price,
       rating: review.rating,
       comment: review.comment,
       longevidade: review.longevidade,
