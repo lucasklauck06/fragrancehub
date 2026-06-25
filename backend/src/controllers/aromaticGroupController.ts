@@ -7,6 +7,12 @@ export const getAromaticGroups = async (req: Request, res: Response): Promise<vo
   try {
     const groups = await prisma.aromaticGroup.findMany({
       orderBy: { name: "asc" },
+      include: {
+        perfumes: {
+          take: 3,
+          include: { brand: true }
+        }
+      }
     });
     res.json(groups);
   } catch (error) {
@@ -20,6 +26,12 @@ export const getAromaticGroupById = async (req: Request, res: Response): Promise
     const { id } = req.params;
     const group = await prisma.aromaticGroup.findUnique({
       where: { id: id as string },
+      include: {
+        perfumes: {
+          take: 3,
+          include: { brand: true }
+        }
+      }
     });
 
     if (!group) {

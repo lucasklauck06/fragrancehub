@@ -10,6 +10,7 @@ import perfumistRoutes from "./routes/perfumistRoutes";
 import newsRoutes from "./routes/newsRoutes";
 import reviewRoutes from "./routes/reviewRoutes";
 import aromaticGroupRoutes from "./routes/aromaticGroupRoutes";
+import noteImageRoutes from "./routes/noteImageRoutes";
 
 dotenv.config();
 
@@ -27,6 +28,7 @@ app.use("/api/perfumists", perfumistRoutes);
 app.use("/api/news", newsRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/aromatic-groups", aromaticGroupRoutes);
+app.use("/api/notes/image", noteImageRoutes);
 
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok" });

@@ -116,3 +116,10 @@ enum Role {
   USER
   ADMIN
 }
+
+model NoteImage {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  imageUrl  String?
+  createdAt DateTime @default(now())
+}

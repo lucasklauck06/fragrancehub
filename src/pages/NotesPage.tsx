@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { Search } from "lucide-react";
 import { Link } from "react-router";
 import SidebarResenhasPerfumes from "../components/SidebarResenhasPerfumes";
@@ -16,6 +16,62 @@ const BASE_FAMILIES = [
   { id: 'musk', name: 'Almíscares', icon: '🐾', color: '#64748b', bgColor: '#e2e8f0', description: 'Sensuais e pele', notes: ['Almíscar', 'Couro', 'Âmbar Cinzento', 'Lã', 'Cashmere'] },
   { id: 'aquatic', name: 'Aquáticos', icon: '💧', color: '#06b6d4', bgColor: '#cffafe', description: 'Marinhos e salgados', notes: ['Aquático', 'Sal Marinho'] },
 ];
+
+const NoteCard = ({ note, family }: { note: string, family: any }) => {
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
+  const cardRef = useRef<HTMLAnchorElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        setIsVisible(true);
+        observer.disconnect();
+      }
+    });
+    if (cardRef.current) observer.observe(cardRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!isVisible) return;
+    fetch(`http://localhost:3000/api/notes/image?name=${encodeURIComponent(note)}`)
+      .then(res => res.json())
+      .then(data => {
+        setImageUrl(data.imageUrl);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, [isVisible, note]);
+
+  return (
+    <Link 
+      ref={cardRef}
+      to={`/nota/${encodeURIComponent(note)}`} 
+      state={{ noteName: note, groupName: family.name }}
+      className="group flex flex-col items-center p-4 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all hover:border-teal-300 cursor-pointer text-center h-full"
+    >
+      <div 
+        className="w-20 h-20 rounded-full mb-3 flex items-center justify-center text-3xl shadow-inner group-hover:scale-110 transition-transform duration-300 overflow-hidden relative"
+        style={{ backgroundColor: family.bgColor, color: family.color }}
+      >
+        {loading && isVisible ? (
+          <div className="absolute inset-0 flex items-center justify-center bg-black/5">
+            <div className="w-5 h-5 border-2 border-teal-500/30 border-t-teal-500 rounded-full animate-spin"></div>
+          </div>
+        ) : imageUrl ? (
+          <img src={imageUrl} alt={note} className="w-full h-full object-cover" />
+        ) : (
+          family.icon
+        )}
+      </div>
+      <span className="text-sm font-semibold text-gray-800 leading-tight group-hover:text-teal-600 transition-colors">
+        {note}
+      </span>
+    </Link>
+  );
+};
 
 export default function NotesPage() {
     const [searchQuery, setSearchQuery] = useState("");
@@ -129,22 +185,7 @@ export default function NotesPage() {
                                     
                                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
                                         {family.notes.map(note => (
-                                            <Link 
-                                                to={`/nota/${encodeURIComponent(note)}`} 
-                                                state={{ noteName: note, groupName: family.name }}
-                                                key={note}
-                                                className="group flex flex-col items-center p-4 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all hover:border-teal-300 cursor-pointer text-center h-full"
-                                            >
-                                                <div 
-                                                    className="w-20 h-20 rounded-full mb-3 flex items-center justify-center text-3xl shadow-inner group-hover:scale-110 transition-transform duration-300"
-                                                    style={{ backgroundColor: family.bgColor, color: family.color }}
-                                                >
-                                                    {family.icon}
-                                                </div>
-                                                <span className="text-sm font-semibold text-gray-800 leading-tight group-hover:text-teal-600 transition-colors">
-                                                    {note}
-                                                </span>
-                                            </Link>
+                                            <NoteCard key={note} note={note} family={family} />
                                         ))}
                                     </div>
                                 </section>

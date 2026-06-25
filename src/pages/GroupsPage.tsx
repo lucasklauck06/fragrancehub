@@ -29,6 +29,7 @@ export type AromaticGroup = {
   characteristics: string[];
   subGroups: string[];
   representativePerfumes: string[];
+  perfumes?: any[];
 };
 
 const seasonIcon: Record<string, React.ReactNode> = {
@@ -181,14 +182,31 @@ function GroupModal({ group, onClose }: { group: AromaticGroup; onClose: () => v
 
           {/* Representative perfumes */}
           <div>
-            <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-2">Perfumes Representativos</h3>
+            <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-2">Perfumes deste Grupo</h3>
             <div className="space-y-2">
-              {(group.representativePerfumes || []).map(name => (
-                <div key={name} className="flex items-center gap-2 p-3 bg-gray-50 rounded-xl border border-gray-200">
-                  <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: group.color }} />
-                  <span className="text-sm text-gray-700 italic">"{name}"</span>
-                </div>
-              ))}
+              {group.perfumes && group.perfumes.length > 0 ? (
+                group.perfumes.map((perfume: any) => (
+                  <Link 
+                    key={perfume.id} 
+                    to={`/perfume/${perfume.id}`}
+                    onClick={onClose}
+                    className="flex items-center gap-3 p-2 bg-gray-50 rounded-xl border border-gray-200 hover:border-teal-300 hover:bg-white transition-all cursor-pointer group/perfume"
+                  >
+                    <img 
+                      src={perfume.image || "https://images.unsplash.com/photo-1541643600914-78b084683601?w=400&h=600&fit=crop"} 
+                      alt={perfume.name}
+                      className="w-10 h-10 rounded-md object-cover shadow-sm bg-white"
+                    />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs font-bold text-gray-900 truncate group-hover/perfume:text-teal-600 transition-colors">{perfume.name}</p>
+                      <p className="text-[10px] text-gray-500 uppercase tracking-wide truncate">{perfume.brand?.name || 'Marca'}</p>
+                    </div>
+                    <ChevronRight className="w-4 h-4 text-gray-400 group-hover/perfume:text-teal-500" />
+                  </Link>
+                ))
+              ) : (
+                <div className="text-xs text-gray-400 italic p-2 bg-gray-50 rounded-lg text-center">Nenhum perfume cadastrado neste grupo ainda.</div>
+              )}
             </div>
           </div>
 
