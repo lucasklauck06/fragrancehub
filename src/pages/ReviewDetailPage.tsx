@@ -85,7 +85,7 @@ export default function ReviewDetailPage() {
                   </div>
                 </div>
               </div>
-              
+
               <div className="flex bg-yellow-50 px-3 py-1.5 rounded-lg border border-yellow-100 items-center">
                 <Star className="w-5 h-5 text-yellow-500 fill-yellow-500 mr-2" />
                 <span className="font-bold text-yellow-700 text-lg">{review.rating} / 5</span>
@@ -103,11 +103,10 @@ export default function ReviewDetailPage() {
               </div>
 
               {/* Technical Metrics */}
-              {(review.longevidade || review.rastro) && (
                 <div className="mt-8 pt-6 border-t border-gray-100">
                   <h3 className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-4">Métricas Técnicas Avaliadas</h3>
                   <div className="flex flex-wrap gap-4">
-                    {review.longevidade && (
+                    {review.longevidade != null ? (
                       <div className="flex bg-teal-50 px-4 py-2 rounded-lg border border-teal-100 items-center gap-2 flex-1 min-w-[140px]">
                         <Clock className="w-5 h-5 text-teal-600" />
                         <div>
@@ -115,8 +114,12 @@ export default function ReviewDetailPage() {
                           <p className="font-bold text-teal-800">{review.longevidade} / 5</p>
                         </div>
                       </div>
+                    ) : (
+                      <div className="flex bg-teal-50 px-4 py-2 rounded-lg border border-teal-100 items-center gap-2 flex-1 min-w-[140px]">
+                        <p className="text-[10px] text-teal-600/80 uppercase font-bold tracking-wider">Sem fixação</p>
+                      </div>
                     )}
-                    {review.rastro && (
+                    {review.rastro != null ? (
                       <div className="flex bg-purple-50 px-4 py-2 rounded-lg border border-purple-100 items-center gap-2 flex-1 min-w-[140px]">
                         <Wind className="w-5 h-5 text-purple-600" />
                         <div>
@@ -124,10 +127,13 @@ export default function ReviewDetailPage() {
                           <p className="font-bold text-purple-800">{review.rastro} / 5</p>
                         </div>
                       </div>
+                    ) : (
+                      <div className="flex bg-purple-50 px-4 py-2 rounded-lg border border-purple-100 items-center gap-2 flex-1 min-w-[140px]">
+                        <p className="text-[10px] text-purple-600/80 uppercase font-bold tracking-wider">Sem projeção</p>
+                      </div>
                     )}
                   </div>
                 </div>
-              )}
             </CardContent>
           </Card>
         </div>
@@ -137,9 +143,9 @@ export default function ReviewDetailPage() {
           {/* Perfume Card Info */}
           <Card className="border border-gray-100 bg-white/95 shadow-sm rounded-xl overflow-hidden cursor-pointer hover:border-teal-200 transition-colors" onClick={() => navigate(`/perfume/${review.perfumeId}`)}>
             <div className="bg-gray-50 h-48 w-full flex items-center justify-center p-4 border-b border-gray-100">
-              <img 
-                src={review.perfumeImage || "https://images.unsplash.com/photo-1541643600914-78b084683601?w=400&h=600&fit=crop"} 
-                alt={review.perfumeName} 
+              <img
+                src={review.perfumeImage || "https://images.unsplash.com/photo-1541643600914-78b084683601?w=400&h=600&fit=crop"}
+                alt={review.perfumeName}
                 className="h-full object-contain mix-blend-multiply"
               />
             </div>
@@ -148,9 +154,8 @@ export default function ReviewDetailPage() {
                 <p className="text-xs font-bold text-teal-600 uppercase tracking-wider mb-1">{review.perfumeBrand}</p>
                 <h3 className="font-bold text-gray-900 text-lg leading-tight mb-2">{review.perfumeName}</h3>
                 <div className="flex justify-center gap-2 mb-3">
-                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full text-white ${
-                    review.perfumeGender === "Masculino" ? "bg-blue-500" : review.perfumeGender === "Feminino" ? "bg-pink-500" : "bg-teal-500"
-                  }`}>
+                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full text-white ${review.perfumeGender === "Masculino" ? "bg-blue-500" : review.perfumeGender === "Feminino" ? "bg-pink-500" : "bg-teal-500"
+                    }`}>
                     {review.perfumeGender}
                   </span>
                 </div>

@@ -107,6 +107,14 @@ export default function PerfumeDetailPage() {
       toast.error("Escreva um comentário para sua resenha.");
       return;
     }
+    if (longevidade === 0) {
+      toast.error("Por favor, avalie a fixação (longevidade).");
+      return;
+    }
+    if (rastro === 0) {
+      toast.error("Por favor, avalie a projeção (rastro).");
+      return;
+    }
 
     setSubmittingReview(true);
     try {
@@ -123,8 +131,8 @@ export default function PerfumeDetailPage() {
           perfumeId: id,
           rating,
           comment,
-          longevidade: longevidade > 0 ? longevidade : null,
-          rastro: rastro > 0 ? rastro : null,
+          longevidade,
+          rastro,
         })
       });
 
