@@ -60,13 +60,14 @@ export default function NotesPage() {
     const filteredFamilies = useMemo(() => {
         if (!searchQuery.trim()) return noteFamilies;
         
-        const lowerQuery = searchQuery.toLowerCase();
+        const normalizeString = (str: string) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+        const lowerQuery = normalizeString(searchQuery);
         
         return noteFamilies.map(family => {
-            const matchesFamily = family.name.toLowerCase().includes(lowerQuery);
+            const matchesFamily = normalizeString(family.name).includes(lowerQuery);
             if (matchesFamily) return family;
             
-            const matchingNotes = family.notes.filter(n => n.toLowerCase().includes(lowerQuery));
+            const matchingNotes = family.notes.filter(n => normalizeString(n).includes(lowerQuery));
             if (matchingNotes.length > 0) {
                 return { ...family, notes: matchingNotes };
             }

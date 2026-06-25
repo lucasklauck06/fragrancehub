@@ -33,12 +33,14 @@ export default function BuscaPerfumesPage() {
 
   const [perfumes, setPerfumes] = useState<Perfume[]>([]);
   const [perfumers, setPerfumers] = useState<Perfumer[]>([]);
+  const [aromaticGroups, setAromaticGroups] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   // Filter States
   const [searchQuery, setSearchQuery] = useState(queryFromUrl);
   const [selectedGenders, setSelectedGenders] = useState<string[]>([]);
   const [selectedPerfumerId, setSelectedPerfumerId] = useState<string>("");
+  const [selectedGroupId, setSelectedGroupId] = useState<string>(searchParams.get("grupo") || "");
   const [minPrice, setMinPrice] = useState<number | "">("");
   const [maxPrice, setMaxPrice] = useState<number | "">("");
   const [priceRangePreset, setPriceRangePreset] = useState<string>("");
@@ -48,6 +50,11 @@ export default function BuscaPerfumesPage() {
     setSearchQuery(queryFromUrl);
   }, [queryFromUrl]);
 
+  useEffect(() => {
+    const grp = searchParams.get("grupo");
+    if (grp) setSelectedGroupId(grp);
+  }, [searchParams]);
+
   // Load backend data
   useEffect(() => {
     fetchData();
@@ -56,9 +63,10 @@ export default function BuscaPerfumesPage() {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const [resPerfumes, resPerfumers] = await Promise.all([
+      const [resPerfumes, resPerfumers, resGroups] = await Promise.all([
         fetch("http://localhost:3000/api/perfumes"),
-        fetch("http://localhost:3000/api/perfumists")
+        fetch("http://localhost:3000/api/perfumists"),
+        fetch("http://localhost:3000/api/aromatic-groups")
       ]);
 
       if (resPerfumes.ok) {
@@ -69,6 +77,10 @@ export default function BuscaPerfumesPage() {
 
       if (resPerfumers.ok) {
         setPerfumers(await resPerfumers.json());
+      }
+
+      if (resGroups.ok) {
+        setAromaticGroups(await resGroups.json());
       }
     } catch (err) {
       console.error(err);
@@ -106,6 +118,7 @@ export default function BuscaPerfumesPage() {
     setSearchQuery("");
     setSelectedGenders([]);
     setSelectedPerfumerId("");
+    setSelectedGroupId("");
     setMinPrice("");
     setMaxPrice("");
     setPriceRangePreset("");
@@ -157,9 +170,14 @@ export default function BuscaPerfumesPage() {
         return false;
       }
 
+      // 6. Group Match
+      if (selectedGroupId && p.aromaticGroupId !== selectedGroupId) {
+        return false;
+      }
+
       return true;
     });
-  }, [perfumes, searchQuery, selectedGenders, selectedPerfumerId, minPrice, maxPrice]);
+  }, [perfumes, searchQuery, selectedGenders, selectedPerfumerId, selectedGroupId, minPrice, maxPrice]);
 
   return (
     <main className="relative flex-1 w-full max-w-7xl mx-auto px-4 py-8 bg-white/40 backdrop-blur-sm rounded-lg shadow-sm">
@@ -182,7 +200,7 @@ export default function BuscaPerfumesPage() {
                 <SlidersHorizontal className="w-4 h-4 text-teal-600" />
                 Filtros Avançados
               </span>
-              {(searchQuery || selectedGenders.length > 0 || selectedPerfumerId || minPrice !== "" || maxPrice !== "") && (
+              {(searchQuery || selectedGenders.length > 0 || selectedPerfumerId || selectedGroupId || minPrice !== "" || maxPrice !== "") && (
                 <button
                   onClick={handleClearFilters}
                   className="text-xs font-bold text-teal-600 hover:text-teal-700 hover:underline flex items-center gap-1 cursor-pointer"
@@ -279,6 +297,32 @@ export default function BuscaPerfumesPage() {
                     />
                   </div>
                 </div>
+              </div>
+
+              {/* Aromatic Group Filter */}
+              <div className="space-y-2">
+                <label className="text-xs font-bold uppercase tracking-wider text-gray-400 block">Família Olfativa</label>
+                <select
+                  value={selectedGroupId}
+                  onChange={(e) => {
+                    setSelectedGroupId(e.target.value);
+                    if (!e.target.value) {
+                      const newParams = new URLSearchParams(searchParams);
+                      newParams.delete("grupo");
+                      setSearchParams(newParams);
+                    } else {
+                      const newParams = new URLSearchParams(searchParams);
+                      newParams.set("grupo", e.target.value);
+                      setSearchParams(newParams);
+                    }
+                  }}
+                  className="w-full text-xs border border-gray-200 rounded-lg p-2.5 bg-gray-50/50 focus:outline-none focus:ring-1 focus:ring-teal-600 cursor-pointer"
+                >
+                  <option value="">Todos os grupos</option>
+                  {aromaticGroups.map(g => (
+                    <option key={g.id} value={g.id}>{g.name}</option>
+                  ))}
+                </select>
               </div>
 
               {/* Perfumer Filter */}

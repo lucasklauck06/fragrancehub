@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 export const getPerfumes = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { brandId, perfumistId, collection, gender, maxPrice, q } = req.query;
+    const { brandId, perfumistId, collection, gender, maxPrice, q, aromaticGroupId, grupo } = req.query;
     
     let whereClause: any = {};
     if (brandId) {
@@ -19,6 +19,9 @@ export const getPerfumes = async (req: Request, res: Response): Promise<void> =>
     }
     if (gender) {
       whereClause.gender = gender as string;
+    }
+    if (aromaticGroupId || grupo) {
+      whereClause.aromaticGroupId = (aromaticGroupId || grupo) as string;
     }
     if (maxPrice) {
       whereClause.price = {
@@ -37,6 +40,7 @@ export const getPerfumes = async (req: Request, res: Response): Promise<void> =>
       include: {
         brand: true,
         perfumist: true,
+        aromaticGroup: true,
       },
       orderBy: { name: "asc" },
     });
@@ -44,7 +48,8 @@ export const getPerfumes = async (req: Request, res: Response): Promise<void> =>
     const formattedPerfumes = perfumes.map((p: any) => ({
       ...p,
       brand: p.brand ? p.brand.name : "",
-      perfumist: p.perfumist ? p.perfumist.name : ""
+      perfumist: p.perfumist ? p.perfumist.name : "",
+      aromaticGroupName: p.aromaticGroup ? p.aromaticGroup.name : ""
     }));
     
     res.json(formattedPerfumes);
@@ -62,6 +67,7 @@ export const getPerfumeById = async (req: Request, res: Response): Promise<void>
       include: {
         brand: true,
         perfumist: true,
+        aromaticGroup: true,
         reviews: {
           include: {
             user: {
@@ -82,6 +88,7 @@ export const getPerfumeById = async (req: Request, res: Response): Promise<void>
       ...perfume,
       brandName: perfume.brand ? perfume.brand.name : "",
       perfumistName: perfume.perfumist ? perfume.perfumist.name : "",
+      aromaticGroupName: perfume.aromaticGroup ? perfume.aromaticGroup.name : "",
       brand: perfume.brand ? perfume.brand.name : "",
       perfumist: perfume.perfumist ? perfume.perfumist.name : "",
       reviews: perfume.reviews.map((r: any) => ({
@@ -120,7 +127,7 @@ export const deletePerfume = async (req: Request, res: Response): Promise<void> 
 
 export const createPerfume = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { name, brandId, perfumistId, gender, price } = req.body;
+    const { name, brandId, perfumistId, aromaticGroupId, gender, price } = req.body;
 
     if (!name || typeof name !== "string" || !name.trim()) {
       res.status(400).json({ error: "Nome é obrigatório." });
@@ -157,6 +164,14 @@ export const createPerfume = async (req: Request, res: Response): Promise<void> 
       return;
     }
 
+    if (aromaticGroupId) {
+      const groupExists = await prisma.aromaticGroup.findUnique({ where: { id: aromaticGroupId } });
+      if (!groupExists) {
+        res.status(400).json({ error: "O grupo aromático especificado não existe." });
+        return;
+      }
+    }
+
     const perfume = await prisma.perfume.create({
       data: req.body,
     });
@@ -178,7 +193,7 @@ export const updatePerfume = async (req: Request, res: Response): Promise<void> 
       return;
     }
 
-    const { name, brandId, perfumistId, gender, price } = req.body;
+    const { name, brandId, perfumistId, aromaticGroupId, gender, price } = req.body;
 
     if (name !== undefined && (typeof name !== "string" || !name.trim())) {
       res.status(400).json({ error: "Nome inválido." });
@@ -211,6 +226,17 @@ export const updatePerfume = async (req: Request, res: Response): Promise<void> 
       const perfumistExists = await prisma.perfumist.findUnique({ where: { id: perfumistId } });
       if (!perfumistExists) {
         res.status(400).json({ error: "O perfumista especificado não existe." });
+        return;
+      }
+    }
+    if (aromaticGroupId !== undefined && aromaticGroupId !== null) {
+      if (typeof aromaticGroupId !== "string" || !aromaticGroupId.trim()) {
+        res.status(400).json({ error: "Grupo aromático inválido." });
+        return;
+      }
+      const groupExists = await prisma.aromaticGroup.findUnique({ where: { id: aromaticGroupId } });
+      if (!groupExists) {
+        res.status(400).json({ error: "O grupo aromático especificado não existe." });
         return;
       }
     }

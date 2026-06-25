@@ -16,11 +16,13 @@ export default function AdminPerfumeFormPage() {
 
   const [brands, setBrands] = useState<any[]>([]);
   const [perfumists, setPerfumists] = useState<any[]>([]);
+  const [aromaticGroups, setAromaticGroups] = useState<any[]>([]);
 
   const [formData, setFormData] = useState({
     name: '',
     brandId: '',
     perfumistId: '',
+    aromaticGroupId: '',
     gender: 'Masculino',
     price: 0,
     year: new Date().getFullYear(),
@@ -42,12 +44,14 @@ export default function AdminPerfumeFormPage() {
 
   const fetchBrandsAndPerfumists = async () => {
     try {
-      const [resBrands, resPerfumists] = await Promise.all([
+      const [resBrands, resPerfumists, resGroups] = await Promise.all([
         fetch("http://localhost:3000/api/brands"),
-        fetch("http://localhost:3000/api/perfumists")
+        fetch("http://localhost:3000/api/perfumists"),
+        fetch("http://localhost:3000/api/aromatic-groups")
       ]);
       if (resBrands.ok) setBrands(await resBrands.json());
       if (resPerfumists.ok) setPerfumists(await resPerfumists.json());
+      if (resGroups.ok) setAromaticGroups(await resGroups.json());
     } catch (error) {
       toast.error("Erro ao carregar marcas e perfumistas.");
     }
@@ -62,6 +66,7 @@ export default function AdminPerfumeFormPage() {
           name: perfume.name || '',
           brandId: perfume.brandId || '',
           perfumistId: perfume.perfumistId || '',
+          aromaticGroupId: perfume.aromaticGroupId || '',
           gender: perfume.gender || 'Masculino',
           price: perfume.price || 0,
           year: perfume.year || new Date().getFullYear(),
@@ -110,6 +115,7 @@ export default function AdminPerfumeFormPage() {
       name: formData.name,
       brandId: formData.brandId,
       perfumistId: formData.perfumistId,
+      aromaticGroupId: formData.aromaticGroupId || undefined,
       gender: formData.gender,
       price: Number(formData.price),
       year: Number(formData.year),
@@ -199,6 +205,22 @@ export default function AdminPerfumeFormPage() {
                   </SelectContent>
                 </Select>
                 {errors.perfumistId && <p className="text-sm text-red-600">{errors.perfumistId}</p>}
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="aromaticGroup">Grupo Aromático</Label>
+                <Select value={formData.aromaticGroupId} onValueChange={(v) => handleChange('aromaticGroupId', v)}>
+                  <SelectTrigger id="aromaticGroup">
+                    <SelectValue placeholder="Opcional: Selecione um grupo" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {aromaticGroups.map(group => (
+                      <SelectItem key={group.id} value={group.id}>
+                        {group.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
 
               <div className="space-y-2">
