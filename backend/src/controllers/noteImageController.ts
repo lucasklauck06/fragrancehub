@@ -32,9 +32,9 @@ export const getNoteImage = async (req: Request, res: Response): Promise<void> =
       return;
     }
 
-    // Aprimora a query para buscar por termos como planta, fruta, resina
-    const searchQuery = encodeURIComponent(`${name} plant fruit`);
-    const unsplashUrl = `https://api.unsplash.com/search/photos?query=${searchQuery}&client_id=${accessKey}&per_page=1&orientation=squarish`;
+    // Busca pelo termo exato em português
+    const searchQuery = encodeURIComponent(name);
+    const unsplashUrl = `https://api.unsplash.com/search/photos?query=${searchQuery}&client_id=${accessKey}&per_page=1&orientation=squarish&lang=pt`;
 
     const response = await fetch(unsplashUrl);
     if (!response.ok) {
