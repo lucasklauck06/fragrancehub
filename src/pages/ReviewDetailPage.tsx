@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router";
 import { Card, CardContent } from "../components/ui/card";
 import { Button } from "../components/ui/button";
-import { ArrowLeft, Star, Clock, Wind, Calendar, User, Edit2 } from "lucide-react";
+import { ArrowLeft, Star, Clock, Wind, Calendar, User, Edit2, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import SidebarResenhasPerfumes from "../components/SidebarResenhasPerfumes";
 import { useAuth } from "../contexts/AuthContext";
@@ -23,6 +23,7 @@ export default function ReviewDetailPage() {
   const [editRastro, setEditRastro] = useState(0);
   const [editQuandoUsar, setEditQuandoUsar] = useState("");
   const [saving, setSaving] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -49,6 +50,31 @@ export default function ReviewDetailPage() {
   }, [id]);
 
   const isAuthor = currentUser?.id === review?.userId;
+
+  const handleDelete = async () => {
+    if (!window.confirm("Tem certeza que deseja deletar esta resenha?")) return;
+    
+    setDeleting(true);
+    try {
+      const token = localStorage.getItem("token")?.replace(/['"]+/g, '');
+      const res = await fetch(`http://localhost:3000/api/reviews/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to delete");
+      }
+      
+      toast.success("Resenha deletada com sucesso!");
+      navigate(`/perfume/${review.perfumeId}`);
+    } catch (e) {
+      toast.error("Erro ao deletar resenha.");
+      setDeleting(false);
+    }
+  };
 
   const handleSave = async () => {
     setSaving(true);
@@ -144,10 +170,16 @@ export default function ReviewDetailPage() {
                   <span className="font-bold text-yellow-700 text-lg">{isEditing ? editRating : review.rating} / 5</span>
                 </div>
                 {isAuthor && !isEditing && (
-                  <Button variant="outline" size="sm" onClick={() => setIsEditing(true)}>
-                    <Edit2 className="w-4 h-4 mr-2" />
-                    Editar
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button variant="outline" size="sm" onClick={() => setIsEditing(true)}>
+                      <Edit2 className="w-4 h-4 mr-2" />
+                      Editar
+                    </Button>
+                    <Button variant="destructive" size="sm" onClick={handleDelete} disabled={deleting}>
+                      <Trash2 className="w-4 h-4 mr-2" />
+                      {deleting ? "Deletando..." : "Deletar"}
+                    </Button>
+                  </div>
                 )}
               </div>
             </div>
