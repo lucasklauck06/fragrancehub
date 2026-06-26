@@ -11,6 +11,7 @@ import newsRoutes from "./routes/newsRoutes";
 import reviewRoutes from "./routes/reviewRoutes";
 import aromaticGroupRoutes from "./routes/aromaticGroupRoutes";
 import noteImageRoutes from "./routes/noteImageRoutes";
+import searchRoutes from "./routes/searchRoutes";
 
 dotenv.config();
 
@@ -29,6 +30,7 @@ app.use("/api/news", newsRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/aromatic-groups", aromaticGroupRoutes);
 app.use("/api/notes/image", noteImageRoutes);
+app.use("/api/search", searchRoutes);
 
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok" });

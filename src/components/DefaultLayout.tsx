@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate, Outlet } from "react-router";
 import { useAuth } from "../contexts/AuthContext";
 import { Button } from "./ui/button";
@@ -19,10 +19,51 @@ import bgImage from "../images/lovely-easter-white-lily-blooms-2jfhx5wifsoflo3j.
 
 export default function DefaultLayout() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState<{ perfumes: any[], brands: any[], reviews: any[] } | null>(null);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const { currentUser, logout, isAdmin } = useAuth();
   const [modalPerfumesOpen, setModalPerfumesOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!searchQuery.trim()) {
+      setSearchResults(null);
+      setIsSearchOpen(false);
+      return;
+    }
+
+    const delayDebounceFn = setTimeout(async () => {
+      try {
+        const query = searchQuery.trim().toLowerCase();
+        
+        // Fetch perfumes with query
+        const perfumesRes = await fetch(`http://localhost:3000/api/perfumes?q=${encodeURIComponent(query)}`);
+        const perfumesData = perfumesRes.ok ? await perfumesRes.json() : [];
+        
+        // Fetch brands
+        const brandsRes = await fetch(`http://localhost:3000/api/brands`);
+        let brandsData = brandsRes.ok ? await brandsRes.json() : [];
+        brandsData = brandsData.filter((b: any) => b.name.toLowerCase().includes(query)).slice(0, 8);
+        
+        // Fetch reviews
+        const reviewsRes = await fetch(`http://localhost:3000/api/reviews`);
+        let reviewsData = reviewsRes.ok ? await reviewsRes.json() : [];
+        reviewsData = reviewsData.filter((r: any) => r.perfumeName && r.perfumeName.toLowerCase().includes(query)).slice(0, 8);
+
+        setSearchResults({
+          perfumes: perfumesData.slice(0, 8),
+          brands: brandsData,
+          reviews: reviewsData
+        });
+        setIsSearchOpen(true);
+      } catch (err) {
+        console.error("Erro na busca:", err);
+      }
+    }, 300);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchQuery]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -246,21 +287,117 @@ export default function DefaultLayout() {
               )}
             </div>
           </div>
-          <form
-            onSubmit={handleSearch}
-            className="flex-1 max-w-4xl mt-4 border border-gray-300 rounded-md"
-          >
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5 " />
-              <Input
-                type="search"
-                placeholder="Buscar perfumes, marcas, perfumistas..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 pr-4 py-2 w-full"
-              />
-            </div>
-          </form>
+          <div className="relative flex-1 max-w-4xl mt-4">
+            <form
+              onSubmit={handleSearch}
+              className="border border-gray-300 rounded-md bg-white"
+            >
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5 " />
+                <Input
+                  type="search"
+                  placeholder="Buscar perfumes, marcas, perfumistas..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onFocus={() => { if (searchQuery.trim()) setIsSearchOpen(true); }}
+                  className="pl-10 pr-4 py-2 w-full border-none focus-visible:ring-0 bg-transparent"
+                />
+              </div>
+            </form>
+
+            {isSearchOpen && searchResults && (
+              <>
+                <div 
+                  className="fixed inset-0 z-40" 
+                  onClick={() => setIsSearchOpen(false)}
+                ></div>
+                
+                <div className="absolute top-full left-0 mt-2 w-full bg-white border border-gray-200 rounded-xl shadow-2xl z-50 p-6 overflow-hidden">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    {/* Coluna 1: Perfumes */}
+                    <div>
+                      <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Perfumes</h3>
+                      {searchResults.perfumes.length > 0 ? (
+                        <div className="space-y-3">
+                          {searchResults.perfumes.map((p: any) => (
+                            <Link 
+                              key={p.id} 
+                              to={`/perfume/${p.id}`}
+                              onClick={() => setIsSearchOpen(false)}
+                              className="flex items-center gap-3 hover:bg-gray-50 p-2 rounded-lg transition-colors group"
+                            >
+                              {p.image && <img src={p.image} alt={p.name} className="w-10 h-10 object-contain mix-blend-multiply" />}
+                              <div>
+                                <p className="text-[10px] uppercase font-bold text-gray-400 mb-0.5">{p.brand?.name}</p>
+                                <p className="text-sm font-bold text-teal-700 group-hover:text-teal-600">{p.name}</p>
+                              </div>
+                            </Link>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="text-sm text-gray-500">Nenhum perfume encontrado</p>
+                      )}
+                    </div>
+
+                    {/* Coluna 2: Marcas */}
+                    <div>
+                      <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Marcas</h3>
+                      {searchResults.brands.length > 0 ? (
+                        <div className="space-y-3">
+                          {searchResults.brands.map((b: any) => (
+                            <Link 
+                              key={b.id} 
+                              to={`/marcas`} 
+                              onClick={() => setIsSearchOpen(false)}
+                              className="flex items-center gap-3 hover:bg-gray-50 p-2 rounded-lg transition-colors group"
+                            >
+                              {b.image ? (
+                                <img src={b.image} alt={b.name} className="w-10 h-10 object-contain mix-blend-multiply" />
+                              ) : (
+                                <div className="w-10 h-10 bg-gray-100 rounded flex items-center justify-center">
+                                  <span className="text-gray-400 text-xs font-bold">{b.name.charAt(0)}</span>
+                                </div>
+                              )}
+                              <p className="text-sm font-bold text-gray-700 group-hover:text-gray-900">{b.name}</p>
+                            </Link>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="text-sm text-gray-500">Nenhuma marca encontrada</p>
+                      )}
+                    </div>
+
+                    {/* Coluna 3: Resenhas */}
+                    <div>
+                      <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Resenhas</h3>
+                      {searchResults.reviews.length > 0 ? (
+                        <div className="space-y-3">
+                          {searchResults.reviews.map((r: any) => (
+                            <Link 
+                              key={r.id} 
+                              to={`/perfume/${r.perfumeId}`}
+                              onClick={() => setIsSearchOpen(false)}
+                              className="flex items-start gap-3 hover:bg-gray-50 p-2 rounded-lg transition-colors group"
+                            >
+                              {r.perfumeImage && <img src={r.perfumeImage} alt={r.perfumeName} className="w-10 h-10 object-contain mix-blend-multiply flex-shrink-0" />}
+                              <div>
+                                <p className="text-xs font-bold text-gray-900">{r.userName}</p>
+                                <p className="text-xs text-teal-600 line-clamp-1 group-hover:text-teal-700 mt-0.5">
+                                  Resenha sobre <span className="font-semibold">{r.perfumeName}</span>
+                                </p>
+                              </div>
+                            </Link>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="text-sm text-gray-500">Nenhuma resenha encontrada</p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
         </div>
       </header>
 
