@@ -17,33 +17,29 @@ export const occasionOptions = [
 
 export const LongevitySlider = ({ value, onChange }: SliderProps) => {
   const labels = ["sem voto", "muito fraca", "fraca", "moderada", "longa", "eterna"];
-  
+
   return (
     <div className="flex flex-col items-center w-full py-4 mt-2">
       <History className="w-8 h-8 text-slate-500 mb-1" />
       <span className="text-xs font-bold text-slate-600 tracking-wider mb-8 uppercase">Longevidade</span>
-      
+
       <div className="relative w-[calc(100%-2rem)] max-w-sm flex items-center h-1.5 bg-gray-200 rounded-full mt-2">
         {/* Fill bar */}
-        <div 
+        <div
           className="absolute h-full bg-teal-500 rounded-full transition-all duration-300"
           style={{ width: `${(value / 5) * 100}%` }}
         ></div>
-        
+
         {/* Points */}
         {[0, 1, 2, 3, 4, 5].map(step => (
-          <div 
-            key={step} 
+          <div
+            key={step}
             className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col items-center cursor-pointer group"
             style={{ left: `${(step / 5) * 100}%` }}
             onClick={() => onChange(step)}
           >
-            {step === 0 ? (
-              <div className={`w-4 h-4 rounded-full bg-white border-2 z-10 transition-colors ${value >= 0 ? "border-teal-500" : "border-gray-300"}`} />
-            ) : (
-              <div className={`w-2.5 h-2.5 rounded-full z-10 transition-colors ${value >= step ? "bg-teal-500" : "bg-teal-200"}`} />
-            )}
-            
+            <div className={`rounded-full z-10 transition-all duration-300 ${value === step ? 'w-4 h-4 bg-teal-500 shadow-sm' : value > step ? 'w-2.5 h-2.5 bg-teal-500' : 'w-2.5 h-2.5 bg-teal-200'}`} />
+
             {/* Label */}
             <span className={`absolute -top-7 whitespace-nowrap text-[10px] transition-opacity ${value === step ? 'opacity-100 font-bold text-teal-700' : 'opacity-0 group-hover:opacity-100 text-gray-400'}`}>
               {labels[step]}
@@ -57,31 +53,27 @@ export const LongevitySlider = ({ value, onChange }: SliderProps) => {
 
 export const SillageSlider = ({ value, onChange }: SliderProps) => {
   const labels = ["sem voto", "íntimo", "suave", "moderado", "forte", "enorme"];
-  
+
   return (
     <div className="flex flex-col items-center w-full py-4 mt-2">
       <UserCircle className="w-8 h-8 text-slate-500 mb-1" />
       <span className="text-xs font-bold text-slate-600 tracking-wider mb-8 uppercase">Rastro</span>
-      
+
       <div className="relative w-[calc(100%-2rem)] max-w-sm flex items-center h-1.5 bg-gray-200 rounded-full mt-2">
-        <div 
+        <div
           className="absolute h-full bg-purple-500 rounded-full transition-all duration-300"
           style={{ width: `${(value / 5) * 100}%` }}
         ></div>
-        
+
         {[0, 1, 2, 3, 4, 5].map(step => (
-          <div 
-            key={step} 
+          <div
+            key={step}
             className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col items-center cursor-pointer group"
             style={{ left: `${(step / 5) * 100}%` }}
             onClick={() => onChange(step)}
           >
-            {step === 0 ? (
-              <div className={`w-4 h-4 rounded-full bg-white border-2 z-10 transition-colors ${value >= 0 ? "border-purple-500" : "border-gray-300"}`} />
-            ) : (
-              <div className={`w-2.5 h-2.5 rounded-full z-10 transition-colors ${value >= step ? "bg-purple-500" : "bg-purple-200"}`} />
-            )}
-            
+            <div className={`rounded-full z-10 transition-all duration-300 ${value === step ? 'w-4 h-4 bg-purple-500 shadow-sm' : value > step ? 'w-2.5 h-2.5 bg-purple-500' : 'w-2.5 h-2.5 bg-purple-200'}`} />
+
             <span className={`absolute -top-7 whitespace-nowrap text-[10px] transition-opacity ${value === step ? 'opacity-100 font-bold text-purple-700' : 'opacity-0 group-hover:opacity-100 text-gray-400'}`}>
               {labels[step]}
             </span>
@@ -98,10 +90,10 @@ export const OccasionSelector = ({ selected, onChange }: { selected: string, onC
       {occasionOptions.map(occ => {
         const Icon = occ.icon;
         const isSingleActive = selected === occ.id;
-        
+
         return (
-          <div 
-            key={occ.id} 
+          <div
+            key={occ.id}
             className="flex flex-col items-center gap-1.5 cursor-pointer group"
             onClick={() => onChange(occ.id)}
           >

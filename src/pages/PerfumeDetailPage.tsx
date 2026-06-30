@@ -518,7 +518,7 @@ export default function PerfumeDetailPage() {
             <CardHeader className="pb-3 border-b border-gray-100 flex flex-row items-center justify-between">
               <CardTitle className="text-lg font-bold text-gray-900 flex items-center gap-2">
                 <User className="w-5 h-5 text-teal-600" />
-                Resenhas dos Usuários ({totalReviews})
+                Resenhas dos Usuários
               </CardTitle>
             </CardHeader>
             <CardContent className="p-6 space-y-6">
