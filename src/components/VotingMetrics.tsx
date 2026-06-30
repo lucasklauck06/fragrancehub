@@ -38,7 +38,7 @@ export const LongevitySlider = ({ value, onChange }: SliderProps) => {
             style={{ left: `${(step / 5) * 100}%` }}
             onClick={() => onChange(step)}
           >
-            <div className={`rounded-full z-10 transition-all duration-300 ${value === step ? 'w-4 h-4 bg-teal-500 shadow-sm' : value > step ? 'w-2.5 h-2.5 bg-teal-500' : 'w-2.5 h-2.5 bg-teal-200'}`} />
+            <div className={`rounded-full z-10 transition-all duration-300 ${(value === step ? 'w-4 h-4 bg-white border-2 z-10 transition-colors border-teal-500' : value > step ? 'w-2.5 h-2.5 bg-teal-500' : 'w-2.5 h-2.5 bg-teal-200')}`} />
 
             {/* Label */}
             <span className={`absolute -top-7 whitespace-nowrap text-[10px] transition-opacity ${value === step ? 'opacity-100 font-bold text-teal-700' : 'opacity-0 group-hover:opacity-100 text-gray-400'}`}>
@@ -72,7 +72,7 @@ export const SillageSlider = ({ value, onChange }: SliderProps) => {
             style={{ left: `${(step / 5) * 100}%` }}
             onClick={() => onChange(step)}
           >
-            <div className={`rounded-full z-10 transition-all duration-300 ${value === step ? 'w-4 h-4 bg-purple-500 shadow-sm' : value > step ? 'w-2.5 h-2.5 bg-purple-500' : 'w-2.5 h-2.5 bg-purple-200'}`} />
+            <div className={`rounded-full z-10 transition-all duration-300 ${value === step ? 'w-4 h-4 bg-white border-2 z-10 transition-colors border-purple-500' : value > step ? 'w-2.5 h-2.5 bg-purple-500' : 'w-2.5 h-2.5 bg-purple-200'}`} />
 
             <span className={`absolute -top-7 whitespace-nowrap text-[10px] transition-opacity ${value === step ? 'opacity-100 font-bold text-purple-700' : 'opacity-0 group-hover:opacity-100 text-gray-400'}`}>
               {labels[step]}
