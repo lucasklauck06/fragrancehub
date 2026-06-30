@@ -51,14 +51,14 @@ export default function BuscaMarcasPage() {
 
   return (
     <>
-      <main className="relative flex-1 w-full max-w-7xl mx-auto px-4 py-8 bg-white/40 backdrop-blur-sm rounded-lg shadow-sm">
+      <main className="relative flex-1 w-full max-w-7xl mx-auto px-4 py-8 bg-background/40 backdrop-blur-sm rounded-lg shadow-sm">
         <div className="flex gap-6">
           <div className="flex-3">
             <div className="flex flex-wrap gap-1 mb-6 justify-center">
               {alfabet.map((letter) => (
                 <Button
                   key={letter}
-                  className={`w-10 h-10 p-0 text-lg bg-transparent hover:bg-transparent font-bold ${selectedLetter === letter ? "text-teal-400" : "text-gray-800 hover:text-teal-400"}`}
+                  className={`w-10 h-10 p-0 text-lg bg-transparent hover:bg-transparent font-bold ${selectedLetter === letter ? "text-teal-400" : "text-foreground hover:text-teal-400"}`}
                   onClick={() => setSelectedLetter(selectedLetter === letter ? "" : letter)}
                 >
                   {letter}
@@ -67,7 +67,7 @@ export default function BuscaMarcasPage() {
             </div>
             <div className="flex justify-between items-center gap-4 mb-6">
               <div className="w-full flex items-center relative">
-                <Search className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <Search className="w-5 h-5 text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <Input
                   placeholder="Buscar marcas..."
                   className="pl-10"
@@ -100,7 +100,7 @@ export default function BuscaMarcasPage() {
                 filteredBrandsByLetterAndCountryAndQuery.map((brand) => (
                   <Card
                     key={brand.id}
-                    className="border border-gray-200 hover:border-teal-400 transition-all duration-300 p-2 rounded-lg cursor-pointer"
+                    className="border border-border hover:border-teal-400 transition-all duration-300 p-2 rounded-lg cursor-pointer"
                     onClick={() => navigate(`/marca/${brand.id}`)}
                   >
                     <div className="flex items-center gap-4">
@@ -110,8 +110,8 @@ export default function BuscaMarcasPage() {
                         className="w-16 h-16 object-cover rounded-lg"
                       />
                       <div>
-                        <p className="font-bold text-gray-800">{brand.name}</p>
-                        <p className="text-sm text-gray-600">{brand.country}</p>
+                        <p className="font-bold text-foreground">{brand.name}</p>
+                        <p className="text-sm text-muted-foreground">{brand.country}</p>
                       </div>
                     </div>
                   </Card>

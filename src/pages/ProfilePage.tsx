@@ -118,7 +118,7 @@ export default function ProfilePage() {
     if (!value) return null;
     return (
       <div className="flex items-center gap-1.5">
-        <span className="text-xs text-gray-500">{label}:</span>
+        <span className="text-xs text-muted-foreground">{label}:</span>
         <div className="flex gap-0.5">
           {[1, 2, 3, 4, 5].map((v) => (
             <Star
@@ -142,9 +142,9 @@ export default function ProfilePage() {
             </span>
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">{currentUser.name}</h1>
+            <h1 className="text-2xl font-bold text-foreground">{currentUser.name}</h1>
             <div className="flex items-center gap-1.5 mt-0.5">
-              <span className="text-sm text-gray-500">{currentUser.email}</span>
+              <span className="text-sm text-muted-foreground">{currentUser.email}</span>
               {currentUser.role === "ADMIN" && (
                 <span className="flex items-center gap-1 text-xs font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded-full border border-purple-100">
                   <ShieldCheck className="w-3 h-3" />
@@ -159,10 +159,10 @@ export default function ProfilePage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* ── Formulário de Edição ────────────────────────────── */}
         <div className="space-y-4">
-          <Card className="border border-gray-100 bg-white/95 shadow-sm rounded-xl">
-            <CardHeader className="pb-3 border-b border-gray-100">
-              <CardTitle className="text-base font-bold text-gray-900 flex items-center gap-2">
-                <User className="w-4 h-4 text-teal-600" />
+          <Card className="border border-border bg-background/95 shadow-sm rounded-xl">
+            <CardHeader className="pb-3 border-b border-border">
+              <CardTitle className="text-base font-bold text-foreground flex items-center gap-2">
+                <User className="w-4 h-4 text-primary" />
                 Dados Cadastrais
               </CardTitle>
             </CardHeader>
@@ -170,8 +170,8 @@ export default function ProfilePage() {
               <form onSubmit={handleSaveProfile} className="space-y-4" id="profile-form">
                 {/* Nome */}
                 <div className="space-y-1.5">
-                  <Label htmlFor="profile-name" className="text-sm font-semibold text-gray-700 flex items-center gap-1.5">
-                    <User className="w-3.5 h-3.5 text-gray-400" />
+                  <Label htmlFor="profile-name" className="text-sm font-semibold text-muted-foreground flex items-center gap-1.5">
+                    <User className="w-3.5 h-3.5 text-muted-foreground" />
                     Nome Completo
                   </Label>
                   <Input
@@ -185,8 +185,8 @@ export default function ProfilePage() {
 
                 {/* Email */}
                 <div className="space-y-1.5">
-                  <Label htmlFor="profile-email" className="text-sm font-semibold text-gray-700 flex items-center gap-1.5">
-                    <Mail className="w-3.5 h-3.5 text-gray-400" />
+                  <Label htmlFor="profile-email" className="text-sm font-semibold text-muted-foreground flex items-center gap-1.5">
+                    <Mail className="w-3.5 h-3.5 text-muted-foreground" />
                     E-mail
                   </Label>
                   <Input
@@ -200,8 +200,8 @@ export default function ProfilePage() {
                 </div>
 
                 {/* Divisor senha */}
-                <div className="border-t border-gray-100 pt-4">
-                  <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                <div className="border-t border-border pt-4">
+                  <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3 flex items-center gap-1.5">
                     <Lock className="w-3.5 h-3.5" />
                     Alterar Senha (opcional)
                   </p>
@@ -209,7 +209,7 @@ export default function ProfilePage() {
                   <div className="space-y-3">
                     {/* Senha atual */}
                     <div className="space-y-1.5">
-                      <Label htmlFor="current-password" className="text-sm font-semibold text-gray-700">
+                      <Label htmlFor="current-password" className="text-sm font-semibold text-muted-foreground">
                         Senha Atual
                       </Label>
                       <div className="relative">
@@ -223,7 +223,7 @@ export default function ProfilePage() {
                         <button
                           type="button"
                           onClick={() => setShowCurrentPwd(!showCurrentPwd)}
-                          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-muted-foreground"
                         >
                           {showCurrentPwd ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                         </button>
@@ -232,7 +232,7 @@ export default function ProfilePage() {
 
                     {/* Nova senha */}
                     <div className="space-y-1.5">
-                      <Label htmlFor="new-password" className="text-sm font-semibold text-gray-700">
+                      <Label htmlFor="new-password" className="text-sm font-semibold text-muted-foreground">
                         Nova Senha
                       </Label>
                       <div className="relative">
@@ -246,7 +246,7 @@ export default function ProfilePage() {
                         <button
                           type="button"
                           onClick={() => setShowNewPwd(!showNewPwd)}
-                          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-muted-foreground"
                         >
                           {showNewPwd ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                         </button>
@@ -255,7 +255,7 @@ export default function ProfilePage() {
 
                     {/* Confirmar nova senha */}
                     <div className="space-y-1.5">
-                      <Label htmlFor="confirm-new-password" className="text-sm font-semibold text-gray-700">
+                      <Label htmlFor="confirm-new-password" className="text-sm font-semibold text-muted-foreground">
                         Confirmar Nova Senha
                       </Label>
                       <Input
@@ -271,7 +271,7 @@ export default function ProfilePage() {
 
                 <Button
                   type="submit"
-                  className="w-full bg-teal-600 hover:bg-teal-700 gap-2 mt-2"
+                  className="w-full bg-primary hover:bg-teal-700 gap-2 mt-2"
                   disabled={saving}
                   id="save-profile-btn"
                 >
@@ -285,10 +285,10 @@ export default function ProfilePage() {
 
         {/* ── Resenhas Recentes ──────────────────────────────── */}
         <div>
-          <Card className="border border-gray-100 bg-white/95 shadow-sm rounded-xl">
-            <CardHeader className="pb-3 border-b border-gray-100">
-              <CardTitle className="text-base font-bold text-gray-900 flex items-center gap-2">
-                <Clock className="w-4 h-4 text-teal-600" />
+          <Card className="border border-border bg-background/95 shadow-sm rounded-xl">
+            <CardHeader className="pb-3 border-b border-border">
+              <CardTitle className="text-base font-bold text-foreground flex items-center gap-2">
+                <Clock className="w-4 h-4 text-primary" />
                 Minhas Resenhas Recentes
               </CardTitle>
             </CardHeader>
@@ -300,10 +300,10 @@ export default function ProfilePage() {
               ) : myReviews.length === 0 ? (
                 <div className="text-center py-8">
                   <Star className="w-10 h-10 text-gray-200 mx-auto mb-3" />
-                  <p className="text-sm text-gray-400">Você ainda não publicou resenhas.</p>
+                  <p className="text-sm text-muted-foreground">Você ainda não publicou resenhas.</p>
                   <Link
                     to="/busca"
-                    className="text-sm text-teal-600 font-semibold hover:underline mt-1 block"
+                    className="text-sm text-primary font-semibold hover:underline mt-1 block"
                   >
                     Explorar perfumes →
                   </Link>
@@ -314,15 +314,15 @@ export default function ProfilePage() {
                     <Link
                       key={review.id}
                       to={`/resenha/${review.id}`}
-                      className="flex gap-3 p-3 rounded-lg hover:bg-gray-50 border border-transparent hover:border-gray-100 transition-all duration-200 group"
+                      className="flex gap-3 p-3 rounded-lg hover:bg-muted/50 border border-transparent hover:border-border transition-all duration-200 group"
                     >
                       <img
                         src={review.perfume.image}
                         alt={review.perfume.name}
-                        className="w-12 h-16 object-cover rounded bg-gray-50 shrink-0"
+                        className="w-12 h-16 object-cover rounded bg-muted/50 shrink-0"
                       />
                       <div className="flex-1 min-w-0">
-                        <p className="text-xs font-bold text-gray-900 truncate">{review.perfume.name}</p>
+                        <p className="text-xs font-bold text-foreground truncate">{review.perfume.name}</p>
                         <div className="flex gap-0.5 mt-0.5">
                           {[1, 2, 3, 4, 5].map((v) => (
                             <Star
@@ -356,8 +356,8 @@ export default function ProfilePage() {
                             })()
                           )}
                         </div>
-                        <p className="text-xs text-gray-500 mt-1 line-clamp-2">{review.comment}</p>
-                        <span className="text-[10px] text-gray-400 mt-0.5 block">
+                        <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{review.comment}</p>
+                        <span className="text-[10px] text-muted-foreground mt-0.5 block">
                           {new Date(review.date).toLocaleDateString("pt-BR", {
                             day: "numeric",
                             month: "short",
@@ -365,7 +365,7 @@ export default function ProfilePage() {
                           })}
                         </span>
                       </div>
-                      <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-teal-500 transition-colors shrink-0 self-center" />
+                      <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-primary transition-colors shrink-0 self-center" />
                     </Link>
                   ))}
                 </div>

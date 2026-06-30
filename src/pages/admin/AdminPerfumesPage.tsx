@@ -160,25 +160,25 @@ export default function AdminPerfumesPage() {
           {/* Search Field */}
           <div className="mb-4">
             <div className="relative w-full">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <input
                 type="text"
                 placeholder="Pesquisar por nome do perfume..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+                className="w-full pl-10 pr-4 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
               />
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-sm font-medium"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-muted-foreground text-sm font-medium"
                 >
                   ✕
                 </button>
               )}
             </div>
             {searchQuery && (
-              <p className="text-xs text-gray-500 mt-1.5">
+              <p className="text-xs text-muted-foreground mt-1.5">
                 {filteredAndSortedPerfumes.length} {filteredAndSortedPerfumes.length === 1 ? 'resultado encontrado' : 'resultados encontrados'}
               </p>
             )}
@@ -186,34 +186,34 @@ export default function AdminPerfumesPage() {
 
           <div className="overflow-x-auto">
             <table className="w-full text-sm text-left">
-              <thead className="text-xs text-gray-700 uppercase bg-gray-50 border-b">
+              <thead className="text-xs text-muted-foreground uppercase bg-muted/50 border-b">
                 <tr>
                   <th className="px-6 py-4 font-medium select-none transition-colors">
-                    <span className="inline-flex cursor-pointer items-center hover:text-teal-500 transition-all duration-200"
+                    <span className="inline-flex cursor-pointer items-center hover:text-primary transition-all duration-200"
                       onClick={() => handleSort('id')}>
                       ID {getSortIcon('id')}
                     </span>
                   </th>
                   <th className="px-6 py-4 font-medium select-none transition-colors">
-                    <span className="inline-flex cursor-pointer items-center hover:text-teal-500 transition-all duration-200"
+                    <span className="inline-flex cursor-pointer items-center hover:text-primary transition-all duration-200"
                       onClick={() => handleSort('name')}>
                       Nome {getSortIcon('name')}
                     </span>
                   </th>
                   <th className="px-6 py-4 font-medium select-none transition-colors">
-                    <span className="inline-flex cursor-pointer items-center hover:text-teal-500 transition-all duration-200"
+                    <span className="inline-flex cursor-pointer items-center hover:text-primary transition-all duration-200"
                       onClick={() => handleSort('brand')}>
                       Marca {getSortIcon('brand')}
                     </span>
                   </th>
                   <th className="px-6 py-4 font-medium select-none transition-colors">
-                    <span className="inline-flex cursor-pointer items-center hover:text-teal-500 transition-all duration-200"
+                    <span className="inline-flex cursor-pointer items-center hover:text-primary transition-all duration-200"
                       onClick={() => handleSort('perfumist')}>
                       Perfumista {getSortIcon('perfumist')}
                     </span>
                   </th>
                   <th className="px-6 py-4 font-medium select-none transition-colors">
-                    <span className="inline-flex cursor-pointer items-center hover:text-teal-500 transition-all duration-200"
+                    <span className="inline-flex cursor-pointer items-center hover:text-primary transition-all duration-200"
                       onClick={() => handleSort('price')}>
                       Preço {getSortIcon('price')}
                     </span>
@@ -224,13 +224,13 @@ export default function AdminPerfumesPage() {
               <tbody className="divide-y divide-gray-100">
                 {perfumes.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="py-8 text-center text-gray-500">
+                    <td colSpan={6} className="py-8 text-center text-muted-foreground">
                       Carregando perfumes...
                     </td>
                   </tr>
                 ) : filteredAndSortedPerfumes.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="py-8 text-center text-gray-500">
+                    <td colSpan={6} className="py-8 text-center text-muted-foreground">
                       {searchQuery
                         ? `Nenhum perfume encontrado para "${searchQuery}"`
                         : "Nenhum perfume cadastrado. Adicione um novo para começar!"}
@@ -238,21 +238,21 @@ export default function AdminPerfumesPage() {
                   </tr>
                 ) : (
                   filteredAndSortedPerfumes.map((perfume) => (
-                    <tr key={perfume.id} className="hover:bg-gray-50/50 transition-colors">
-                      <td className="px-6 py-4 text-gray-600">{perfume.id}</td>
-                      <td className="px-6 py-4 font-medium text-gray-900 flex items-center gap-3">
+                    <tr key={perfume.id} className="hover:bg-muted/50/50 transition-colors">
+                      <td className="px-6 py-4 text-muted-foreground">{perfume.id}</td>
+                      <td className="px-6 py-4 font-medium text-foreground flex items-center gap-3">
                         {perfume.image ? (
-                          <img src={perfume.image} alt={perfume.name} className="w-8 h-8 rounded-full object-cover border border-gray-200" />
+                          <img src={perfume.image} alt={perfume.name} className="w-8 h-8 rounded-full object-cover border border-border" />
                         ) : (
-                          <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 text-xs font-bold border border-gray-300">
+                          <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center text-muted-foreground text-xs font-bold border border-border">
                             {perfume.name.charAt(0).toUpperCase()}
                           </div>
                         )}
                         {perfume.name}
                       </td>
-                      <td className="px-6 py-4 text-gray-500">{perfume.brand}</td>
-                      <td className="px-6 py-4 text-gray-500">{perfume.perfumist || "Não informado"}</td>
-                      <td className="px-6 py-4 text-gray-500">R$ {perfume.price.toFixed(2)}</td>
+                      <td className="px-6 py-4 text-muted-foreground">{perfume.brand}</td>
+                      <td className="px-6 py-4 text-muted-foreground">{perfume.perfumist || "Não informado"}</td>
+                      <td className="px-6 py-4 text-muted-foreground">R$ {perfume.price.toFixed(2)}</td>
                       <td className="px-6 py-4 text-right">
                         <div className="flex justify-end gap-2">
                           <Button

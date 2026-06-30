@@ -95,7 +95,7 @@ export default function AdminUsersPage() {
           <div className="flex items-center justify-between">
             <div>
               <CardTitle>Usuários Registrados</CardTitle>
-              <p className="text-sm text-gray-500 mt-1">
+              <p className="text-sm text-muted-foreground mt-1">
                 Visualize todos os membros cadastrados na plataforma.
               </p>
             </div>
@@ -112,25 +112,25 @@ export default function AdminUsersPage() {
           {/* Search Field */}
           <div className="mb-6">
             <div className="relative w-full">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <input
                 type="text"
                 placeholder="Pesquisar por nome, email ou ID..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                className="w-full pl-10 pr-4 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
               />
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-sm font-medium"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-muted-foreground text-sm font-medium"
                 >
                   ✕
                 </button>
               )}
             </div>
             {searchQuery && (
-              <p className="text-xs text-gray-500 mt-1.5">
+              <p className="text-xs text-muted-foreground mt-1.5">
                 {filteredUsers.length} {filteredUsers.length === 1 ? 'resultado encontrado' : 'resultados encontrados'}
               </p>
             )}
@@ -138,7 +138,7 @@ export default function AdminUsersPage() {
 
           <div className="overflow-x-auto">
             <table className="w-full text-sm text-left">
-              <thead className="text-xs text-gray-700 uppercase bg-gray-50 border-b">
+              <thead className="text-xs text-muted-foreground uppercase bg-muted/50 border-b">
                 <tr>
                   <th className="px-6 py-4 font-medium">Usuário</th>
                   <th className="px-6 py-4 font-medium">E-mail</th>
@@ -149,13 +149,13 @@ export default function AdminUsersPage() {
               <tbody className="divide-y divide-gray-100">
                 {isLoading ? (
                   <tr>
-                    <td colSpan={4} className="py-8 text-center text-gray-500">
+                    <td colSpan={4} className="py-8 text-center text-muted-foreground">
                       Carregando usuários...
                     </td>
                   </tr>
                 ) : filteredUsers.length === 0 ? (
                   <tr>
-                    <td colSpan={4} className="py-8 text-center text-gray-500">
+                    <td colSpan={4} className="py-8 text-center text-muted-foreground">
                       {searchQuery
                         ? `Nenhum usuário encontrado para "${searchQuery}"`
                         : "Nenhum usuário cadastrado"}
@@ -165,7 +165,7 @@ export default function AdminUsersPage() {
                   filteredUsers.map((user) => (
                     <tr
                       key={user.id}
-                      className="hover:bg-gray-50/50 transition-colors"
+                      className="hover:bg-muted/50/50 transition-colors"
                     >
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
@@ -175,18 +175,18 @@ export default function AdminUsersPage() {
                             </span>
                           </div>
                           <div>
-                            <p className="font-medium text-gray-900">{user.name}</p>
-                            <p className="text-xs text-gray-400 font-mono">ID: {user.id.substring(0, 8)}...</p>
+                            <p className="font-medium text-foreground">{user.name}</p>
+                            <p className="text-xs text-muted-foreground font-mono">ID: {user.id.substring(0, 8)}...</p>
                           </div>
                         </div>
                       </td>
-                      <td className="px-6 py-4 text-gray-600">{user.email}</td>
-                      <td className="px-6 py-4 text-gray-500">{formatDate(user.createdAt)}</td>
+                      <td className="px-6 py-4 text-muted-foreground">{user.email}</td>
+                      <td className="px-6 py-4 text-muted-foreground">{formatDate(user.createdAt)}</td>
                       <td className="px-6 py-4">
                         <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${
                           user.role === 'ADMIN' 
                             ? 'bg-purple-100 text-purple-700' 
-                            : 'bg-gray-100 text-gray-700'
+                            : 'bg-muted text-muted-foreground'
                         }`}>
                           {user.role === 'ADMIN' ? <Shield className="w-3 h-3" /> : <User className="w-3 h-3" />}
                           {user.role}

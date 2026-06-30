@@ -136,7 +136,7 @@ export default function AdminBrandsPage() {
           <div className="flex items-center justify-between">
             <div>
               <CardTitle>Marcas</CardTitle>
-              <p className="text-sm text-gray-500 mt-1">
+              <p className="text-sm text-muted-foreground mt-1">
                 Gerencie as casas de perfumaria do catálogo.
               </p>
             </div>
@@ -152,25 +152,25 @@ export default function AdminBrandsPage() {
           {/* Search Field */}
           <div className="mb-4">
             <div className="relative w-full">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <input
                 type="text"
                 placeholder="Pesquisar por nome da marca..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+                className="w-full pl-10 pr-4 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
               />
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-sm font-medium"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-muted-foreground text-sm font-medium"
                 >
                   ✕
                 </button>
               )}
             </div>
             {searchQuery && (
-              <p className="text-xs text-gray-500 mt-1.5">
+              <p className="text-xs text-muted-foreground mt-1.5">
                 {filteredAndSortedBrands.length} {filteredAndSortedBrands.length === 1 ? 'resultado encontrado' : 'resultados encontrados'}
               </p>
             )}
@@ -178,11 +178,11 @@ export default function AdminBrandsPage() {
 
           <div className="overflow-x-auto">
             <table className="w-full text-sm text-left">
-              <thead className="text-xs text-gray-700 uppercase bg-gray-50 border-b">
+              <thead className="text-xs text-muted-foreground uppercase bg-muted/50 border-b">
                 <tr>
                   <th className="px-6 py-4 font-medium select-none transition-colors">
                     <span
-                      className="inline-flex cursor-pointer items-center hover:text-teal-500 transition-all duration-200"
+                      className="inline-flex cursor-pointer items-center hover:text-primary transition-all duration-200"
                       onClick={() => handleSort('name')}
                     >
                       Marca {getSortIcon('name')}
@@ -190,7 +190,7 @@ export default function AdminBrandsPage() {
                   </th>
                   <th className="px-6 py-4 font-medium select-none transition-colors">
                     <span
-                      className="inline-flex cursor-pointer items-center hover:text-teal-500 transition-all duration-200"
+                      className="inline-flex cursor-pointer items-center hover:text-primary transition-all duration-200"
                       onClick={() => handleSort('country')}
                     >
                       País {getSortIcon('country')}
@@ -202,7 +202,7 @@ export default function AdminBrandsPage() {
               <tbody className="divide-y divide-gray-100">
                 {filteredAndSortedBrands.length === 0 ? (
                   <tr>
-                    <td colSpan={3} className="py-8 text-center text-gray-500">
+                    <td colSpan={3} className="py-8 text-center text-muted-foreground">
                       {searchQuery
                         ? `Nenhuma marca encontrada para "${searchQuery}"`
                         : "Nenhuma marca cadastrada"}
@@ -212,12 +212,12 @@ export default function AdminBrandsPage() {
                   filteredAndSortedBrands.map((brand) => (
                     <tr
                       key={brand.id}
-                      className="hover:bg-gray-50/50 transition-colors"
+                      className="hover:bg-muted/50/50 transition-colors"
                     >
-                      <td className="px-6 py-4 font-medium text-gray-900">
+                      <td className="px-6 py-4 font-medium text-foreground">
                         {brand.name}
                       </td>
-                      <td className="px-6 py-4 text-gray-500">{brand.country}</td>
+                      <td className="px-6 py-4 text-muted-foreground">{brand.country}</td>
                       <td className="px-6 py-4 text-right">
                         <div className="flex justify-end gap-2">
                           <Button
@@ -254,7 +254,7 @@ export default function AdminBrandsPage() {
             <AlertDialogDescription>
               Esta ação não pode ser desfeita. Isso excluirá permanentemente a
               marca
-              <span className="font-semibold text-gray-900">
+              <span className="font-semibold text-foreground">
                 {" "}
                 {brandToDelete?.name}{" "}
               </span>

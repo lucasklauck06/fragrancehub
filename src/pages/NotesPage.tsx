@@ -50,7 +50,7 @@ const NoteCard = ({ note, family }: { note: string, family: any }) => {
       ref={cardRef}
       to={`/nota/${encodeURIComponent(note)}`} 
       state={{ noteName: note, groupName: family.name }}
-      className="group flex flex-col items-center p-4 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all hover:border-teal-300 cursor-pointer text-center h-full"
+      className="group flex flex-col items-center p-4 bg-background rounded-2xl border border-border shadow-sm hover:shadow-md transition-all hover:border-primary/50 cursor-pointer text-center h-full"
     >
       <div 
         className="w-20 h-20 rounded-full mb-3 flex items-center justify-center text-3xl shadow-inner group-hover:scale-110 transition-transform duration-300 overflow-hidden relative"
@@ -58,7 +58,7 @@ const NoteCard = ({ note, family }: { note: string, family: any }) => {
       >
         {loading && isVisible ? (
           <div className="absolute inset-0 flex items-center justify-center bg-black/5">
-            <div className="w-5 h-5 border-2 border-teal-500/30 border-t-teal-500 rounded-full animate-spin"></div>
+            <div className="w-5 h-5 border-2 border-primary/30 border-t-teal-500 rounded-full animate-spin"></div>
           </div>
         ) : imageUrl ? (
           <img src={imageUrl} alt={note} className="w-full h-full object-cover" />
@@ -66,7 +66,7 @@ const NoteCard = ({ note, family }: { note: string, family: any }) => {
           family.icon
         )}
       </div>
-      <span className="text-sm font-semibold text-gray-800 leading-tight group-hover:text-teal-600 transition-colors">
+      <span className="text-sm font-semibold text-foreground leading-tight group-hover:text-primary transition-colors">
         {note}
       </span>
     </Link>
@@ -132,19 +132,19 @@ export default function NotesPage() {
     }, [searchQuery, noteFamilies]);
 
     return (
-        <main className="relative flex-1 w-full max-w-7xl mx-auto px-4 py-8 bg-white/40 backdrop-blur-sm rounded-lg shadow-sm">
+        <main className="relative flex-1 w-full max-w-7xl mx-auto px-4 py-8 bg-background/40 backdrop-blur-sm rounded-lg shadow-sm">
             <div className="flex flex-col lg:flex-row gap-6">
                 {/* Main Content Area */}
                 <div className="flex-1 min-w-0">
                     <div className="flex flex-col mb-8">
-                        <h1 className="text-3xl font-bold text-gray-900 mb-6 flex justify-center">Notas Olfativas</h1>
+                        <h1 className="text-3xl font-bold text-foreground mb-6 flex justify-center">Notas Olfativas</h1>
                         
                         <div className="relative max-w-md mx-auto w-full">
-                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
+                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground w-5 h-5" />
                             <Input
                                 type="search"
                                 placeholder="Buscar notas ou grupos (ex: Rosa, Cítricos)..."
-                                className="pl-12 pr-4 py-3 h-12 w-full text-base rounded-full shadow-sm border-gray-200 focus:border-teal-500 focus:ring-teal-500 bg-white transition-shadow focus:shadow-md"
+                                className="pl-12 pr-4 py-3 h-12 w-full text-base rounded-full shadow-sm border-border focus:border-primary focus:ring-primary bg-background transition-shadow focus:shadow-md"
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
@@ -153,7 +153,7 @@ export default function NotesPage() {
 
                     {/* Family Navigation Anchors (Only show if no search) */}
                     {!searchQuery && (
-                        <div className="mb-10 pb-4 border-b border-gray-200 overflow-x-auto hide-scrollbar">
+                        <div className="mb-10 pb-4 border-b border-border overflow-x-auto hide-scrollbar">
                             <div className="flex gap-2 min-w-max px-2">
                                 {noteFamilies.map(family => (
                                     <a 
@@ -176,12 +176,12 @@ export default function NotesPage() {
                             filteredFamilies.map(family => (
                                 <section key={family.id} id={`family-${family.id}`} className="scroll-mt-28">
                                     <div className="flex items-center gap-3 mb-1">
-                                        <h2 className="text-2xl font-bold text-gray-900 uppercase tracking-tight flex items-center gap-2">
+                                        <h2 className="text-2xl font-bold text-foreground uppercase tracking-tight flex items-center gap-2">
                                             <span className="text-3xl" style={{ color: family.color }}>{family.icon}</span>
                                             {family.name}
                                         </h2>
                                     </div>
-                                    <p className="text-gray-500 mb-6 ml-11">{family.description}</p>
+                                    <p className="text-muted-foreground mb-6 ml-11">{family.description}</p>
                                     
                                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
                                         {family.notes.map(note => (
@@ -191,10 +191,10 @@ export default function NotesPage() {
                                 </section>
                             ))
                         ) : (
-                            <div className="text-center py-24 bg-white/60 rounded-3xl border border-dashed border-gray-300">
+                            <div className="text-center py-24 bg-background/60 rounded-3xl border border-dashed border-border">
                                 <Search className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                                <h3 className="text-xl font-semibold text-gray-900 mb-1">Nenhuma nota encontrada</h3>
-                                <p className="text-gray-500">Tente buscar por um termo diferente.</p>
+                                <h3 className="text-xl font-semibold text-foreground mb-1">Nenhuma nota encontrada</h3>
+                                <p className="text-muted-foreground">Tente buscar por um termo diferente.</p>
                             </div>
                         )}
                     </div>

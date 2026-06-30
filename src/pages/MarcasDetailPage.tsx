@@ -39,10 +39,10 @@ export default function BrandDetailPage() {
 
   return (
     <>
-      <main className="relative bg-white shadow-md rounded-lg w-full max-w-7xl mx-auto px-4 py-8">
+      <main className="relative bg-background shadow-md rounded-lg w-full max-w-7xl mx-auto px-4 py-8">
         <div className="flex gap-2">
           <div className="flex-2">
-            <h1 className="text-3xl font-bold justify-center flex text-gray-800">
+            <h1 className="text-3xl font-bold justify-center flex text-foreground">
               {brand?.name}
             </h1>
             <div className="flex gap-4 mt-4">
@@ -53,23 +53,23 @@ export default function BrandDetailPage() {
               />
               <p>{brand?.description}</p>
             </div>
-            <div className="flex gap-10 mt-4 border-b border-gray-300">
+            <div className="flex gap-10 mt-4 border-b border-border">
               <p
-                className={`flex cursor-pointer gap-2 items-center border-b p-2 ${optionSelected === "Novo" ? "border-teal-600 bg-transparent hover:bg-transparent text-teal-600" : "border-transparent bg-transparent hover:bg-transparent text-gray-500"}`}
+                className={`flex cursor-pointer gap-2 items-center border-b p-2 ${optionSelected === "Novo" ? "border-teal-600 bg-transparent hover:bg-transparent text-primary" : "border-transparent bg-transparent hover:bg-transparent text-muted-foreground"}`}
                 onClick={() => setOptionSelected("Novo")}
               >
                 <Star className="w-5 h-5" />
                 Novo
               </p>
               <p
-                className={`flex cursor-pointer gap-2 items-center border-b p-2 ${optionSelected === "Masculino" ? "border-teal-600 bg-transparent hover:bg-transparent text-teal-600" : "border-transparent bg-transparent hover:bg-transparent text-gray-500"}`}
+                className={`flex cursor-pointer gap-2 items-center border-b p-2 ${optionSelected === "Masculino" ? "border-teal-600 bg-transparent hover:bg-transparent text-primary" : "border-transparent bg-transparent hover:bg-transparent text-muted-foreground"}`}
                 onClick={() => setOptionSelected("Masculino")}
               >
                 <Mars className="w-5 h-5" />
                 Masculino
               </p>
               <p
-                className={`flex cursor-pointer gap-2 items-center border-b p-2 ${optionSelected === "Feminino" ? "border-teal-600 bg-transparent hover:bg-transparent text-teal-600" : "border-transparent bg-transparent hover:bg-transparent text-gray-500"}`}
+                className={`flex cursor-pointer gap-2 items-center border-b p-2 ${optionSelected === "Feminino" ? "border-teal-600 bg-transparent hover:bg-transparent text-primary" : "border-transparent bg-transparent hover:bg-transparent text-muted-foreground"}`}
                 onClick={() => setOptionSelected("Feminino")}
               >
                 <Venus className="w-5 h-5" />
@@ -82,16 +82,16 @@ export default function BrandDetailPage() {
                 placeholder="pesquise aqui seu perfume"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full rounded-md border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-teal-600 focus:border-transparent"
+                className="w-full rounded-md border border-border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-teal-600 focus:border-transparent"
               />
               <Button
-                className={`bg-transparent border border-white text-black hover:border-teal-600 hover:bg-transparent transition-colors duration-200 ${showPerfumesList === "Kanban" ? "text-teal-600" : ""}`}
+                className={`bg-transparent border border-white text-black hover:border-teal-600 hover:bg-transparent transition-colors duration-200 ${showPerfumesList === "Kanban" ? "text-primary" : ""}`}
                 onClick={() => setShowPerfumesList("Kanban")}
               >
                 <LayoutGrid className="w-5 h-5" />
               </Button>
               <Button
-                className={`bg-transparent border border-white text-black hover:border-teal-600 hover:bg-transparent transition-colors duration-200 ${showPerfumesList === "Lista" ? "text-teal-600" : ""}`}
+                className={`bg-transparent border border-white text-black hover:border-teal-600 hover:bg-transparent transition-colors duration-200 ${showPerfumesList === "Lista" ? "text-primary" : ""}`}
                 onClick={() => setShowPerfumesList("Lista")}
               >
                 <List className="w-5 h-5" />
@@ -104,7 +104,7 @@ export default function BrandDetailPage() {
                   perfumesFiltrados.map((perfume) => (
                     <div
                       key={perfume.id}
-                      className={`flex-col gap-4 mt-4 items-center justify-center p-4 border border-gray-200 rounded-lg transition-all duration-300 cursor-pointer bg-gradient-to-b from-white ${
+                      className={`flex-col gap-4 mt-4 items-center justify-center p-4 border border-border rounded-lg transition-all duration-300 cursor-pointer bg-gradient-to-b from-white ${
                         perfume.gender === "Masculino"
                           ? "to-blue-200 hover:border-blue-400 hover:shadow-lg hover:shadow-blue-200"
                           : perfume.gender === "Feminino"
@@ -119,17 +119,17 @@ export default function BrandDetailPage() {
                         className="w-50 h-50 rounded-md object-cover mx-auto"
                       />
                       <div className="flex flex-col items-center mt-2 text-center">
-                        <h3 className="font-bold text-sm text-gray-800 text-center">
+                        <h3 className="font-bold text-sm text-foreground text-center">
                           {perfume.name}
                         </h3>
-                        <p className="text-sm text-gray-600 line-clamp-2 text-center border-b border-black w-full">
+                        <p className="text-sm text-muted-foreground line-clamp-2 text-center border-b border-black w-full">
                           {perfume.brand}
                         </p>
                       </div>
                       <div className="flex justify-between items-center mt-2">
                         <p className="text-sm text-black">{perfume.year}</p>
                         <div
-                          className={`mt-2 px-2 py-1 rounded-full text-xs ${perfume.gender === "Masculino" ? "text-blue-700 bg-gradient-to-r from-blue-300 to-transparent" : perfume.gender === "Feminino" ? "text-pink-700 bg-gradient-to-r from-pink-300 to-transparent" : "text-teal-700 bg-gradient-to-r from-teal-300 to-transparent"}`}
+                          className={`mt-2 px-2 py-1 rounded-full text-xs ${perfume.gender === "Masculino" ? "text-blue-700 bg-gradient-to-r from-blue-300 to-transparent" : perfume.gender === "Feminino" ? "text-pink-700 bg-gradient-to-r from-pink-300 to-transparent" : "text-primary bg-gradient-to-r from-teal-300 to-transparent"}`}
                         >
                           <p className="font-bold">{perfume.gender}</p>
                         </div>
@@ -137,18 +137,18 @@ export default function BrandDetailPage() {
                     </div>
                   ))
                 ) : (
-                  <div className="col-span-full py-10 text-center text-gray-500">
+                  <div className="col-span-full py-10 text-center text-muted-foreground">
                     Nenhum perfume encontrado para esta categoria ou pesquisa.
                   </div>
                 )}
               </div>
             ) : (
-              <div className="flex flex-col gap-4 p-2 mt-4 bg-white">
+              <div className="flex flex-col gap-4 p-2 mt-4 bg-background">
                 {perfumesFiltrados.length > 0 ? (
                   perfumesFiltrados.map((perfume) => (
                     <div
                       key={perfume.id}
-                      className="border-b border-teal-500 hover:bg-gray-100 hover:rounded-lg bg-white w-full pb-4 hover:p-4 flex gap-4 transition-all duration-300 cursor-pointer"
+                      className="border-b border-primary hover:bg-muted hover:rounded-lg bg-background w-full pb-4 hover:p-4 flex gap-4 transition-all duration-300 cursor-pointer"
                       onClick={() => navigate(`/perfume/${perfume.id}`)}
                     >
                       <img
@@ -163,7 +163,7 @@ export default function BrandDetailPage() {
                         </div>
                         <p>{perfume.brand}</p>
                         <div
-                          className={`${perfume.gender === "Masculino" ? "text-blue-700 bg-gradient-to-r from-blue-300 to-transparent" : perfume.gender === "Feminino" ? "text-pink-700 bg-gradient-to-r from-pink-300 to-transparent" : "text-teal-700 bg-gradient-to-r from-teal-300 to-transparent"} rounded-full px-2 py-1 text-xs w-full mt-1 self-start`}
+                          className={`${perfume.gender === "Masculino" ? "text-blue-700 bg-gradient-to-r from-blue-300 to-transparent" : perfume.gender === "Feminino" ? "text-pink-700 bg-gradient-to-r from-pink-300 to-transparent" : "text-primary bg-gradient-to-r from-teal-300 to-transparent"} rounded-full px-2 py-1 text-xs w-full mt-1 self-start`}
                         >
                           <p className="font-bold">{perfume.gender}</p>
                         </div>
@@ -171,7 +171,7 @@ export default function BrandDetailPage() {
                     </div>
                   ))
                 ) : (
-                  <div className="py-10 text-center text-gray-500">
+                  <div className="py-10 text-center text-muted-foreground">
                     Nenhum perfume encontrado para esta categoria ou pesquisa.
                   </div>
                 )}

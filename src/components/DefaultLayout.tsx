@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate, Outlet } from "react-router";
 import { useAuth } from "../contexts/AuthContext";
+import { useTheme } from "next-themes";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Tabs, TabsList, TabsTrigger } from "./ui/tabs";
@@ -24,6 +25,7 @@ export default function DefaultLayout() {
   const { currentUser, logout, isAdmin } = useAuth();
   const [modalPerfumesOpen, setModalPerfumesOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const { theme, setTheme } = useTheme();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -83,17 +85,17 @@ export default function DefaultLayout() {
       style={{ backgroundImage: `url(${bgImage})` }}
     >
       {/* Overlay branco semitransparente em todo o fundo */}
-      <div className="absolute inset-0 bg-white/60 pointer-events-none"></div>
+      <div className="absolute inset-0 bg-background/60 pointer-events-none"></div>
 
       {/* Header */}
-      <header className="bg-white/10 backdrop-blur-sm shadow-sm sticky top-0 z-50">
+      <header className="bg-background/10 backdrop-blur-sm shadow-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between gap-4">
             <Link to="/" className="flex items-center gap-2">
               <div className="w-10 h-10 bg-gradient-to-br from-purple-600 to-pink-600 rounded-full flex items-center justify-center">
                 <span className="text-white font-bold">FH</span>
               </div>
-              <span className="text-xl font-bold text-gray-900">
+              <span className="text-xl font-bold text-foreground">
                 FragranceHub
               </span>
             </Link>
@@ -103,7 +105,7 @@ export default function DefaultLayout() {
                 onMouseEnter={() => setModalPerfumesOpen(true)}
                 onMouseLeave={() => setModalPerfumesOpen(false)}
               >
-                <Button className="hidden md:flex bg-transparent hover:bg-transparent text-gray-700 gap-2">
+                <Button className="hidden md:flex bg-transparent hover:bg-transparent text-muted-foreground gap-2">
                   Perfumes
                   {modalPerfumesOpen === true ? (
                     <ChevronDown className="w-4 h-4 transition-transform duration-200" />
@@ -113,14 +115,14 @@ export default function DefaultLayout() {
                 </Button>
                 <div className="absolute top-full z-10 w-screen max-w-md overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
                   {modalPerfumesOpen && (
-                    <div className="relative rounded-md shadow-2xl ring-1 ring-zinc-900/[0.08] dark:ring-zinc-700/50 bg-white/95 dark:bg-zinc-800/95 backdrop-blur-xl overflow-hidden">
+                    <div className="relative rounded-md shadow-2xl ring-1 ring-zinc-900/[0.08] dark:ring-zinc-700/50 bg-background/95 dark:bg-zinc-800/95 backdrop-blur-xl overflow-hidden">
                       <div className="flex flex-col py-8 px-10 gap-10 ">
                         <button
                           onClick={() => {
                             setModalPerfumesOpen(false);
                             navigate("/busca");
                           }}
-                          className="flex items-center gap-4 hover:text-teal-600 transition-colors duration-200"
+                          className="flex items-center gap-4 hover:text-primary transition-colors duration-200"
                         >
                           <Search className="w-6 h-6 inline-block mr-1" />
                           Ver todos os perfumes
@@ -130,7 +132,7 @@ export default function DefaultLayout() {
                             setModalPerfumesOpen(false);
                             navigate("/marcas");
                           }}
-                          className="flex items-center gap-4 hover:text-teal-600 transition-colors duration-200 "
+                          className="flex items-center gap-4 hover:text-primary transition-colors duration-200 "
                         >
                           <Tag className="w-6 h-6 inline-block mr-1" />
                           Designers
@@ -140,7 +142,7 @@ export default function DefaultLayout() {
                             setModalPerfumesOpen(false);
                             navigate("/comparar");
                           }}
-                          className="flex items-center gap-4 hover:text-teal-600 transition-colors duration-200 "
+                          className="flex items-center gap-4 hover:text-primary transition-colors duration-200 "
                         >
                           <ArrowLeftRight className="w-6 h-6 inline-block mr-1" />
                           <span className="font-semibold text-md">
@@ -148,7 +150,7 @@ export default function DefaultLayout() {
                           </span>
                         </button>
                         <button
-                          className="flex items-center gap-4 hover:text-teal-600 transition-colors duration-200 "
+                          className="flex items-center gap-4 hover:text-primary transition-colors duration-200 "
                           onClick={() => {
                             setModalPerfumesOpen(false);
                             navigate("/busca-notas");
@@ -162,7 +164,7 @@ export default function DefaultLayout() {
                             setModalPerfumesOpen(false);
                             navigate("/grupos");
                           }}
-                          className="flex items-center gap-4 hover:text-teal-600 transition-colors duration-200"
+                          className="flex items-center gap-4 hover:text-primary transition-colors duration-200"
                         >
                           <Users className="w-6 h-6 inline-block mr-1" />
                           <span className="font-semibold text-md">
@@ -177,42 +179,45 @@ export default function DefaultLayout() {
 
               <Button
                 onClick={() => navigate("/notas")}
-                className="hidden md:flex bg-transparent hover:bg-transparent text-gray-700 "
+                className="hidden md:flex bg-transparent hover:bg-transparent text-muted-foreground "
               >
                 Notas
               </Button>
 
               <Button
                 onClick={() => navigate("/perfumistas")}
-                className="hidden md:flex bg-transparent hover:bg-transparent text-gray-700 "
+                className="hidden md:flex bg-transparent hover:bg-transparent text-muted-foreground "
               >
                 Perfumistas
               </Button>
               <Button
                 onClick={() => navigate("/resenhas")}
-                className="hidden md:flex bg-transparent hover:bg-transparent text-gray-700 "
+                className="hidden md:flex bg-transparent hover:bg-transparent text-muted-foreground "
               >
                 Resenhas
               </Button>
             </div>
             <div className="flex items-center gap-4">
-              <Tabs defaultValue="Sun">
-                <TabsList className="bg-transparent border-b-2 border-gray-200">
+              <Tabs 
+                value={theme === 'dark' ? 'Moon' : 'Sun'} 
+                onValueChange={(val) => setTheme(val === 'Moon' ? 'dark' : 'light')}
+              >
+                <TabsList className="bg-transparent border-b-2 border-border dark:border-zinc-700">
                   <TabsTrigger
                     value="Sun"
-                    className="text-gray-700 hover:text-gray-900"
+                    className="text-muted-foreground hover:text-foreground"
                   >
                     ☀️
                   </TabsTrigger>
                   <TabsTrigger
                     value="Moon"
-                    className="text-gray-700 hover:text-gray-900"
+                    className="text-muted-foreground hover:text-foreground"
                   >
                     🌙
                   </TabsTrigger>
                 </TabsList>
               </Tabs>
-              <Button className="rounded-full bg-gray-200 text-black hover:bg-gray-200">
+              <Button className="rounded-full bg-muted text-black hover:bg-muted">
                 <SearchIcon className="w-5 h-5" />
               </Button>
               {currentUser ? (
@@ -235,12 +240,12 @@ export default function DefaultLayout() {
                       ></div>
 
                       {/* Menu */}
-                      <div className="absolute right-0 top-full mt-2 w-56 bg-white border border-gray-200 shadow-xl rounded-lg z-50 flex flex-col py-1 overflow-hidden animate-in fade-in zoom-in-95 duration-200">
-                        <div className="px-4 py-3 bg-gray-50 border-b border-gray-100">
-                          <p className="text-sm font-bold text-gray-900 truncate">
+                      <div className="absolute right-0 top-full mt-2 w-56 bg-background border border-border shadow-xl rounded-lg z-50 flex flex-col py-1 overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+                        <div className="px-4 py-3 bg-muted/50 border-b border-border">
+                          <p className="text-sm font-bold text-foreground truncate">
                             {currentUser.name}
                           </p>
-                          <p className="text-xs text-gray-500 truncate">
+                          <p className="text-xs text-muted-foreground truncate">
                             {currentUser.email}
                           </p>
                         </div>
@@ -251,20 +256,20 @@ export default function DefaultLayout() {
                               setIsUserMenuOpen(false);
                               navigate("/perfil");
                             }}
-                            className="w-full text-left px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors"
+                            className="w-full text-left px-4 py-2.5 text-sm font-medium text-muted-foreground hover:bg-muted transition-colors"
                             id="profile-menu-btn"
                           >
                             Meu Perfil
                           </button>
 
                         {isAdmin() && (
-                          <div className="border-b border-gray-100">
+                          <div className="border-b border-border">
                             <button
                               onClick={() => {
                                 setIsUserMenuOpen(false);
                                 navigate("/admin");
                               }}
-                              className="w-full text-left px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors"
+                              className="w-full text-left px-4 py-2.5 text-sm font-medium text-muted-foreground hover:bg-muted transition-colors"
                             >
                               Painel Admin
                             </button>
@@ -290,10 +295,10 @@ export default function DefaultLayout() {
           <div className="relative flex-1 max-w-4xl mt-4">
             <form
               onSubmit={handleSearch}
-              className="border border-gray-300 rounded-md bg-white"
+              className="border border-border rounded-md bg-background"
             >
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5 " />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground w-5 h-5 " />
                 <Input
                   type="search"
                   placeholder="Buscar perfumes, marcas, perfumistas..."
@@ -312,11 +317,11 @@ export default function DefaultLayout() {
                   onClick={() => setIsSearchOpen(false)}
                 ></div>
                 
-                <div className="absolute top-full left-0 mt-2 w-full bg-white border border-gray-200 rounded-xl shadow-2xl z-50 p-6 overflow-hidden">
+                <div className="absolute top-full left-0 mt-2 w-full bg-background border border-border rounded-xl shadow-2xl z-50 p-6 overflow-hidden">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {/* Coluna 1: Perfumes */}
                     <div>
-                      <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Perfumes</h3>
+                      <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-4">Perfumes</h3>
                       {searchResults.perfumes.length > 0 ? (
                         <div className="space-y-3">
                           {searchResults.perfumes.map((p: any) => (
@@ -324,24 +329,24 @@ export default function DefaultLayout() {
                               key={p.id} 
                               to={`/perfume/${p.id}`}
                               onClick={() => setIsSearchOpen(false)}
-                              className="flex items-center gap-3 hover:bg-gray-50 p-2 rounded-lg transition-colors group"
+                              className="flex items-center gap-3 hover:bg-muted/50 p-2 rounded-lg transition-colors group"
                             >
                               {p.image && <img src={p.image} alt={p.name} className="w-10 h-10 object-contain mix-blend-multiply" />}
                               <div>
-                                <p className="text-[10px] uppercase font-bold text-gray-400 mb-0.5">{p.brand?.name}</p>
-                                <p className="text-sm font-bold text-teal-700 group-hover:text-teal-600">{p.name}</p>
+                                <p className="text-[10px] uppercase font-bold text-muted-foreground mb-0.5">{p.brand?.name}</p>
+                                <p className="text-sm font-bold text-primary group-hover:text-primary">{p.name}</p>
                               </div>
                             </Link>
                           ))}
                         </div>
                       ) : (
-                        <p className="text-sm text-gray-500">Nenhum perfume encontrado</p>
+                        <p className="text-sm text-muted-foreground">Nenhum perfume encontrado</p>
                       )}
                     </div>
 
                     {/* Coluna 2: Marcas */}
                     <div>
-                      <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Marcas</h3>
+                      <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-4">Marcas</h3>
                       {searchResults.brands.length > 0 ? (
                         <div className="space-y-3">
                           {searchResults.brands.map((b: any) => (
@@ -349,27 +354,27 @@ export default function DefaultLayout() {
                               key={b.id} 
                               to={`/marcas`} 
                               onClick={() => setIsSearchOpen(false)}
-                              className="flex items-center gap-3 hover:bg-gray-50 p-2 rounded-lg transition-colors group"
+                              className="flex items-center gap-3 hover:bg-muted/50 p-2 rounded-lg transition-colors group"
                             >
                               {b.image ? (
                                 <img src={b.image} alt={b.name} className="w-10 h-10 object-contain mix-blend-multiply" />
                               ) : (
-                                <div className="w-10 h-10 bg-gray-100 rounded flex items-center justify-center">
-                                  <span className="text-gray-400 text-xs font-bold">{b.name.charAt(0)}</span>
+                                <div className="w-10 h-10 bg-muted rounded flex items-center justify-center">
+                                  <span className="text-muted-foreground text-xs font-bold">{b.name.charAt(0)}</span>
                                 </div>
                               )}
-                              <p className="text-sm font-bold text-gray-700 group-hover:text-gray-900">{b.name}</p>
+                              <p className="text-sm font-bold text-muted-foreground group-hover:text-foreground">{b.name}</p>
                             </Link>
                           ))}
                         </div>
                       ) : (
-                        <p className="text-sm text-gray-500">Nenhuma marca encontrada</p>
+                        <p className="text-sm text-muted-foreground">Nenhuma marca encontrada</p>
                       )}
                     </div>
 
                     {/* Coluna 3: Resenhas */}
                     <div>
-                      <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Resenhas</h3>
+                      <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-4">Resenhas</h3>
                       {searchResults.reviews.length > 0 ? (
                         <div className="space-y-3">
                           {searchResults.reviews.map((r: any) => (
@@ -377,12 +382,12 @@ export default function DefaultLayout() {
                               key={r.id} 
                               to={`/perfume/${r.perfumeId}`}
                               onClick={() => setIsSearchOpen(false)}
-                              className="flex items-start gap-3 hover:bg-gray-50 p-2 rounded-lg transition-colors group"
+                              className="flex items-start gap-3 hover:bg-muted/50 p-2 rounded-lg transition-colors group"
                             >
                               {r.perfumeImage && <img src={r.perfumeImage} alt={r.perfumeName} className="w-10 h-10 object-contain mix-blend-multiply flex-shrink-0" />}
                               <div>
-                                <p className="text-xs font-bold text-gray-900">{r.userName}</p>
-                                <p className="text-xs text-teal-600 line-clamp-1 group-hover:text-teal-700 mt-0.5">
+                                <p className="text-xs font-bold text-foreground">{r.userName}</p>
+                                <p className="text-xs text-primary line-clamp-1 group-hover:text-primary mt-0.5">
                                   Resenha sobre <span className="font-semibold">{r.perfumeName}</span>
                                 </p>
                               </div>
@@ -390,7 +395,7 @@ export default function DefaultLayout() {
                           ))}
                         </div>
                       ) : (
-                        <p className="text-sm text-gray-500">Nenhuma resenha encontrada</p>
+                        <p className="text-sm text-muted-foreground">Nenhuma resenha encontrada</p>
                       )}
                     </div>
                   </div>

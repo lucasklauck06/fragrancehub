@@ -271,13 +271,13 @@ export default function AdminPerfumeFormPage() {
                 onChange={(e) => handleChange('image', e.target.value)}
                 placeholder="https://exemplo.com/imagem.jpg"
               />
-              <p className="text-xs text-gray-600">Exemplo: https://images.unsplash.com/photo-1541643600914-78b084683601?w=400&h=600&fit=crop</p>
+              <p className="text-xs text-muted-foreground">Exemplo: https://images.unsplash.com/photo-1541643600914-78b084683601?w=400&h=600&fit=crop</p>
               {formData.image && <img src={formData.image} alt="Preview" className="w-24 h-24 object-cover mt-2" />}
             </div>
 
             <div className="space-y-4">
               <h3 className="font-semibold text-lg">Pirâmide Olfativa</h3>
-              <p className="text-sm text-gray-600">Separe as notas por vírgula (ex: Bergamota, Lavanda, Cedro)</p>
+              <p className="text-sm text-muted-foreground">Separe as notas por vírgula (ex: Bergamota, Lavanda, Cedro)</p>
 
               <div className="space-y-2">
                 <Label htmlFor="topNotes">Notas de Topo</Label>

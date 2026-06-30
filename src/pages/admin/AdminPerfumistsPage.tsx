@@ -143,7 +143,7 @@ export default function AdminPerfumistsPage() {
           <div className="flex items-center justify-between">
             <div>
               <CardTitle>Perfumistas</CardTitle>
-              <p className="text-sm text-gray-500 mt-1">
+              <p className="text-sm text-muted-foreground mt-1">
                 Gerencie os profissionais criadores de fragrâncias do catálogo.
               </p>
             </div>
@@ -159,25 +159,25 @@ export default function AdminPerfumistsPage() {
           {/* Search Field */}
           <div className="mb-4">
             <div className="relative w-full">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <input
                 type="text"
                 placeholder="Pesquisar por nome do perfumista..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+                className="w-full pl-10 pr-4 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
               />
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-sm font-medium"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-muted-foreground text-sm font-medium"
                 >
                   ✕
                 </button>
               )}
             </div>
             {searchQuery && (
-              <p className="text-xs text-gray-500 mt-1.5">
+              <p className="text-xs text-muted-foreground mt-1.5">
                 {filteredAndSortedPerfumists.length} {filteredAndSortedPerfumists.length === 1 ? 'resultado encontrado' : 'resultados encontrados'}
               </p>
             )}
@@ -185,11 +185,11 @@ export default function AdminPerfumistsPage() {
 
           <div className="overflow-x-auto">
             <table className="w-full text-sm text-left">
-              <thead className="text-xs text-gray-700 uppercase bg-gray-50 border-b">
+              <thead className="text-xs text-muted-foreground uppercase bg-muted/50 border-b">
                 <tr>
                   <th className="px-6 py-4 font-medium select-none transition-colors">
                     <span
-                      className="inline-flex cursor-pointer items-center hover:text-teal-500 transition-all duration-200"
+                      className="inline-flex cursor-pointer items-center hover:text-primary transition-all duration-200"
                       onClick={() => handleSort('name')}
                     >
                       Perfumista {getSortIcon('name')}
@@ -197,7 +197,7 @@ export default function AdminPerfumistsPage() {
                   </th>
                   <th className="px-6 py-4 font-medium select-none transition-colors">
                     <span
-                      className="inline-flex cursor-pointer items-center hover:text-teal-500 transition-all duration-200"
+                      className="inline-flex cursor-pointer items-center hover:text-primary transition-all duration-200"
                       onClick={() => handleSort('country')}
                     >
                       País {getSortIcon('country')}
@@ -209,13 +209,13 @@ export default function AdminPerfumistsPage() {
               <tbody className="divide-y divide-gray-100">
                 {loading ? (
                   <tr>
-                    <td colSpan={3} className="py-8 text-center text-gray-500">
+                    <td colSpan={3} className="py-8 text-center text-muted-foreground">
                       Carregando perfumistas...
                     </td>
                   </tr>
                 ) : filteredAndSortedPerfumists.length === 0 ? (
                   <tr>
-                    <td colSpan={3} className="py-8 text-center text-gray-500">
+                    <td colSpan={3} className="py-8 text-center text-muted-foreground">
                       {searchQuery
                         ? `Nenhum perfumista encontrado para "${searchQuery}"`
                         : "Nenhum perfumista cadastrado. Adicione um novo para começar!"}
@@ -225,19 +225,19 @@ export default function AdminPerfumistsPage() {
                   filteredAndSortedPerfumists.map((perfumist) => (
                     <tr
                       key={perfumist.id}
-                      className="hover:bg-gray-50/50 transition-colors"
+                      className="hover:bg-muted/50/50 transition-colors"
                     >
-                      <td className="px-6 py-4 font-medium text-gray-900 flex items-center gap-3">
+                      <td className="px-6 py-4 font-medium text-foreground flex items-center gap-3">
                         {perfumist.photo ? (
-                           <img src={perfumist.photo} alt={perfumist.name} className="w-8 h-8 rounded-full object-cover border border-gray-200" />
+                           <img src={perfumist.photo} alt={perfumist.name} className="w-8 h-8 rounded-full object-cover border border-border" />
                         ) : (
-                           <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 text-xs font-bold border border-gray-300">
+                           <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center text-muted-foreground text-xs font-bold border border-border">
                              {perfumist.name.charAt(0).toUpperCase()}
                            </div>
                         )}
                         {perfumist.name}
                       </td>
-                      <td className="px-6 py-4 text-gray-500">{perfumist.country || "Não informado"}</td>
+                      <td className="px-6 py-4 text-muted-foreground">{perfumist.country || "Não informado"}</td>
                       <td className="px-6 py-4 text-right">
                         <div className="flex justify-end gap-2">
                           <Button
@@ -274,7 +274,7 @@ export default function AdminPerfumistsPage() {
             <AlertDialogDescription>
               Esta ação não pode ser desfeita. Isso excluirá permanentemente o
               perfumista
-              <span className="font-semibold text-gray-900">
+              <span className="font-semibold text-foreground">
                 {" "}
                 {perfumistToDelete?.name}{" "}
               </span>

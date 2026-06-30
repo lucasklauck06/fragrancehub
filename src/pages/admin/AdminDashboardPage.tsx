@@ -76,8 +76,8 @@ export default function AdminDashboardPage() {
     <AdminLayout>
       <div className="space-y-6">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Dashboard Administrativo</h1>
-          <p className="text-gray-600">Visão geral do sistema FragranceHub</p>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Dashboard Administrativo</h1>
+          <p className="text-muted-foreground">Visão geral do sistema FragranceHub</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -87,7 +87,7 @@ export default function AdminDashboardPage() {
               <Link key={stat.title} to={stat.link}>
                 <Card className="hover:shadow-lg transition-shadow cursor-pointer">
                   <CardHeader className="flex flex-row items-center justify-between pb-2">
-                    <CardTitle className="text-sm font-medium text-gray-600">
+                    <CardTitle className="text-sm font-medium text-muted-foreground">
                       {stat.title}
                     </CardTitle>
                     <div className={`p-2 rounded-lg ${colorClasses[stat.color as keyof typeof colorClasses]}`}>
@@ -119,11 +119,11 @@ export default function AdminDashboardPage() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="font-medium text-sm">{review.userName}</p>
-                      <p className="text-sm text-gray-600 truncate">
+                      <p className="text-sm text-muted-foreground truncate">
                         {review.perfumeName} - {review.rating} estrelas
                       </p>
-                      <p className="text-sm text-gray-500 mt-1 line-clamp-2">{review.comment}</p>
-                      <p className="text-xs text-gray-400 mt-1">{review.date}</p>
+                      <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{review.comment}</p>
+                      <p className="text-xs text-muted-foreground mt-1">{review.date}</p>
                     </div>
                   </div>
                 );

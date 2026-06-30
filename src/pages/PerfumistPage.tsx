@@ -55,7 +55,7 @@ export default function PerfumistPage() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p className="text-gray-600">Carregando...</p>
+        <p className="text-muted-foreground">Carregando...</p>
       </div>
     );
   }
@@ -63,7 +63,7 @@ export default function PerfumistPage() {
   if (!perfumist) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p className="text-gray-600">Perfumista não encontrado</p>
+        <p className="text-muted-foreground">Perfumista não encontrado</p>
       </div>
     );
   }
@@ -92,14 +92,14 @@ export default function PerfumistPage() {
                 className="w-32 h-32 rounded-full object-cover ring-4 ring-purple-100"
               />
               <div className="flex-1 text-center md:text-left">
-                <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                <h1 className="text-3xl font-bold text-foreground mb-2">
                   {perfumist.name}
                 </h1>
-                <div className="flex items-center justify-center md:justify-start gap-2 text-gray-600 mb-4">
+                <div className="flex items-center justify-center md:justify-start gap-2 text-muted-foreground mb-4">
                   <MapPin className="w-4 h-4" />
                   <span>{perfumist.country}</span>
                 </div>
-                <p className="text-gray-700 leading-relaxed max-w-3xl">
+                <p className="text-muted-foreground leading-relaxed max-w-3xl">
                   {perfumist.bio}
                 </p>
               </div>
@@ -120,19 +120,19 @@ export default function PerfumistPage() {
                 <table className="w-full">
                   <thead>
                     <tr className="border-b">
-                      <th className="text-left py-3 px-4 font-semibold text-gray-700">
+                      <th className="text-left py-3 px-4 font-semibold text-muted-foreground">
                         Ano
                       </th>
-                      <th className="text-left py-3 px-4 font-semibold text-gray-700">
+                      <th className="text-left py-3 px-4 font-semibold text-muted-foreground">
                         Foto
                       </th>
-                      <th className="text-left py-3 px-4 font-semibold text-gray-700">
+                      <th className="text-left py-3 px-4 font-semibold text-muted-foreground">
                         Fragrância
                       </th>
-                      <th className="text-left py-3 px-4 font-semibold text-gray-700">
+                      <th className="text-left py-3 px-4 font-semibold text-muted-foreground">
                         Marca
                       </th>
-                      <th className="text-left py-3 px-4 font-semibold text-gray-700">
+                      <th className="text-left py-3 px-4 font-semibold text-muted-foreground">
                         Gênero
                       </th>
                     </tr>
@@ -141,9 +141,9 @@ export default function PerfumistPage() {
                     {perfumistWorks.map((perfume) => (
                       <tr
                         key={perfume.id}
-                        className="border-b hover:bg-gray-50 transition-colors"
+                        className="border-b hover:bg-muted/50 transition-colors"
                       >
-                        <td className="py-3 px-4 text-gray-600">
+                        <td className="py-3 px-4 text-muted-foreground">
                           {perfume.year}
                         </td>
                         <td className="py-3 px-4">
@@ -161,13 +161,13 @@ export default function PerfumistPage() {
                             {perfume.name}
                           </Link>
                         </td>
-                        <td className="py-3 px-4 text-gray-700 hover:text-teal-600 cursor-pointer"
+                        <td className="py-3 px-4 text-muted-foreground hover:text-primary cursor-pointer"
                           onClick={() => navigate(`/marca/${perfume.brandId}`)}>
                           {perfume.brand}
                         </td>
                         <td className="py-3 px-4">
                           <span
-                            className={`${perfume.gender === "Masculino" ? "bg-blue-400 text-blue-800" : perfume.gender === "Feminino" ? "bg-pink-400 text-pink-800" : "bg-teal-400 text-teal-600"} px-2 py-1 rounded text-sm`}
+                            className={`${perfume.gender === "Masculino" ? "bg-blue-400 text-blue-800" : perfume.gender === "Feminino" ? "bg-pink-400 text-pink-800" : "bg-teal-400 text-primary"} px-2 py-1 rounded text-sm`}
                           >
                             {perfume.gender}
                           </span>
@@ -178,7 +178,7 @@ export default function PerfumistPage() {
                 </table>
               </div>
             ) : (
-              <p className="text-center text-gray-500 py-8">
+              <p className="text-center text-muted-foreground py-8">
                 Nenhuma fragrância cadastrada para este perfumista
               </p>
             )}

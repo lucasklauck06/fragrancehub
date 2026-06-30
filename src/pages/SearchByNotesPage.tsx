@@ -17,7 +17,7 @@ type NoteFamily = {
 const genderColor: Record<string, string> = {
   Masculino: "text-blue-700 bg-blue-100",
   Feminino: "text-pink-700 bg-pink-100",
-  Unissex: "text-teal-700 bg-teal-100",
+  Unissex: "text-primary bg-teal-100",
 };
 
 const BASE_FAMILIES: NoteFamily[] = [
@@ -114,13 +114,13 @@ export default function SearchByNotesPage() {
   }, [selectedNotes, perfumes]);
 
   return (
-    <main className="relative w-full max-w-7xl mx-auto px-4 py-8 bg-white/40 backdrop-blur-sm rounded-lg shadow-sm min-h-screen">
+    <main className="relative w-full max-w-7xl mx-auto px-4 py-8 bg-background/40 backdrop-blur-sm rounded-lg shadow-sm min-h-screen">
       <div className="max-w-7xl mx-auto px-4 py-6">
 
         {/* Selected notes pill bar */}
         {selectedNotes.length > 0 && (
-          <div className="bg-white border border-teal-200 rounded-xl p-4 mb-5 flex flex-wrap items-center gap-2">
-            <span className="text-sm font-medium text-gray-700 mr-1">Notas selecionadas:</span>
+          <div className="bg-background border border-teal-200 rounded-xl p-4 mb-5 flex flex-wrap items-center gap-2">
+            <span className="text-sm font-medium text-muted-foreground mr-1">Notas selecionadas:</span>
             {selectedNotes.map(n => (
               <button
                 key={n}
@@ -143,8 +143,8 @@ export default function SearchByNotesPage() {
           {/* Left: Family & Notes selector */}
           <div className="lg:col-span-2 space-y-4">
             {/* Family pills */}
-            <div className="bg-white rounded-xl border border-gray-200 p-4">
-              <h2 className="text-sm font-bold text-gray-700 mb-3 uppercase tracking-wider">
+            <div className="bg-background rounded-xl border border-border p-4">
+              <h2 className="text-sm font-bold text-muted-foreground mb-3 uppercase tracking-wider">
                 Famílias Olfativas
               </h2>
               <div className="flex flex-wrap gap-2">
@@ -169,24 +169,24 @@ export default function SearchByNotesPage() {
 
             {/* Notes grid for selected family */}
             {currentFamily ? (
-              <div className="bg-white rounded-xl border border-gray-200 p-4">
+              <div className="bg-background rounded-xl border border-border p-4">
                 <div className="flex items-center justify-between mb-3">
-                  <h2 className="text-sm font-bold text-gray-700 flex items-center gap-2">
+                  <h2 className="text-sm font-bold text-muted-foreground flex items-center gap-2">
                     <span style={{ color: currentFamily.color }}>{currentFamily.icon}</span>
                     Notas {currentFamily.name}
                   </h2>
                   <button
                     onClick={() => setActiveFamily(null)}
-                    className="text-gray-400 hover:text-gray-600 cursor-pointer"
+                    className="text-muted-foreground hover:text-muted-foreground cursor-pointer"
                   >
                     <X className="w-4 h-4" />
                   </button>
                 </div>
-                <p className="text-xs text-gray-500 mb-3">{currentFamily.description}</p>
+                <p className="text-xs text-muted-foreground mb-3">{currentFamily.description}</p>
 
                 {/* Search inside notes */}
                 <div className="relative mb-3">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-3.5 h-3.5" />
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground w-3.5 h-3.5" />
                   <Input
                     value={noteQuery}
                     onChange={e => setNoteQuery(e.target.value)}
@@ -219,39 +219,39 @@ export default function SearchByNotesPage() {
                     );
                   })}
                   {filteredNotes.length === 0 && (
-                    <p className="text-sm text-gray-400 py-4">Nenhuma nota encontrada</p>
+                    <p className="text-sm text-muted-foreground py-4">Nenhuma nota encontrada</p>
                   )}
                 </div>
               </div>
             ) : (
-              <div className="bg-white rounded-xl border border-dashed border-gray-300 p-8 text-center">
+              <div className="bg-background rounded-xl border border-dashed border-border p-8 text-center">
                 <Beaker className="w-10 h-10 text-gray-300 mx-auto mb-3" />
-                <p className="text-gray-500 font-medium">Selecione uma família olfativa acima</p>
-                <p className="text-gray-400 text-sm mt-1">para ver e escolher suas notas</p>
+                <p className="text-muted-foreground font-medium">Selecione uma família olfativa acima</p>
+                <p className="text-muted-foreground text-sm mt-1">para ver e escolher suas notas</p>
               </div>
             )}
           </div>
 
           {/* Right: Matching perfumes */}
           <div>
-            <div className="bg-white rounded-xl border border-gray-200 p-4 sticky top-24">
-              <h2 className="text-sm font-bold text-gray-700 mb-1 flex items-center gap-2">
-                <ChevronRight className="w-4 h-4 text-teal-600" />
+            <div className="bg-background rounded-xl border border-border p-4 sticky top-24">
+              <h2 className="text-sm font-bold text-muted-foreground mb-1 flex items-center gap-2">
+                <ChevronRight className="w-4 h-4 text-primary" />
                 Perfumes Encontrados
               </h2>
               {selectedNotes.length === 0 ? (
                 <div className="py-8 text-center">
-                  <p className="text-sm text-gray-400">Selecione notas para ver perfumes compatíveis</p>
+                  <p className="text-sm text-muted-foreground">Selecione notas para ver perfumes compatíveis</p>
                 </div>
               ) : matchingPerfumes.length === 0 ? (
                 <div className="py-8 text-center">
-                  <p className="text-sm text-gray-500 font-medium">Nenhum perfume encontrado</p>
-                  <p className="text-xs text-gray-400 mt-1">com essas notas</p>
+                  <p className="text-sm text-muted-foreground font-medium">Nenhum perfume encontrado</p>
+                  <p className="text-xs text-muted-foreground mt-1">com essas notas</p>
                 </div>
               ) : (
                 <div className="space-y-3 mt-3">
-                  <p className="text-xs text-gray-500">
-                    <span className="font-bold text-teal-600">{matchingPerfumes.length}</span> perfume{matchingPerfumes.length !== 1 ? 's' : ''} encontrado{matchingPerfumes.length !== 1 ? 's' : ''}
+                  <p className="text-xs text-muted-foreground">
+                    <span className="font-bold text-primary">{matchingPerfumes.length}</span> perfume{matchingPerfumes.length !== 1 ? 's' : ''} encontrado{matchingPerfumes.length !== 1 ? 's' : ''}
                   </p>
                   {matchingPerfumes.map(p => {
                     const allNotes = [...(p.topNotes || []), ...(p.heartNotes || []), ...(p.baseNotes || [])];
@@ -264,18 +264,18 @@ export default function SearchByNotesPage() {
                         to={`/perfume/${p.id}`}
                         className="flex items-center gap-3 p-2.5 rounded-lg hover:bg-teal-50 group transition-colors border border-transparent hover:border-teal-200"
                       >
-                        <div className="w-12 h-16 rounded-lg overflow-hidden flex-shrink-0 bg-gray-100">
+                        <div className="w-12 h-16 rounded-lg overflow-hidden flex-shrink-0 bg-muted">
                           <img src={p.image} alt={p.name} className="w-full h-full object-cover" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h4 className="text-sm font-bold text-gray-900 group-hover:text-teal-600 line-clamp-1">
+                          <h4 className="text-sm font-bold text-foreground group-hover:text-primary line-clamp-1">
                             {p.name}
                           </h4>
-                          <p className="text-xs text-gray-500">{p.brand}</p>
+                          <p className="text-xs text-muted-foreground">{p.brand}</p>
                           <span className={`text-xs px-2 py-0.5 rounded-full font-medium mt-1 inline-block ${genderColor[p.gender]}`}>
                             {p.gender}
                           </span>
-                          <p className="text-xs text-teal-600 mt-1 font-medium">
+                          <p className="text-xs text-primary mt-1 font-medium">
                             {matchCount} nota{matchCount !== 1 ? 's' : ''} em comum
                           </p>
                         </div>
@@ -290,12 +290,12 @@ export default function SearchByNotesPage() {
 
         {/* Full note reference table */}
         <div className="mt-8">
-          <h2 className="text-lg font-bold text-gray-900 mb-4">Referência Completa de Notas</h2>
+          <h2 className="text-lg font-bold text-foreground mb-4">Referência Completa de Notas</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {noteFamilies.map(family => (
               <div
                 key={family.id}
-                className="bg-white rounded-xl border border-gray-200 overflow-hidden cursor-pointer"
+                className="bg-background rounded-xl border border-border overflow-hidden cursor-pointer"
                 onClick={(e) => {
                   e.stopPropagation();
                   (family.id === activeFamily ? setActiveFamily(null) : setActiveFamily(family.id));
@@ -333,7 +333,7 @@ export default function SearchByNotesPage() {
                   {family.notes.length > 8 && (
                     <button
                       onClick={(e) => { e.stopPropagation(); setActiveFamily(family.id); }}
-                      className="text-xs px-2 py-1 rounded-full text-gray-500 hover:text-gray-700 cursor-pointer"
+                      className="text-xs px-2 py-1 rounded-full text-muted-foreground hover:text-muted-foreground cursor-pointer"
                     >
                       +{family.notes.length - 8} mais
                     </button>

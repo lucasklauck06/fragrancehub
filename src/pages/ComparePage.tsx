@@ -46,29 +46,29 @@ export default function ComparePage() {
 
   return (
     <>
-    <div className="relative flex-1 w-full max-w-7xl mx-auto px-4 py-8 bg-white/40  backdrop-blur-sm rounded-lg shadow-sm">
+    <div className="relative flex-1 w-full max-w-7xl mx-auto px-4 py-8 bg-background/40  backdrop-blur-sm rounded-lg shadow-sm">
       <div className="mb-8 flex justify-between items-end">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Comparar Fragrâncias</h1>
-          <p className="mt-2 text-gray-600">
+          <h1 className="text-3xl font-bold text-foreground">Comparar Fragrâncias</h1>
+          <p className="mt-2 text-muted-foreground">
             Selecione até 3 fragrâncias para comparar suas notas e características lado a lado.
           </p>
         </div>
       </div>
 
       {/* Comparison Grid */}
-      <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-gray-100 overflow-x-auto">
+      <div className="bg-background/80 backdrop-blur-md rounded-2xl shadow-xl border border-border overflow-x-auto">
         <div className="min-w-[800px] p-6">
           <div className="grid grid-cols-4 gap-6">
             
             {/* Row Header */}
-            <div className="col-span-1 flex flex-col gap-8 pt-[280px] font-medium text-gray-500 text-sm">
-              <div className="h-10 flex items-center border-b border-gray-100">Gênero</div>
-              <div className="h-10 flex items-center border-b border-gray-100">Ano de Lançamento</div>
-              <div className="h-10 flex items-center border-b border-gray-100">Preço Estimado</div>
-              <div className="flex-1 border-b border-gray-100 pt-2">Notas de Topo</div>
-              <div className="flex-1 border-b border-gray-100 pt-2">Notas de Coração</div>
-              <div className="flex-1 border-b border-gray-100 pt-2">Notas de Fundo</div>
+            <div className="col-span-1 flex flex-col gap-8 pt-[280px] font-medium text-muted-foreground text-sm">
+              <div className="h-10 flex items-center border-b border-border">Gênero</div>
+              <div className="h-10 flex items-center border-b border-border">Ano de Lançamento</div>
+              <div className="h-10 flex items-center border-b border-border">Preço Estimado</div>
+              <div className="flex-1 border-b border-border pt-2">Notas de Topo</div>
+              <div className="flex-1 border-b border-border pt-2">Notas de Coração</div>
+              <div className="flex-1 border-b border-border pt-2">Notas de Fundo</div>
             </div>
 
             {/* Selected Perfumes Columns */}
@@ -87,21 +87,21 @@ export default function ComparePage() {
                       
                       <div className="h-64 flex flex-col items-center justify-end pb-4 border-b-2 border-gray-900 text-center">
                         <img src={perfume.image || "https://images.unsplash.com/photo-1541643600914-78b084683601?w=400&h=600&fit=crop"} alt={perfume.name} className="h-40 object-contain drop-shadow-md mb-4" />
-                        <h3 className="font-bold text-lg text-gray-900 line-clamp-1">{perfume.name}</h3>
-                        <p className="text-sm text-gray-500">{perfume.brand}</p>
+                        <h3 className="font-bold text-lg text-foreground line-clamp-1">{perfume.name}</h3>
+                        <p className="text-sm text-muted-foreground">{perfume.brand}</p>
                       </div>
 
-                      <div className="h-10 flex items-center justify-center border-b border-gray-100 font-semibold text-gray-800">
+                      <div className="h-10 flex items-center justify-center border-b border-border font-semibold text-foreground">
                         {perfume.gender}
                       </div>
-                      <div className="h-10 flex items-center justify-center border-b border-gray-100 font-semibold text-gray-800">
+                      <div className="h-10 flex items-center justify-center border-b border-border font-semibold text-foreground">
                         {perfume.year || "N/A"}
                       </div>
-                      <div className="h-10 flex items-center justify-center border-b border-gray-100 font-semibold text-teal-600">
+                      <div className="h-10 flex items-center justify-center border-b border-border font-semibold text-primary">
                         R$ {perfume.price}
                       </div>
                       
-                      <div className="flex-1 border-b border-gray-100 pt-2">
+                      <div className="flex-1 border-b border-border pt-2">
                         <div className="flex flex-wrap gap-2 justify-center">
                           {(perfume.topNotes || []).map(note => (
                             <span key={note} className="px-2 py-1 bg-blue-50 text-blue-700 text-xs rounded-md">{note}</span>
@@ -109,7 +109,7 @@ export default function ComparePage() {
                         </div>
                       </div>
                       
-                      <div className="flex-1 border-b border-gray-100 pt-2">
+                      <div className="flex-1 border-b border-border pt-2">
                         <div className="flex flex-wrap gap-2 justify-center">
                           {(perfume.heartNotes || []).map(note => (
                             <span key={note} className="px-2 py-1 bg-pink-50 text-pink-700 text-xs rounded-md">{note}</span>
@@ -117,7 +117,7 @@ export default function ComparePage() {
                         </div>
                       </div>
                       
-                      <div className="flex-1 border-b border-gray-100 pt-2">
+                      <div className="flex-1 border-b border-border pt-2">
                         <div className="flex flex-wrap gap-2 justify-center">
                           {(perfume.baseNotes || []).map(note => (
                             <span key={note} className="px-2 py-1 bg-amber-50 text-amber-700 text-xs rounded-md">{note}</span>
@@ -126,39 +126,39 @@ export default function ComparePage() {
                       </div>
                     </>
                   ) : (
-                    <div className="h-full border-2 border-dashed border-gray-200 rounded-xl flex flex-col items-center justify-center bg-gray-50/50 min-h-[600px]">
+                    <div className="h-full border-2 border-dashed border-border rounded-xl flex flex-col items-center justify-center bg-muted/50/50 min-h-[600px]">
                       {isSearchOpen && selectedPerfumes.length === index ? (
                         <div className="w-full p-4 h-full flex flex-col">
                           <div className="relative mb-4 mt-2">
-                            <Search className="w-5 h-5 absolute left-3 top-3 text-gray-400" />
+                            <Search className="w-5 h-5 absolute left-3 top-3 text-muted-foreground" />
                             <input 
                               type="text" 
                               autoFocus
                               placeholder="Buscar..." 
                               value={searchTerm}
                               onChange={e => setSearchTerm(e.target.value)}
-                              className="w-full pl-10 pr-4 py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none"
+                              className="w-full pl-10 pr-4 py-2 bg-background border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none"
                             />
-                            <button onClick={() => setIsSearchOpen(false)} className="absolute right-3 top-3 text-gray-400 hover:text-gray-600 cursor-pointer">
+                            <button onClick={() => setIsSearchOpen(false)} className="absolute right-3 top-3 text-muted-foreground hover:text-muted-foreground cursor-pointer">
                               <X className="w-5 h-5" />
                             </button>
                           </div>
                           
                           <div className="flex-1 overflow-y-auto pr-2 space-y-2 max-h-[400px]">
                             {filteredPerfumes.length === 0 ? (
-                              <p className="text-center text-gray-500 text-sm mt-8">Nenhum perfume encontrado.</p>
+                              <p className="text-center text-muted-foreground text-sm mt-8">Nenhum perfume encontrado.</p>
                             ) : (
                               filteredPerfumes.map(p => (
                                 <button 
                                   key={p.id}
                                   disabled={selectedPerfumes.some(sp => sp.id === p.id)}
                                   onClick={() => handleSelect(p)}
-                                  className="w-full flex items-center gap-3 p-2 rounded-lg hover:bg-white border border-transparent hover:border-gray-200 hover:shadow-sm transition-all text-left disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                                  className="w-full flex items-center gap-3 p-2 rounded-lg hover:bg-background border border-transparent hover:border-border hover:shadow-sm transition-all text-left disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                                 >
-                                  <img src={p.image || "https://images.unsplash.com/photo-1541643600914-78b084683601?w=400&h=600&fit=crop"} alt={p.name} className="w-10 h-10 object-contain bg-white rounded" />
+                                  <img src={p.image || "https://images.unsplash.com/photo-1541643600914-78b084683601?w=400&h=600&fit=crop"} alt={p.name} className="w-10 h-10 object-contain bg-background rounded" />
                                   <div className="flex-1">
-                                    <h4 className="font-semibold text-sm text-gray-900 line-clamp-1">{p.name}</h4>
-                                    <p className="text-xs text-gray-500">{p.brand}</p>
+                                    <h4 className="font-semibold text-sm text-foreground line-clamp-1">{p.name}</h4>
+                                    <p className="text-xs text-muted-foreground">{p.brand}</p>
                                   </div>
                                   {selectedPerfumes.some(sp => sp.id === p.id) && <Check className="w-4 h-4 text-green-500" />}
                                 </button>
@@ -172,9 +172,9 @@ export default function ComparePage() {
                             if (selectedPerfumes.length === index) setIsSearchOpen(true);
                           }}
                           disabled={selectedPerfumes.length !== index}
-                          className="flex flex-col items-center gap-4 text-gray-400 hover:text-gray-600 transition-colors disabled:opacity-30 disabled:cursor-not-allowed group cursor-pointer"
+                          className="flex flex-col items-center gap-4 text-muted-foreground hover:text-muted-foreground transition-colors disabled:opacity-30 disabled:cursor-not-allowed group cursor-pointer"
                         >
-                          <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center group-hover:bg-gray-200 group-hover:scale-105 transition-all">
+                          <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center group-hover:bg-muted group-hover:scale-105 transition-all">
                             <Plus className="w-8 h-8" />
                           </div>
                           <span className="font-medium text-sm">

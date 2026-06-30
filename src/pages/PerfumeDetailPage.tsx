@@ -176,7 +176,7 @@ export default function PerfumeDetailPage() {
       <div className="min-h-[70vh] flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-teal-600 mx-auto"></div>
-          <p className="mt-4 text-gray-500 font-medium">Carregando detalhes técnicos...</p>
+          <p className="mt-4 text-muted-foreground font-medium">Carregando detalhes técnicos...</p>
         </div>
       </div>
     );
@@ -186,7 +186,7 @@ export default function PerfumeDetailPage() {
     return (
       <div className="min-h-[70vh] flex items-center justify-center">
         <div className="text-center">
-          <p className="text-xl font-semibold text-gray-800">Perfume não encontrado</p>
+          <p className="text-xl font-semibold text-foreground">Perfume não encontrado</p>
           <Button onClick={() => navigate("/")} className="mt-4">Voltar para Início</Button>
         </div>
       </div>
@@ -305,11 +305,11 @@ export default function PerfumeDetailPage() {
   }
 
   return (
-    <main className="relative flex-1 w-full max-w-7xl mx-auto px-4 py-8 bg-white/40 backdrop-blur-sm rounded-lg shadow-sm">
+    <main className="relative flex-1 w-full max-w-7xl mx-auto px-4 py-8 bg-background/40 backdrop-blur-sm rounded-lg shadow-sm">
       <Button
         variant="ghost"
         onClick={() => navigate(-1)}
-        className="mb-6 hover:bg-gray-100/50"
+        className="mb-6 hover:bg-muted/50"
       >
         <ArrowLeft className="w-4 h-4 mr-2" />
         Voltar
@@ -319,26 +319,26 @@ export default function PerfumeDetailPage() {
         {/* Left Columns - Detailed Info */}
         <div className="lg:col-span-2 space-y-6">
           {/* Main Perfume Card */}
-          <Card className="overflow-hidden border border-gray-100 bg-white/95 shadow-sm rounded-xl">
+          <Card className="overflow-hidden border border-border bg-background/95 shadow-sm rounded-xl">
             <div className="flex flex-col md:flex-row gap-6 p-6">
               {/* Image & Price */}
               <div className="md:w-1/3 flex flex-col items-center gap-4">
-                <div className="relative group overflow-hidden rounded-lg bg-gray-50 border border-gray-100 flex items-center justify-center p-4 h-64 w-full">
+                <div className="relative group overflow-hidden rounded-lg bg-muted/50 border border-border flex items-center justify-center p-4 h-64 w-full">
                   <img
                     src={perfume.image || "https://images.unsplash.com/photo-1541643600914-78b084683601?w=400&h=600&fit=crop"}
                     alt={perfume.name}
                     className="h-full object-contain hover:scale-105 transition-transform duration-500"
                   />
                   <div className="absolute top-3 left-3">
-                    <span className={`text-xs font-bold px-3 py-1 rounded-full text-white shadow-sm tracking-wide ${perfume.gender === "Masculino" ? "bg-blue-500" : perfume.gender === "Feminino" ? "bg-pink-500" : "bg-teal-500"
+                    <span className={`text-xs font-bold px-3 py-1 rounded-full text-white shadow-sm tracking-wide ${perfume.gender === "Masculino" ? "bg-blue-500" : perfume.gender === "Feminino" ? "bg-pink-500" : "bg-primary"
                       }`}>
                       {perfume.gender}
                     </span>
                   </div>
                 </div>
-                <div className="text-center w-full bg-gradient-to-r from-teal-500/10 to-emerald-500/10 p-3 rounded-lg border border-teal-500/20">
-                  <span className="text-xs text-gray-500 block uppercase tracking-wider font-semibold">Valor Estimado</span>
-                  <span className="text-2xl font-bold text-teal-700">R$ {perfume.price.toFixed(2)}</span>
+                <div className="text-center w-full bg-gradient-to-r from-teal-500/10 to-emerald-500/10 p-3 rounded-lg border border-primary/20">
+                  <span className="text-xs text-muted-foreground block uppercase tracking-wider font-semibold">Valor Estimado</span>
+                  <span className="text-2xl font-bold text-primary">R$ {perfume.price.toFixed(2)}</span>
                 </div>
               </div>
 
@@ -346,23 +346,23 @@ export default function PerfumeDetailPage() {
               <div className="md:w-2/3 flex flex-col justify-between">
                 <div>
                   <div className="flex flex-wrap gap-2 items-center mb-1">
-                    <Link to={`/marca/${perfume.brandId}`} className="text-sm font-semibold text-teal-600 hover:underline uppercase tracking-wider">
+                    <Link to={`/marca/${perfume.brandId}`} className="text-sm font-semibold text-primary hover:underline uppercase tracking-wider">
                       {perfume.brandName || perfume.brand}
                     </Link>
                     {perfume.year && (
-                      <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded">
+                      <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded">
                         Lançamento: {perfume.year}
                       </span>
                     )}
                   </div>
-                  <h1 className="text-3xl font-bold text-gray-900 leading-tight mb-2">
+                  <h1 className="text-3xl font-bold text-foreground leading-tight mb-2">
                     {perfume.name}
                   </h1>
 
                   {/* Perfumist link */}
                   <div className="flex items-center gap-2 mb-4 bg-purple-50/50 p-2 rounded-lg border border-purple-100/50 w-fit">
                     <Award className="w-4 h-4 text-purple-600" />
-                    <span className="text-xs text-gray-500 font-medium">Perfumista:</span>
+                    <span className="text-xs text-muted-foreground font-medium">Perfumista:</span>
                     <Link to={`/perfumista/${perfume.perfumistId}`} className="text-xs font-bold text-purple-700 hover:underline">
                       {perfume.perfumistName || perfume.perfumist}
                     </Link>
@@ -375,22 +375,22 @@ export default function PerfumeDetailPage() {
                     </div>
                   )}
 
-                  <p className="text-gray-600 leading-relaxed text-sm">
+                  <p className="text-muted-foreground leading-relaxed text-sm">
                     {perfume.description || "Este perfume é uma fragrância sofisticada pertencente ao portfólio exclusivo de nossa marca, desenvolvida meticulosamente pelos narizes mais experientes para proporcionar uma jornada sensorial única e inesquecível."}
                   </p>
                 </div>
 
                 {/* Accords Section */}
                 <div className="mt-6">
-                  <h3 className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Principais Acordes</h3>
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">Principais Acordes</h3>
                   <div className="space-y-2">
                     {accords.map((accord) => (
                       <div key={accord.name} className="space-y-0.5">
-                        <div className="flex justify-between text-xs font-bold text-gray-700">
+                        <div className="flex justify-between text-xs font-bold text-muted-foreground">
                           <span>{accord.name}</span>
                           <span>{accord.percentage}%</span>
                         </div>
-                        <div className="w-full bg-gray-100 h-2.5 rounded-full overflow-hidden">
+                        <div className="w-full bg-muted h-2.5 rounded-full overflow-hidden">
                           <div className={`h-full rounded-full bg-gradient-to-r ${accord.color}`} style={{ width: `${accord.percentage}%` }}></div>
                         </div>
                       </div>
@@ -404,80 +404,80 @@ export default function PerfumeDetailPage() {
           {/* Olfactory Pyramid & Technical details */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Pyramid */}
-            <Card className="border border-gray-100 bg-white/95 shadow-sm rounded-xl">
-              <CardHeader className="pb-3 border-b border-gray-100">
-                <CardTitle className="text-lg font-bold text-gray-900 flex items-center gap-2">
-                  <Layers className="w-5 h-5 text-teal-600" />
+            <Card className="border border-border bg-background/95 shadow-sm rounded-xl">
+              <CardHeader className="pb-3 border-b border-border">
+                <CardTitle className="text-lg font-bold text-foreground flex items-center gap-2">
+                  <Layers className="w-5 h-5 text-primary" />
                   Pirâmide Olfativa
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-6">
-                <div className="space-y-6 relative before:absolute before:left-3 before:top-2 before:bottom-2 before:w-0.5 before:bg-gray-100">
+                <div className="space-y-6 relative before:absolute before:left-3 before:top-2 before:bottom-2 before:w-0.5 before:bg-muted">
                   {/* Top Notes */}
                   <div className="relative pl-8">
-                    <div className="absolute left-1.5 top-1.5 w-3.5 h-3.5 rounded-full bg-teal-500 border-2 border-white shadow-sm"></div>
-                    <span className="text-xs font-bold text-teal-600 uppercase tracking-wider block">Notas de Topo (Saída)</span>
-                    <p className="text-sm font-semibold text-gray-800 mt-0.5">
+                    <div className="absolute left-1.5 top-1.5 w-3.5 h-3.5 rounded-full bg-primary border-2 border-white shadow-sm"></div>
+                    <span className="text-xs font-bold text-primary uppercase tracking-wider block">Notas de Topo (Saída)</span>
+                    <p className="text-sm font-semibold text-foreground mt-0.5">
                       {perfume.topNotes && perfume.topNotes.length > 0 ? perfume.topNotes.join(", ") : "Notas Cítricas, Frescor"}
                     </p>
-                    <p className="text-xs text-gray-400 mt-0.5">Perceptíveis nos primeiros 15 minutos pós-aplicação.</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">Perceptíveis nos primeiros 15 minutos pós-aplicação.</p>
                   </div>
                   {/* Heart Notes */}
                   <div className="relative pl-8">
                     <div className="absolute left-1.5 top-1.5 w-3.5 h-3.5 rounded-full bg-pink-500 border-2 border-white shadow-sm"></div>
                     <span className="text-xs font-bold text-pink-600 uppercase tracking-wider block">Notas de Coração (Corpo)</span>
-                    <p className="text-sm font-semibold text-gray-800 mt-0.5">
+                    <p className="text-sm font-semibold text-foreground mt-0.5">
                       {perfume.heartNotes && perfume.heartNotes.length > 0 ? perfume.heartNotes.join(", ") : "Notas Florais, Especiarias"}
                     </p>
-                    <p className="text-xs text-gray-400 mt-0.5">A alma da fragrância, dura entre 2 a 4 horas.</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">A alma da fragrância, dura entre 2 a 4 horas.</p>
                   </div>
                   {/* Base Notes */}
                   <div className="relative pl-8">
                     <div className="absolute left-1.5 top-1.5 w-3.5 h-3.5 rounded-full bg-amber-700 border-2 border-white shadow-sm"></div>
                     <span className="text-xs font-bold text-amber-800 uppercase tracking-wider block">Notas de Base (Fundo)</span>
-                    <p className="text-sm font-semibold text-gray-800 mt-0.5">
+                    <p className="text-sm font-semibold text-foreground mt-0.5">
                       {perfume.baseNotes && perfume.baseNotes.length > 0 ? perfume.baseNotes.join(", ") : "Madeiras, Âmbar, Almíscar"}
                     </p>
-                    <p className="text-xs text-gray-400 mt-0.5">Dão sustentação, evaporam muito lentamente (8h+).</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">Dão sustentação, evaporam muito lentamente (8h+).</p>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
             {/* Performance Gauges */}
-            <Card className="border border-gray-100 bg-white/95 shadow-sm rounded-xl">
-              <CardHeader className="pb-3 border-b border-gray-100">
-                <CardTitle className="text-lg font-bold text-gray-900 flex items-center gap-2">
-                  <Clock className="w-5 h-5 text-teal-600" />
+            <Card className="border border-border bg-background/95 shadow-sm rounded-xl">
+              <CardHeader className="pb-3 border-b border-border">
+                <CardTitle className="text-lg font-bold text-foreground flex items-center gap-2">
+                  <Clock className="w-5 h-5 text-primary" />
                   Métricas Técnicas
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-6 space-y-6">
                 {/* Longevity Gauge */}
                 <div className="space-y-2">
-                  <div className="flex justify-between items-center text-sm font-semibold text-gray-700">
+                  <div className="flex justify-between items-center text-sm font-semibold text-muted-foreground">
                     <span>Longevidade (Fixação)</span>
-                    <span className="text-xs text-teal-700 font-bold bg-teal-50 px-2 py-0.5 rounded">{performance.longevityText}</span>
+                    <span className="text-xs text-primary font-bold bg-teal-50 px-2 py-0.5 rounded">{performance.longevityText}</span>
                   </div>
-                  <div className="w-full bg-gray-100 h-3 rounded-full overflow-hidden">
-                    <div className="h-full rounded-full bg-teal-500" style={{ width: `${performance.longevity}%` }}></div>
+                  <div className="w-full bg-muted h-3 rounded-full overflow-hidden">
+                    <div className="h-full rounded-full bg-primary" style={{ width: `${performance.longevity}%` }}></div>
                   </div>
                 </div>
 
                 {/* Sillage Gauge */}
                 <div className="space-y-2">
-                  <div className="flex justify-between items-center text-sm font-semibold text-gray-700">
+                  <div className="flex justify-between items-center text-sm font-semibold text-muted-foreground">
                     <span>Rastro (Projeção / Silagem)</span>
                     <span className="text-xs text-purple-700 font-bold bg-purple-50 px-2 py-0.5 rounded">{performance.sillageText}</span>
                   </div>
-                  <div className="w-full bg-gray-100 h-3 rounded-full overflow-hidden">
+                  <div className="w-full bg-muted h-3 rounded-full overflow-hidden">
                     <div className="h-full rounded-full bg-purple-500" style={{ width: `${performance.sillage}%` }}></div>
                   </div>
                 </div>
 
                 {/* Ocasião Recomendada */}
                 <div className="space-y-2">
-                  <div className="flex justify-between items-center text-sm font-semibold text-gray-700">
+                  <div className="flex justify-between items-center text-sm font-semibold text-muted-foreground">
                     <span>Ocasião / Estação (Quando Usar)</span>
                     {(() => {
                       const occInfo = occasionOptions.find(o => o.id === mostCommonOcasião);
@@ -498,14 +498,14 @@ export default function PerfumeDetailPage() {
                 </div>
 
                 {/* Summary Evaluation */}
-                <div className="bg-gray-50/70 p-4 rounded-xl border border-gray-100 mt-4 flex items-center gap-3">
+                <div className="bg-muted/50/70 p-4 rounded-xl border border-border mt-4 flex items-center gap-3">
                   <div className="w-12 h-12 rounded-full bg-yellow-100 flex items-center justify-center shrink-0">
                     <Star className="w-6 h-6 text-yellow-600 fill-yellow-600" />
                   </div>
                   <div>
-                    <span className="text-xs font-bold text-gray-400 uppercase tracking-wide">Avaliação Geral</span>
-                    <p className="text-sm font-bold text-gray-800">
-                      Nota {averageRating} <span className="text-xs font-normal text-gray-500">({totalReviews} resenhas técnicas)</span>
+                    <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide">Avaliação Geral</span>
+                    <p className="text-sm font-bold text-foreground">
+                      Nota {averageRating} <span className="text-xs font-normal text-muted-foreground">({totalReviews} resenhas técnicas)</span>
                     </p>
                   </div>
                 </div>
@@ -514,22 +514,22 @@ export default function PerfumeDetailPage() {
           </div>
 
           {/* Reviews List & Write Review */}
-          <Card className="border border-gray-100 bg-white/95 shadow-sm rounded-xl">
-            <CardHeader className="pb-3 border-b border-gray-100 flex flex-row items-center justify-between">
-              <CardTitle className="text-lg font-bold text-gray-900 flex items-center gap-2">
-                <User className="w-5 h-5 text-teal-600" />
+          <Card className="border border-border bg-background/95 shadow-sm rounded-xl">
+            <CardHeader className="pb-3 border-b border-border flex flex-row items-center justify-between">
+              <CardTitle className="text-lg font-bold text-foreground flex items-center gap-2">
+                <User className="w-5 h-5 text-primary" />
                 Resenhas dos Usuários
               </CardTitle>
             </CardHeader>
             <CardContent className="p-6 space-y-6">
               {/* Form to submit review */}
               {currentUser ? (
-                <form onSubmit={handleReviewSubmit} className="bg-gray-50/50 p-4 rounded-xl border border-gray-100 space-y-4">
-                  <h4 className="text-sm font-bold text-gray-800">Compartilhe sua Avaliação Técnica</h4>
+                <form onSubmit={handleReviewSubmit} className="bg-muted/50/50 p-4 rounded-xl border border-border space-y-4">
+                  <h4 className="text-sm font-bold text-foreground">Compartilhe sua Avaliação Técnica</h4>
 
                   {/* Rating selection */}
                   <div className="flex items-center gap-2">
-                    <span className="text-xs text-gray-500 font-semibold">Sua Nota:</span>
+                    <span className="text-xs text-muted-foreground font-semibold">Sua Nota:</span>
                     <div className="flex gap-1">
                       {[1, 2, 3, 4, 5].map((val) => (
                         <button
@@ -545,13 +545,13 @@ export default function PerfumeDetailPage() {
                   </div>
 
                   {/* Longevidade técnica e Rastro */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 bg-white p-4 rounded-xl border border-gray-100">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 bg-background p-4 rounded-xl border border-border">
                     <LongevitySlider value={longevidade} onChange={setLongevidade} />
                     <SillageSlider value={rastro} onChange={setRastro} />
                   </div>
 
                   {/* Quando usar */}
-                  <div className="bg-white p-4 rounded-xl border border-gray-100">
+                  <div className="bg-background p-4 rounded-xl border border-border">
                     <OccasionSelector selected={quandoUsar} onChange={setQuandoUsar} />
                   </div>
 
@@ -561,23 +561,23 @@ export default function PerfumeDetailPage() {
                       placeholder="Descreva as características técnicas, longevidade, projeção, acordes dominantes..."
                       value={comment}
                       onChange={(e) => setComment(e.target.value)}
-                      className="w-full text-sm border border-gray-200 rounded-lg p-3 bg-white focus:outline-none focus:ring-2 focus:ring-teal-600/50"
+                      className="w-full text-sm border border-border rounded-lg p-3 bg-background focus:outline-none focus:ring-2 focus:ring-teal-600/50"
                       rows={3}
                     />
                   </div>
 
                   <div className="flex justify-end">
-                    <Button type="submit" size="sm" className="bg-teal-600 hover:bg-teal-700 gap-1.5" disabled={submittingReview}>
+                    <Button type="submit" size="sm" className="bg-primary hover:bg-teal-700 gap-1.5" disabled={submittingReview}>
                       <Send className="w-3.5 h-3.5" />
                       Publicar Resenha
                     </Button>
                   </div>
                 </form>
               ) : (
-                <div className="bg-gray-50 p-4 rounded-xl border border-gray-100 text-center">
-                  <p className="text-sm text-gray-500">
+                <div className="bg-muted/50 p-4 rounded-xl border border-border text-center">
+                  <p className="text-sm text-muted-foreground">
                     Você precisa estar logado para publicar resenhas.{" "}
-                    <Link to="/login" className="text-teal-600 font-bold hover:underline">Faça login aqui</Link>.
+                    <Link to="/login" className="text-primary font-bold hover:underline">Faça login aqui</Link>.
                   </p>
                 </div>
               )}
@@ -586,19 +586,19 @@ export default function PerfumeDetailPage() {
               <div className="space-y-4">
                 {perfume.reviews && perfume.reviews.length > 0 ? (
                   perfume.reviews.map((review) => (
-                    <div key={review.id} onClick={() => navigate(`/resenha/${review.id}`)} className="border-b border-teal-500 hover:rounded-md transition-all duration-500 ease-in-out hover:border-teal-200 hover:p-2 cursor-pointer hover:bg-teal-200 pb-4 last:border-0 last:pb-0">
+                    <div key={review.id} onClick={() => navigate(`/resenha/${review.id}`)} className="border-b border-primary hover:rounded-md transition-all duration-500 ease-in-out hover:border-teal-200 hover:p-2 cursor-pointer hover:bg-teal-200 pb-4 last:border-0 last:pb-0">
                       <div className="flex justify-between items-start">
                         <div>
                           <div className="flex items-center gap-2">
-                            <span className="font-bold text-sm text-gray-900">{review.userName}</span>
+                            <span className="font-bold text-sm text-foreground">{review.userName}</span>
                             <div className="flex bg-yellow-50 px-1.5 py-0.5 rounded border border-yellow-100 items-center">
                               <Star className="w-3 h-3 text-yellow-500 fill-yellow-500 mr-1" />
                               <span className="text-[10px] font-bold text-yellow-700">{review.rating}</span>
                             </div>
                             {review.longevidade && (
                               <div className="flex bg-teal-50 px-1.5 py-0.5 rounded border border-teal-100 items-center gap-0.5">
-                                <Clock className="w-3 h-3 text-teal-500 mr-0.5" />
-                                <span className="text-[10px] font-bold text-teal-700">{review.longevidade}/5</span>
+                                <Clock className="w-3 h-3 text-primary mr-0.5" />
+                                <span className="text-[10px] font-bold text-primary">{review.longevidade}/5</span>
                               </div>
                             )}
                             {review.rastro && (
@@ -627,7 +627,7 @@ export default function PerfumeDetailPage() {
                               })()
                             )}
                           </div>
-                          <span className="text-[10px] text-gray-400">
+                          <span className="text-[10px] text-muted-foreground">
                             {new Date(review.date).toLocaleDateString("pt-BR", {
                               day: "numeric",
                               month: "long",
@@ -636,13 +636,13 @@ export default function PerfumeDetailPage() {
                           </span>
                         </div>
                       </div>
-                      <p className="text-sm text-gray-600 mt-2 leading-relaxed whitespace-pre-line">
+                      <p className="text-sm text-muted-foreground mt-2 leading-relaxed whitespace-pre-line">
                         {review.comment}
                       </p>
                     </div>
                   ))
                 ) : (
-                  <p className="text-center text-gray-400 text-sm py-6">
+                  <p className="text-center text-muted-foreground text-sm py-6">
                     Ainda não há resenhas técnicas para este perfume. Seja o primeiro a avaliar!
                   </p>
                 )}
@@ -654,10 +654,10 @@ export default function PerfumeDetailPage() {
         {/* Right Sidebar */}
         <div className="space-y-6">
           {/* Related Brand Perfumes */}
-          <Card className="border border-gray-100 bg-white/95 shadow-sm rounded-xl">
-            <CardHeader className="pb-3 border-b border-gray-100">
-              <CardTitle className="text-base font-bold text-gray-900 flex items-center gap-2">
-                <Tag className="w-4 h-4 text-teal-600" />
+          <Card className="border border-border bg-background/95 shadow-sm rounded-xl">
+            <CardHeader className="pb-3 border-b border-border">
+              <CardTitle className="text-base font-bold text-foreground flex items-center gap-2">
+                <Tag className="w-4 h-4 text-primary" />
                 Da Mesma Casa ({perfume.brandName || perfume.brand})
               </CardTitle>
             </CardHeader>
@@ -668,29 +668,29 @@ export default function PerfumeDetailPage() {
                     <Link
                       key={p.id}
                       to={`/perfume/${p.id}`}
-                      className="flex flex-col gap-2 hover:bg-gray-50/80 p-3 rounded-lg border border-transparent hover:border-gray-100 transition-all duration-200 min-w-[140px] snap-start"
+                      className="flex flex-col gap-2 hover:bg-muted/50/80 p-3 rounded-lg border border-transparent hover:border-border transition-all duration-200 min-w-[140px] snap-start"
                     >
-                      <img src={p.image} alt={p.name} className="w-full h-32 object-cover rounded-md bg-gray-50 shrink-0 shadow-sm" />
+                      <img src={p.image} alt={p.name} className="w-full h-32 object-cover rounded-md bg-muted/50 shrink-0 shadow-sm" />
                       <div className="flex flex-col min-w-0">
                         <span className="text-sm font-bold text-gray-950 truncate block">{p.name}</span>
-                        <span className="text-xs text-gray-500 font-medium block truncate">{p.gender} • {p.year}</span>
-                        <span className="text-sm text-teal-600 font-bold block mt-1">R$ {p.price.toFixed(2)}</span>
+                        <span className="text-xs text-muted-foreground font-medium block truncate">{p.gender} • {p.year}</span>
+                        <span className="text-sm text-primary font-bold block mt-1">R$ {p.price.toFixed(2)}</span>
                       </div>
                     </Link>
                   ))}
                 </div>
               ) : (
-                <p className="text-xs text-gray-400 text-center py-4">Nenhuma outra fragrância desta marca cadastrada.</p>
+                <p className="text-xs text-muted-foreground text-center py-4">Nenhuma outra fragrância desta marca cadastrada.</p>
               )}
             </CardContent>
           </Card>
 
           {/* Related Collection Perfumes */}
           {perfume.collection && (
-            <Card className="border border-gray-100 bg-white/95 shadow-sm rounded-xl">
-              <CardHeader className="pb-3 border-b border-gray-100">
-                <CardTitle className="text-base font-bold text-gray-900 flex items-center gap-2">
-                  <Layers className="w-4 h-4 text-teal-600" />
+            <Card className="border border-border bg-background/95 shadow-sm rounded-xl">
+              <CardHeader className="pb-3 border-b border-border">
+                <CardTitle className="text-base font-bold text-foreground flex items-center gap-2">
+                  <Layers className="w-4 h-4 text-primary" />
                   Da Coleção ({perfume.collection})
                 </CardTitle>
               </CardHeader>
@@ -701,19 +701,19 @@ export default function PerfumeDetailPage() {
                       <Link
                         key={p.id}
                         to={`/perfume/${p.id}`}
-                        className="flex flex-col gap-2 hover:bg-gray-50/80 p-3 rounded-lg border border-transparent hover:border-gray-100 transition-all duration-200 min-w-[140px] snap-start"
+                        className="flex flex-col gap-2 hover:bg-muted/50/80 p-3 rounded-lg border border-transparent hover:border-border transition-all duration-200 min-w-[140px] snap-start"
                       >
-                        <img src={p.image} alt={p.name} className="w-full h-32 object-cover rounded-md bg-gray-50 shrink-0 shadow-sm" />
+                        <img src={p.image} alt={p.name} className="w-full h-32 object-cover rounded-md bg-muted/50 shrink-0 shadow-sm" />
                         <div className="flex flex-col min-w-0">
                           <span className="text-sm font-bold text-gray-950 truncate block">{p.name}</span>
-                          <span className="text-xs text-gray-500 font-medium block truncate">{p.brand}</span>
-                          <span className="text-sm text-teal-600 font-bold block mt-1">R$ {p.price.toFixed(2)}</span>
+                          <span className="text-xs text-muted-foreground font-medium block truncate">{p.brand}</span>
+                          <span className="text-sm text-primary font-bold block mt-1">R$ {p.price.toFixed(2)}</span>
                         </div>
                       </Link>
                     ))}
                   </div>
                 ) : (
-                  <p className="text-xs text-gray-400 text-center py-4">Nenhuma outra fragrância desta coleção cadastrada.</p>
+                  <p className="text-xs text-muted-foreground text-center py-4">Nenhuma outra fragrância desta coleção cadastrada.</p>
                 )}
               </CardContent>
             </Card>

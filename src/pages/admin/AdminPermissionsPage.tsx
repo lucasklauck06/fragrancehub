@@ -107,30 +107,30 @@ export default function AdminPermissionsPage() {
             <table className="w-full">
               <thead>
                 <tr className="border-b">
-                  <th className="text-left py-3 px-4 font-semibold text-gray-700">ID</th>
-                  <th className="text-left py-3 px-4 font-semibold text-gray-700">Nome</th>
-                  <th className="text-left py-3 px-4 font-semibold text-gray-700">E-mail</th>
-                  <th className="text-left py-3 px-4 font-semibold text-gray-700">Data de Cadastro</th>
-                  <th className="text-left py-3 px-4 font-semibold text-gray-700">Nível de Acesso</th>
+                  <th className="text-left py-3 px-4 font-semibold text-muted-foreground">ID</th>
+                  <th className="text-left py-3 px-4 font-semibold text-muted-foreground">Nome</th>
+                  <th className="text-left py-3 px-4 font-semibold text-muted-foreground">E-mail</th>
+                  <th className="text-left py-3 px-4 font-semibold text-muted-foreground">Data de Cadastro</th>
+                  <th className="text-left py-3 px-4 font-semibold text-muted-foreground">Nível de Acesso</th>
                 </tr>
               </thead>
               <tbody>
                 {isLoading ? (
                   <tr>
-                    <td colSpan={5} className="py-8 text-center text-gray-500">
+                    <td colSpan={5} className="py-8 text-center text-muted-foreground">
                       Carregando usuários...
                     </td>
                   </tr>
                 ) : users.length === 0 ? (
                   <tr>
-                    <td colSpan={5} className="py-8 text-center text-gray-500">
+                    <td colSpan={5} className="py-8 text-center text-muted-foreground">
                       Nenhum usuário encontrado.
                     </td>
                   </tr>
                 ) : (
                   users.map((user) => (
-                    <tr key={user.id} className="border-b hover:bg-gray-50 transition-colors">
-                      <td className="py-3 px-4 text-gray-600 text-sm">{user.id.substring(0, 8)}...</td>
+                    <tr key={user.id} className="border-b hover:bg-muted/50 transition-colors">
+                      <td className="py-3 px-4 text-muted-foreground text-sm">{user.id.substring(0, 8)}...</td>
                       <td className="py-3 px-4">
                         <div className="flex items-center gap-2">
                           <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
@@ -141,8 +141,8 @@ export default function AdminPermissionsPage() {
                           <span className="font-medium">{user.name}</span>
                         </div>
                       </td>
-                      <td className="py-3 px-4 text-gray-700">{user.email}</td>
-                      <td className="py-3 px-4 text-gray-600">{formatDate(user.createdAt)}</td>
+                      <td className="py-3 px-4 text-muted-foreground">{user.email}</td>
+                      <td className="py-3 px-4 text-muted-foreground">{formatDate(user.createdAt)}</td>
                       <td className="py-3 px-4">
                         <Select
                           value={user.role}

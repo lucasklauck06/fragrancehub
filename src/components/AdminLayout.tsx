@@ -34,17 +34,17 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
+    <div className="min-h-screen bg-muted/50 flex">
       {/* Sidebar */}
-      <aside className="w-64 bg-white border-r min-h-screen sticky top-0">
+      <aside className="w-64 bg-background border-r min-h-screen sticky top-0">
         <div className="p-6 border-b">
           <Link to="/" className="flex items-center gap-2">
             <div className="w-10 h-10 bg-gradient-to-br from-purple-600 to-pink-600 rounded-full flex items-center justify-center">
               <span className="text-white font-bold">FH</span>
             </div>
             <div>
-              <div className="font-bold text-gray-900">FragranceHub</div>
-              <div className="text-xs text-gray-500">Painel Admin</div>
+              <div className="font-bold text-foreground">FragranceHub</div>
+              <div className="text-xs text-muted-foreground">Painel Admin</div>
             </div>
           </Link>
         </div>
@@ -62,7 +62,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                 className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
                   isActive
                     ? 'bg-purple-50 text-purple-700 font-medium'
-                    : 'text-gray-700 hover:bg-gray-50'
+                    : 'text-muted-foreground hover:bg-muted/50'
                 }`}
               >
                 <Icon className="w-5 h-5" />
@@ -72,7 +72,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           })}
         </nav>
 
-        <div className="absolute bottom-0 w-64 p-4 border-t bg-white">
+        <div className="absolute bottom-0 w-64 p-4 border-t bg-background">
           <div className="flex items-center gap-3 mb-3 px-2">
             <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
               <span className="text-purple-700 font-semibold text-sm">
@@ -81,7 +81,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             </div>
             <div className="flex-1 min-w-0">
               <p className="font-medium text-sm truncate">{currentUser.name}</p>
-              <p className="text-xs text-gray-500 truncate">{currentUser.email}</p>
+              <p className="text-xs text-muted-foreground truncate">{currentUser.email}</p>
             </div>
           </div>
           <Button variant="outline" onClick={handleLogout} className="w-full gap-2 text-red-600 hover:bg-red-50">

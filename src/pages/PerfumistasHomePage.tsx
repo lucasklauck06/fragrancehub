@@ -39,7 +39,7 @@ export default function DesignersHomePage() {
   return (
     <>
       {/* Main Content */}
-      <main className="relative flex-1 w-full max-w-7xl mx-auto px-4 py-8 bg-white/40  backdrop-blur-sm rounded-lg shadow-sm">
+      <main className="relative flex-1 w-full max-w-7xl mx-auto px-4 py-8 bg-background/40  backdrop-blur-sm rounded-lg shadow-sm">
         <div className="flex flex-col md:flex-row gap-4">
           <div className="flex-3">
             <div className="flex flex-col">
@@ -78,9 +78,9 @@ export default function DesignersHomePage() {
                           .map((perfumist) => (
                             <span
                               key={perfumist.name}
-                              className="text-teal-600 hover:text-teal-700 transition-colors duration-300 text-lg font-semibold flex items-center gap-2 group"
+                              className="text-primary hover:text-primary transition-colors duration-300 text-lg font-semibold flex items-center gap-2 group"
                             >
-                              <div className="bg-gray-200 rounded-full w-16 h-16 overflow-hidden relative border-2 border-gray-300 group-hover:border-teal-700 transition-colors duration-300">
+                              <div className="bg-muted rounded-full w-16 h-16 overflow-hidden relative border-2 border-border group-hover:border-teal-700 transition-colors duration-300">
                                 {perfumist.photo ? (
                                   <img
                                     src={perfumist.photo}
@@ -88,7 +88,7 @@ export default function DesignersHomePage() {
                                     className="w-full h-full object-cover"
                                   />
                                 ) : (
-                                  <div className="w-full h-full flex items-center justify-center text-gray-400">
+                                  <div className="w-full h-full flex items-center justify-center text-muted-foreground">
                                     👤
                                   </div>
                                 )}
@@ -105,7 +105,7 @@ export default function DesignersHomePage() {
                       </div>
                     ) : (
                       <div className="flex justify-center gap-2">
-                        <span className="text-gray-500">
+                        <span className="text-muted-foreground">
                           Nenhum perfumista encontrado com a letra {letter}
                         </span>
                       </div>
@@ -116,9 +116,9 @@ export default function DesignersHomePage() {
                   <Link
                     key={perfumist.id}
                     to={`/perfumista/${perfumist.id}`}
-                    className="text-teal-600 hover:text-teal-700 transition-colors duration-300 text-lg font-semibold flex items-center gap-2 group"
+                    className="text-primary hover:text-primary transition-colors duration-300 text-lg font-semibold flex items-center gap-2 group"
                   >
-                    <div className="bg-gray-200 rounded-full w-16 h-16 overflow-hidden relative border-2 border-gray-300 group-hover:border-teal-700 transition-colors duration-300">
+                    <div className="bg-muted rounded-full w-16 h-16 overflow-hidden relative border-2 border-border group-hover:border-teal-700 transition-colors duration-300">
                       {perfumist.photo ? (
                         <img
                           src={perfumist.photo}
@@ -126,7 +126,7 @@ export default function DesignersHomePage() {
                           className="w-full h-full object-cover"
                         />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center text-gray-400">
+                        <div className="w-full h-full flex items-center justify-center text-muted-foreground">
                           👤
                         </div>
                       )}

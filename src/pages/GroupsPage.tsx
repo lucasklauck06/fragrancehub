@@ -111,13 +111,13 @@ function GroupModal({ group, onClose }: { group: AromaticGroup; onClose: () => v
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-3xl max-w-2xl w-full max-h-[85vh] overflow-y-auto shadow-2xl"
+        className="bg-background rounded-3xl max-w-2xl w-full max-h-[85vh] overflow-y-auto shadow-2xl"
         onClick={e => e.stopPropagation()}
       >
         {/* Modal header */}
         <div className={`bg-gradient-to-br ${group.gradient} p-6 rounded-t-3xl relative overflow-hidden`}>
-          <div className="absolute -right-8 -top-8 w-32 h-32 rounded-full bg-white/10" />
-          <div className="absolute -right-2 bottom-0 w-20 h-20 rounded-full bg-white/5" />
+          <div className="absolute -right-8 -top-8 w-32 h-32 rounded-full bg-background/10" />
+          <div className="absolute -right-2 bottom-0 w-20 h-20 rounded-full bg-background/5" />
           <div className="relative flex items-start justify-between">
             <div>
               <span className="text-5xl mb-2 block">{group.icon}</span>
@@ -126,7 +126,7 @@ function GroupModal({ group, onClose }: { group: AromaticGroup; onClose: () => v
             </div>
             <button
               onClick={onClose}
-              className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/30 transition-colors cursor-pointer"
+              className="w-8 h-8 rounded-full bg-background/20 flex items-center justify-center hover:bg-background/30 transition-colors cursor-pointer"
               style={{ color: group.textColor }}
             >
               <X className="w-4 h-4" />
@@ -138,16 +138,16 @@ function GroupModal({ group, onClose }: { group: AromaticGroup; onClose: () => v
         <div className="p-6 space-y-5">
           {/* Description */}
           <div>
-            <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-2">Sobre</h3>
-            <p className="text-gray-700 leading-relaxed">{group.description}</p>
+            <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-2">Sobre</h3>
+            <p className="text-muted-foreground leading-relaxed">{group.description}</p>
           </div>
 
           {/* Characteristics */}
           <div>
-            <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-2">Características</h3>
+            <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-2">Características</h3>
             <div className="flex flex-wrap gap-2">
               {(group.characteristics || []).map(c => (
-                <span key={c} className="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-full font-medium">
+                <span key={c} className="bg-muted text-muted-foreground text-sm px-3 py-1.5 rounded-full font-medium">
                   {c}
                 </span>
               ))}
@@ -156,12 +156,12 @@ function GroupModal({ group, onClose }: { group: AromaticGroup; onClose: () => v
 
           {/* Sub-groups */}
           <div>
-            <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-2">Sub-grupos</h3>
+            <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-2">Sub-grupos</h3>
             <div className="grid grid-cols-2 gap-2">
               {(group.subGroups || []).map(sg => (
-                <div key={sg} className="flex items-center gap-2 p-2.5 bg-gray-50 rounded-xl border border-gray-200">
+                <div key={sg} className="flex items-center gap-2 p-2.5 bg-muted/50 rounded-xl border border-border">
                   <div className="w-2 h-2 rounded-full" style={{ backgroundColor: group.color }} />
-                  <span className="text-sm text-gray-700">{sg}</span>
+                  <span className="text-sm text-muted-foreground">{sg}</span>
                 </div>
               ))}
             </div>
@@ -169,10 +169,10 @@ function GroupModal({ group, onClose }: { group: AromaticGroup; onClose: () => v
 
           {/* Seasonality */}
           <div>
-            <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-2">Estações Ideais</h3>
+            <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-2">Estações Ideais</h3>
             <div className="flex flex-wrap gap-2">
               {(group.seasonality || []).map(s => (
-                <div key={s} className="flex items-center gap-1.5 bg-gray-50 border border-gray-200 px-3 py-1.5 rounded-full text-sm text-gray-700">
+                <div key={s} className="flex items-center gap-1.5 bg-muted/50 border border-border px-3 py-1.5 rounded-full text-sm text-muted-foreground">
                   {seasonIcon[s]}
                   <span>{s}</span>
                 </div>
@@ -182,7 +182,7 @@ function GroupModal({ group, onClose }: { group: AromaticGroup; onClose: () => v
 
           {/* Representative perfumes */}
           <div>
-            <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-2">Perfumes deste Grupo</h3>
+            <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-2">Perfumes deste Grupo</h3>
             <div className="space-y-2">
               {group.perfumes && group.perfumes.length > 0 ? (
                 group.perfumes.map((perfume: any) => (
@@ -190,22 +190,22 @@ function GroupModal({ group, onClose }: { group: AromaticGroup; onClose: () => v
                     key={perfume.id} 
                     to={`/perfume/${perfume.id}`}
                     onClick={onClose}
-                    className="flex items-center gap-3 p-2 bg-gray-50 rounded-xl border border-gray-200 hover:border-teal-300 hover:bg-white transition-all cursor-pointer group/perfume"
+                    className="flex items-center gap-3 p-2 bg-muted/50 rounded-xl border border-border hover:border-primary/50 hover:bg-background transition-all cursor-pointer group/perfume"
                   >
                     <img 
                       src={perfume.image || "https://images.unsplash.com/photo-1541643600914-78b084683601?w=400&h=600&fit=crop"} 
                       alt={perfume.name}
-                      className="w-10 h-10 rounded-md object-cover shadow-sm bg-white"
+                      className="w-10 h-10 rounded-md object-cover shadow-sm bg-background"
                     />
                     <div className="flex-1 min-w-0">
-                      <p className="text-xs font-bold text-gray-900 truncate group-hover/perfume:text-teal-600 transition-colors">{perfume.name}</p>
-                      <p className="text-[10px] text-gray-500 uppercase tracking-wide truncate">{perfume.brand?.name || 'Marca'}</p>
+                      <p className="text-xs font-bold text-foreground truncate group-hover/perfume:text-primary transition-colors">{perfume.name}</p>
+                      <p className="text-[10px] text-muted-foreground uppercase tracking-wide truncate">{perfume.brand?.name || 'Marca'}</p>
                     </div>
-                    <ChevronRight className="w-4 h-4 text-gray-400 group-hover/perfume:text-teal-500" />
+                    <ChevronRight className="w-4 h-4 text-muted-foreground group-hover/perfume:text-primary" />
                   </Link>
                 ))
               ) : (
-                <div className="text-xs text-gray-400 italic p-2 bg-gray-50 rounded-lg text-center">Nenhum perfume cadastrado neste grupo ainda.</div>
+                <div className="text-xs text-muted-foreground italic p-2 bg-muted/50 rounded-lg text-center">Nenhum perfume cadastrado neste grupo ainda.</div>
               )}
             </div>
           </div>
@@ -244,16 +244,16 @@ export default function GroupsPage() {
 
   return (
     <>
-    <div className="relative flex-1 w-full max-w-7xl mx-auto px-4 py-8 bg-white/40  backdrop-blur-sm rounded-lg shadow-sm">
+    <div className="relative flex-1 w-full max-w-7xl mx-auto px-4 py-8 bg-background/40  backdrop-blur-sm rounded-lg shadow-sm">
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Intro card */}
-        <div className="bg-white rounded-2xl border border-gray-200 p-5 mb-8 flex flex-col sm:flex-row gap-4 items-start">
+        <div className="bg-background rounded-2xl border border-border p-5 mb-8 flex flex-col sm:flex-row gap-4 items-start">
           <div className="w-12 h-12 bg-rose-100 rounded-xl flex items-center justify-center flex-shrink-0">
             <span className="text-2xl">🌐</span>
           </div>
           <div>
-            <h2 className="font-bold text-gray-900 mb-1">O que são grupos aromáticos?</h2>
-            <p className="text-sm text-gray-600 leading-relaxed">
+            <h2 className="font-bold text-foreground mb-1">O que são grupos aromáticos?</h2>
+            <p className="text-sm text-muted-foreground leading-relaxed">
               As famílias olfativas são categorias que classificam fragrâncias de acordo com suas características predominantes.
               Criadas pela indústria perfumísta para facilitar a comunicação entre criadores, varejistas e consumidores.
               Conhecer os grupos ajuda você a encontrar perfumes com maior precisão.
@@ -267,17 +267,17 @@ export default function GroupsPage() {
             <GroupCard key={group.id} group={group} onClick={() => setActiveGroup(group)} />
           ))}
           {aromaticGroups.length === 0 && (
-            <div className="col-span-full text-center py-10 text-gray-500">
+            <div className="col-span-full text-center py-10 text-muted-foreground">
               Nenhum grupo aromático encontrado ou carregando...
             </div>
           )}
         </div>
 
         {/* Fragrance Family Quick Reference */}
-        <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
-          <div className="px-5 py-4 border-b border-gray-200 bg-gray-50">
-            <h3 className="font-bold text-gray-900">Referência Rápida — Famílias Olfativas</h3>
-            <p className="text-xs text-gray-500 mt-0.5">Sub-grupos de cada família</p>
+        <div className="bg-background rounded-2xl border border-border overflow-hidden">
+          <div className="px-5 py-4 border-b border-border bg-muted/50">
+            <h3 className="font-bold text-foreground">Referência Rápida — Famílias Olfativas</h3>
+            <p className="text-xs text-muted-foreground mt-0.5">Sub-grupos de cada família</p>
           </div>
           <div className="divide-y divide-gray-100">
             {aromaticGroups.map(group => (
@@ -286,7 +286,7 @@ export default function GroupsPage() {
                   <span className="text-xl">{group.icon}</span>
                   <button
                     onClick={() => setActiveGroup(group)}
-                    className="font-bold text-sm text-gray-900 hover:text-purple-600 transition-colors text-left cursor-pointer"
+                    className="font-bold text-sm text-foreground hover:text-purple-600 transition-colors text-left cursor-pointer"
                   >
                     {group.name}
                   </button>
@@ -345,7 +345,7 @@ export default function GroupsPage() {
                   </button>
                 ))}
                 {section.groups.length === 0 && (
-                  <span className="text-xs text-gray-500 opacity-70 italic">-</span>
+                  <span className="text-xs text-muted-foreground opacity-70 italic">-</span>
                 )}
               </div>
             </div>

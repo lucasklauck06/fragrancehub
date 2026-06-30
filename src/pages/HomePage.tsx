@@ -54,13 +54,13 @@ export default function HomePage() {
 
   return (
     <>
-      <main className="relative flex-1 w-full max-w-7xl mx-auto px-4 py-8 bg-white/40  backdrop-blur-sm rounded-lg shadow-sm">
+      <main className="relative flex-1 w-full max-w-7xl mx-auto px-4 py-8 bg-background/40  backdrop-blur-sm rounded-lg shadow-sm">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Coluna Esquerda: Notícias/Artigos */}
           <div className="lg:col-span-2 flex flex-col gap-6">
             {/* Card Artigo 1 */}
-            <Card className="bg-white/90 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col md:flex-row relative group cursor-pointer">
-              <div className="md:w-[45%] relative aspect-square md:aspect-auto bg-gray-100 overflow-hidden">
+            <Card className="bg-background/90 backdrop-blur-sm rounded-xl shadow-sm border border-border overflow-hidden flex flex-col md:flex-row relative group cursor-pointer">
+              <div className="md:w-[45%] relative aspect-square md:aspect-auto bg-muted overflow-hidden">
                 <img
                   src="https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=800"
                   alt="Roja Parfums"
@@ -75,13 +75,13 @@ export default function HomePage() {
                 </div>
               </div>
               <div className="p-8 md:w-[55%] flex flex-col justify-center">
-                <h2 className="text-2xl font-bold text-gray-900 mb-3 leading-tight">
+                <h2 className="text-2xl font-bold text-foreground mb-3 leading-tight">
                   Roja Haute Luxe de Roja Dove: Um Neo Chypré Clássico
                 </h2>
-                <p className="text-gray-500 mb-8 text-sm">
+                <p className="text-muted-foreground mb-8 text-sm">
                   Qual é o cheiro de um perfume de £2.500,00?!
                 </p>
-                <div className="flex items-center gap-3 mt-auto pt-4 border-t border-gray-100">
+                <div className="flex items-center gap-3 mt-auto pt-4 border-t border-border">
                   <div className="w-10 h-10 rounded-full overflow-hidden shrink-0">
                     <img
                       src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150"
@@ -90,17 +90,17 @@ export default function HomePage() {
                     />
                   </div>
                   <div>
-                    <p className="text-sm font-bold text-gray-900">
+                    <p className="text-sm font-bold text-foreground">
                       Rouu Abd El-Latif
                     </p>
-                    <p className="text-xs text-gray-400">4 hours ago</p>
+                    <p className="text-xs text-muted-foreground">4 hours ago</p>
                   </div>
                 </div>
               </div>
             </Card>
 
             {/* Card Artigo 2 */}
-            <Card className="bg-red-950 rounded-xl shadow-sm overflow-hidden h-[320px] relative group cursor-pointer border border-gray-100/20">
+            <Card className="bg-red-950 rounded-xl shadow-sm overflow-hidden h-[320px] relative group cursor-pointer border border-border/20">
               <img
                 src="https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=1200"
                 alt="Splash"
@@ -121,7 +121,7 @@ export default function HomePage() {
               {news.slice(0, 1).map((newsItem) => (
                 <Card
                   key={newsItem.id}
-                  className="bg-white/90 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100 cursor-pointer group overflow-hidden"
+                  className="bg-background/90 backdrop-blur-sm rounded-xl shadow-sm border border-border cursor-pointer group overflow-hidden"
                 >
                   <img
                     src={newsItem.image}
@@ -131,13 +131,13 @@ export default function HomePage() {
                   <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/20 to-white/0 opacity-0 group-hover:opacity-100 translate-x-[-100%] group-hover:translate-x-[100%] transition-all duration-1000 ease-out pointer-events-none z-10"></div>
 
                   <div className="p-6">
-                    <h3 className="text-lg font-bold text-gray-800 mb-2">
+                    <h3 className="text-lg font-bold text-foreground mb-2">
                       {newsItem.title}
                     </h3>
-                    <p className="text-gray-600 text-sm mb-4">
+                    <p className="text-muted-foreground text-sm mb-4">
                       {newsItem.subtitle}
                     </p>
-                    <p className="text-gray-500 text-xs">
+                    <p className="text-muted-foreground text-xs">
                       {newsItem.content.substring(0, 250)}...
                     </p>
                   </div>
@@ -147,7 +147,7 @@ export default function HomePage() {
               {news.slice(2, 3).map((newsItem) => (
                 <Card
                   key={newsItem.id}
-                  className="bg-white/90 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100 cursor-pointer group overflow-hidden"
+                  className="bg-background/90 backdrop-blur-sm rounded-xl shadow-sm border border-border cursor-pointer group overflow-hidden"
                 >
                   <img
                     src={newsItem.image}
@@ -156,13 +156,13 @@ export default function HomePage() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/20 to-white/0 opacity-0 group-hover:opacity-100 translate-x-[-100%] group-hover:translate-x-[100%] transition-all duration-1000 ease-out pointer-events-none z-10"></div>
                   <div className="p-6">
-                    <h3 className="text-lg font-bold text-gray-800 mb-2">
+                    <h3 className="text-lg font-bold text-foreground mb-2">
                       {newsItem.title}
                     </h3>
-                    <p className="text-gray-600 text-sm mb-4">
+                    <p className="text-muted-foreground text-sm mb-4">
                       {newsItem.subtitle}
                     </p>
-                    <p className="text-gray-500 text-xs">
+                    <p className="text-muted-foreground text-xs">
                       {newsItem.content.substring(0, 250)}...
                     </p>
                   </div>
@@ -173,7 +173,7 @@ export default function HomePage() {
               {news.slice(1, 2).map((newsItem) => (
                 <Card
                   key={newsItem.id}
-                  className="bg-white/90 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100 cursor-pointer group overflow-hidden"
+                  className="bg-background/90 backdrop-blur-sm rounded-xl shadow-sm border border-border cursor-pointer group overflow-hidden"
                 >
                   <img
                     src={newsItem.image}
@@ -182,13 +182,13 @@ export default function HomePage() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/20 to-white/0 opacity-0 group-hover:opacity-100 translate-x-[-100%] group-hover:translate-x-[100%] transition-all duration-1000 ease-out pointer-events-none z-10"></div>
                   <div className="p-6">
-                    <h3 className="text-lg font-bold text-gray-800 mb-2">
+                    <h3 className="text-lg font-bold text-foreground mb-2">
                       {newsItem.title}
                     </h3>
-                    <p className="text-gray-600 text-sm mb-4">
+                    <p className="text-muted-foreground text-sm mb-4">
                       {newsItem.subtitle}
                     </p>
-                    <p className="text-gray-500 text-xs">
+                    <p className="text-muted-foreground text-xs">
                       {newsItem.content.substring(0, 250)}...
                     </p>
                   </div>
@@ -196,8 +196,8 @@ export default function HomePage() {
               ))}
             </div>
             {/* Novos Perfumes */}
-            <Card className="bg-white/90 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100 p-6">
-              <h2 className="text-xl font-bold text-gray-800 mb-4 border-l-4 border-teal-600 pl-3">
+            <Card className="bg-background/90 backdrop-blur-sm rounded-xl shadow-sm border border-border p-6">
+              <h2 className="text-xl font-bold text-foreground mb-4 border-l-4 border-teal-600 pl-3">
                 Novos Perfumes
               </h2>
               <div className="flex gap-4 overflow-x-auto scroll-smooth pb-2">
@@ -207,7 +207,7 @@ export default function HomePage() {
                   .map((perfume) => (
                     <div key={perfume.id} className="flex-shrink-0">
                       <Card
-                        className="bg-gray-50 rounded-lg overflow-hidden p-2 hover:shadow-lg transition-all duration-300 cursor-pointer w-32"
+                        className="bg-muted/50 rounded-lg overflow-hidden p-2 hover:shadow-lg transition-all duration-300 cursor-pointer w-32"
                         onClick={() => navigate(`/perfume/${perfume.id}`)}
                       >
                         <img
@@ -215,13 +215,13 @@ export default function HomePage() {
                           alt={perfume.name}
                           className="w-full h-40 object-cover rounded-md mb-2 hover:scale-105 transition-transform duration-300"
                         />
-                        <p className="text-sm font-bold text-gray-900 truncate">
+                        <p className="text-sm font-bold text-foreground truncate">
                           {perfume.name}
                         </p>
-                        <p className="text-xs text-gray-500 truncate">
+                        <p className="text-xs text-muted-foreground truncate">
                           {perfume.brand}
                         </p>
-                        <p className="text-xs text-teal-600 font-semibold mt-1">
+                        <p className="text-xs text-primary font-semibold mt-1">
                           R$ {perfume.price}
                         </p>
                       </Card>

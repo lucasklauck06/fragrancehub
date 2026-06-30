@@ -87,15 +87,15 @@ export default function AdminBrandFormPage() {
         <Button
           variant="ghost"
           onClick={() => navigate("/admin/marcas")}
-          className="mb-4 text-gray-500 hover:text-gray-900 -ml-4"
+          className="mb-4 text-muted-foreground hover:text-foreground -ml-4"
         >
           <ArrowLeft size={16} className="mr-2" />
           Voltar para Marcas
         </Button>
-        <h1 className="text-3xl font-bold text-gray-900">
+        <h1 className="text-3xl font-bold text-foreground">
           {isEditing ? "Editar Marca" : "Nova Marca"}
         </h1>
-        <p className="text-sm text-gray-500 mt-1">
+        <p className="text-sm text-muted-foreground mt-1">
           {isEditing
             ? "Atualize as informações da marca."
             : "Adicione uma nova casa de perfumaria."}
@@ -140,7 +140,7 @@ export default function AdminBrandFormPage() {
                 }
                 placeholder="https://exemplo.com/imagem.jpg"
               />
-              <p className="text-xs text-gray-600">Exemplo: https://images.unsplash.com/photo-1541643600914-78b084683601?w=400&h=600&fit=crop</p>
+              <p className="text-xs text-muted-foreground">Exemplo: https://images.unsplash.com/photo-1541643600914-78b084683601?w=400&h=600&fit=crop</p>
               {formData.image && <img src={formData.image} alt="Preview" className="w-24 h-24 object-cover mt-2" />}
             </div>
 

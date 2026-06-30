@@ -118,7 +118,7 @@ export default function AdminPerfumistFormPage() {
   if (loadingInitial) {
     return (
       <AdminLayout>
-        <div className="flex items-center justify-center py-20 text-gray-500">
+        <div className="flex items-center justify-center py-20 text-muted-foreground">
           Carregando dados do perfumista...
         </div>
       </AdminLayout>
@@ -131,15 +131,15 @@ export default function AdminPerfumistFormPage() {
         <Button
           variant="ghost"
           onClick={() => navigate("/admin/perfumistas")}
-          className="mb-4 text-gray-500 hover:text-gray-900 -ml-4"
+          className="mb-4 text-muted-foreground hover:text-foreground -ml-4"
         >
           <ArrowLeft size={16} className="mr-2" />
           Voltar para Perfumistas
         </Button>
-        <h1 className="text-3xl font-bold text-gray-900">
+        <h1 className="text-3xl font-bold text-foreground">
           {isEditing ? "Editar Perfumista" : "Novo Perfumista"}
         </h1>
-        <p className="text-sm text-gray-500 mt-1">
+        <p className="text-sm text-muted-foreground mt-1">
           {isEditing
             ? "Atualize as informações biográficas e o país do criador."
             : "Adicione um novo profissional criador ao catálogo."}
@@ -178,14 +178,14 @@ export default function AdminPerfumistFormPage() {
 
             <div className="space-y-2">
               <Label>Perfumes Associados</Label>
-              <p className="text-xs text-gray-600 mb-2">Selecione os perfumes criados por este perfumista:</p>
-              <div className="border border-gray-200 rounded-md p-4 max-h-60 overflow-y-auto bg-gray-50/50">
+              <p className="text-xs text-muted-foreground mb-2">Selecione os perfumes criados por este perfumista:</p>
+              <div className="border border-border rounded-md p-4 max-h-60 overflow-y-auto bg-muted/50/50">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {allPerfumes.length === 0 ? (
-                    <p className="text-sm text-gray-500 col-span-2">Nenhum perfume encontrado no sistema.</p>
+                    <p className="text-sm text-muted-foreground col-span-2">Nenhum perfume encontrado no sistema.</p>
                   ) : (
                     allPerfumes.map(perfume => (
-                      <div key={perfume.id} className="flex items-center space-x-3 bg-white p-2 rounded border border-gray-100 shadow-sm">
+                      <div key={perfume.id} className="flex items-center space-x-3 bg-background p-2 rounded border border-border shadow-sm">
                         <Checkbox
                           id={`perfume-${perfume.id}`}
                           checked={formData.perfumeIds.includes(perfume.id)}
@@ -196,11 +196,11 @@ export default function AdminPerfumistFormPage() {
                           {perfume.image ? (
                             <img src={perfume.image} alt={perfume.name} className="w-8 h-8 object-contain mix-blend-multiply" />
                           ) : (
-                            <div className="w-8 h-8 bg-gray-100 rounded flex items-center justify-center text-xs">P</div>
+                            <div className="w-8 h-8 bg-muted rounded flex items-center justify-center text-xs">P</div>
                           )}
                           <Label htmlFor={`perfume-${perfume.id}`} className="text-sm font-medium cursor-pointer truncate">
                             {perfume.name}
-                            <span className="block text-[10px] text-gray-500 font-normal">{perfume.brand}</span>
+                            <span className="block text-[10px] text-muted-foreground font-normal">{perfume.brand}</span>
                           </Label>
                         </div>
                       </div>
@@ -222,14 +222,14 @@ export default function AdminPerfumistFormPage() {
                 placeholder="https://exemplo.com/foto.jpg"
                 disabled={isSubmitting}
               />
-              <p className="text-xs text-gray-600">Recomendado formato quadrado ou retrato. Será exibido no perfil.</p>
+              <p className="text-xs text-muted-foreground">Recomendado formato quadrado ou retrato. Será exibido no perfil.</p>
               {formData.photo && (
                 <div className="mt-3">
-                  <p className="text-xs font-semibold text-gray-700 mb-1">Preview:</p>
+                  <p className="text-xs font-semibold text-muted-foreground mb-1">Preview:</p>
                   <img
                     src={formData.photo}
                     alt="Preview"
-                    className="w-24 h-24 object-cover rounded-full border border-gray-200"
+                    className="w-24 h-24 object-cover rounded-full border border-border"
                     onError={(e) => (e.currentTarget.style.display = 'none')}
                     onLoad={(e) => (e.currentTarget.style.display = 'block')}
                   />

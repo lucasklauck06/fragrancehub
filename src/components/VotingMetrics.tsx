@@ -23,10 +23,10 @@ export const LongevitySlider = ({ value, onChange }: SliderProps) => {
       <History className="w-8 h-8 text-slate-500 mb-1" />
       <span className="text-xs font-bold text-slate-600 tracking-wider mb-8 uppercase">Longevidade</span>
 
-      <div className="relative w-[calc(100%-2rem)] max-w-sm flex items-center h-1.5 bg-gray-200 rounded-full mt-2">
+      <div className="relative w-[calc(100%-2rem)] max-w-sm flex items-center h-1.5 bg-muted rounded-full mt-2">
         {/* Fill bar */}
         <div
-          className="absolute h-full bg-teal-500 rounded-full transition-all duration-300"
+          className="absolute h-full bg-primary rounded-full transition-all duration-300"
           style={{ width: `${(value / 5) * 100}%` }}
         ></div>
 
@@ -38,10 +38,10 @@ export const LongevitySlider = ({ value, onChange }: SliderProps) => {
             style={{ left: `${(step / 5) * 100}%` }}
             onClick={() => onChange(step)}
           >
-            <div className={`rounded-full z-10 transition-all duration-300 ${(value === step ? 'w-4 h-4 bg-white border-2 z-10 transition-colors border-teal-500' : value > step ? 'w-2.5 h-2.5 bg-teal-500' : 'w-2.5 h-2.5 bg-teal-200')}`} />
+            <div className={`rounded-full z-10 transition-all duration-300 ${(value === step ? 'w-4 h-4 bg-background border-2 z-10 transition-colors border-primary' : value > step ? 'w-2.5 h-2.5 bg-primary' : 'w-2.5 h-2.5 bg-teal-200')}`} />
 
             {/* Label */}
-            <span className={`absolute -top-7 whitespace-nowrap text-[10px] transition-opacity ${value === step ? 'opacity-100 font-bold text-teal-700' : 'opacity-0 group-hover:opacity-100 text-gray-400'}`}>
+            <span className={`absolute -top-7 whitespace-nowrap text-[10px] transition-opacity ${value === step ? 'opacity-100 font-bold text-primary' : 'opacity-0 group-hover:opacity-100 text-muted-foreground'}`}>
               {labels[step]}
             </span>
           </div>
@@ -59,7 +59,7 @@ export const SillageSlider = ({ value, onChange }: SliderProps) => {
       <UserCircle className="w-8 h-8 text-slate-500 mb-1" />
       <span className="text-xs font-bold text-slate-600 tracking-wider mb-8 uppercase">Rastro</span>
 
-      <div className="relative w-[calc(100%-2rem)] max-w-sm flex items-center h-1.5 bg-gray-200 rounded-full mt-2">
+      <div className="relative w-[calc(100%-2rem)] max-w-sm flex items-center h-1.5 bg-muted rounded-full mt-2">
         <div
           className="absolute h-full bg-purple-500 rounded-full transition-all duration-300"
           style={{ width: `${(value / 5) * 100}%` }}
@@ -72,9 +72,9 @@ export const SillageSlider = ({ value, onChange }: SliderProps) => {
             style={{ left: `${(step / 5) * 100}%` }}
             onClick={() => onChange(step)}
           >
-            <div className={`rounded-full z-10 transition-all duration-300 ${value === step ? 'w-4 h-4 bg-white border-2 z-10 transition-colors border-purple-500' : value > step ? 'w-2.5 h-2.5 bg-purple-500' : 'w-2.5 h-2.5 bg-purple-200'}`} />
+            <div className={`rounded-full z-10 transition-all duration-300 ${value === step ? 'w-4 h-4 bg-background border-2 z-10 transition-colors border-purple-500' : value > step ? 'w-2.5 h-2.5 bg-purple-500' : 'w-2.5 h-2.5 bg-purple-200'}`} />
 
-            <span className={`absolute -top-7 whitespace-nowrap text-[10px] transition-opacity ${value === step ? 'opacity-100 font-bold text-purple-700' : 'opacity-0 group-hover:opacity-100 text-gray-400'}`}>
+            <span className={`absolute -top-7 whitespace-nowrap text-[10px] transition-opacity ${value === step ? 'opacity-100 font-bold text-purple-700' : 'opacity-0 group-hover:opacity-100 text-muted-foreground'}`}>
               {labels[step]}
             </span>
           </div>
@@ -97,8 +97,8 @@ export const OccasionSelector = ({ selected, onChange }: { selected: string, onC
             className="flex flex-col items-center gap-1.5 cursor-pointer group"
             onClick={() => onChange(occ.id)}
           >
-            <Icon className={`w-8 h-8 transition-colors ${isSingleActive ? occ.color : 'text-gray-300 group-hover:text-gray-400'}`} />
-            <span className={`text-[11px] font-bold transition-colors ${isSingleActive ? occ.color : 'text-gray-400'}`}>
+            <Icon className={`w-8 h-8 transition-colors ${isSingleActive ? occ.color : 'text-gray-300 group-hover:text-muted-foreground'}`} />
+            <span className={`text-[11px] font-bold transition-colors ${isSingleActive ? occ.color : 'text-muted-foreground'}`}>
               {occ.id}
             </span>
           </div>
