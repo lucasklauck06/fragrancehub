@@ -1,0 +1,146 @@
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router";
+import { useAuth } from "../contexts/AuthContext";
+import { Input } from "../components/ui/input";
+import { Search } from "lucide-react";
+import SidebarResenhasPerfumes from "../components/SidebarResenhasPerfumes";
+
+export default function DesignersHomePage() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const { currentUser, logout, isAdmin } = useAuth();
+  const [modalPerfumesOpen, setModalPerfumesOpen] = useState(false);
+  const [perfumists, setPerfumists] = useState<any[]>([]);
+  const alfabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    fetch("http://localhost:3000/api/perfumists")
+      .then((res) => res.json())
+      .then((data) => setPerfumists(data))
+      .catch((err) => console.error("Erro ao buscar perfumistas:", err));
+  }, []);
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/busca?q=${encodeURIComponent(searchQuery)}`);
+    }
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
+
+  const perfumistsFiltrados = perfumists.filter((perfumist) =>
+    perfumist.name.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
+
+  return (
+    <>
+      {/* Main Content */}
+      <main className="relative flex-1 w-full max-w-7xl mx-auto px-4 py-8 bg-background/40  backdrop-blur-sm rounded-lg shadow-sm">
+        <div className="flex flex-col md:flex-row gap-4">
+          <div className="flex-3">
+            <div className="flex flex-col">
+              <h1 className="flex justify-center text-2xl mb-4">Perfumistas</h1>
+            </div>
+            <div className="relative">
+              <Search className="w-4 h-4 text-black absolute left-3 top-1/2 -translate-y-1/2" />
+              <Input
+                type="search"
+                placeholder="Buscar perfumistas..."
+                className="pl-10 pr-4 py-2 h-12 w-full "
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleSearch(e);
+                  }
+                }}
+              />
+            </div>
+            <div className="flex flex-col">
+              {searchQuery === ""
+                ? alfabet.map((letter) => (
+                  <div key={letter}>
+                    <div className="text-black text-xl font-bold mt-4">
+                      {letter}
+                    </div>
+                    {perfumistsFiltrados.filter((perfumist) =>
+                      perfumist.name.startsWith(letter),
+                    ).length > 0 ? (
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mt-2">
+                        {perfumistsFiltrados
+                          .filter((perfumist) =>
+                            perfumist.name.startsWith(letter),
+                          )
+                          .map((perfumist) => (
+                            <span
+                              key={perfumist.name}
+                              className="text-primary hover:text-primary transition-colors duration-300 text-lg font-semibold flex items-center gap-2 group"
+                            >
+                              <div className="bg-muted rounded-full w-16 h-16 overflow-hidden relative border-2 border-border group-hover:border-teal-700 transition-colors duration-300">
+                                {perfumist.photo ? (
+                                  <img
+                                    src={perfumist.photo}
+                                    alt={perfumist.name}
+                                    className="w-full h-full object-cover"
+                                  />
+                                ) : (
+                                  <div className="w-full h-full flex items-center justify-center text-muted-foreground">
+                                    👤
+                                  </div>
+                                )}
+                              </div>
+                              <Link
+                                to={`/perfumista/${perfumist.id}`}
+                                className="truncate"
+                                title={perfumist.name}
+                              >
+                                {perfumist.name}
+                              </Link>
+                            </span>
+                          ))}
+                      </div>
+                    ) : (
+                      <div className="flex justify-center gap-2">
+                        <span className="text-muted-foreground">
+                          Nenhum perfumista encontrado com a letra {letter}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                ))
+                : perfumistsFiltrados.map((perfumist) => (
+                  <Link
+                    key={perfumist.id}
+                    to={`/perfumista/${perfumist.id}`}
+                    className="text-primary hover:text-primary transition-colors duration-300 text-lg font-semibold flex items-center gap-2 group"
+                  >
+                    <div className="bg-muted rounded-full w-16 h-16 overflow-hidden relative border-2 border-border group-hover:border-teal-700 transition-colors duration-300">
+                      {perfumist.photo ? (
+                        <img
+                          src={perfumist.photo}
+                          alt={perfumist.name}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-muted-foreground">
+                          👤
+                        </div>
+                      )}
+                    </div>
+                    {perfumist.name}
+                  </Link>
+                ))}
+            </div>
+          </div>
+          <div className="flex-1">
+            <SidebarResenhasPerfumes />
+          </div>
+        </div>
+      </main>
+    </>
+  );
+}

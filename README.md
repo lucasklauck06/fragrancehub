@@ -1,4 +1,4 @@
-# Projeto Fragrance Hub
+# Fragrance Hub
 
 Este projeto consiste em uma plataforma para fragrâncias e perfumes.
 
@@ -9,60 +9,80 @@ O projeto é dividido em duas partes principais:
 1. **Frontend (React + Vite)**: Aplicativo interativo, estruturado e com design moderno.
 2. **Backend (Node.js + Express + TypeScript)**: API para gerenciamento de perfis, autenticação de usuários (Login/Cadastro) utilizando Prisma com Supabase (PostgreSQL).
 
-## Como Configurar e Rodar o Projeto
+## Pré-requisitos
 
-### 1. Configuração do Banco de Dados (Supabase)
+Certifique-se de ter instalado em sua máquina:
+- [Node.js](https://nodejs.org/) (versão 18+ recomendada)
+- Conta no [Supabase](https://supabase.com/) (para o banco de dados PostgreSQL)
 
-O projeto utiliza o banco de dados Supabase (PostgreSQL).
-Para configurar o backend, siga as etapas:
+## Variáveis de Ambiente
+
+Para o backend funcionar corretamente, você precisa configurar as variáveis de ambiente. Na pasta `backend`, crie um arquivo chamado `.env` (você pode copiar o conteúdo do arquivo `.env.example` que já está disponível na mesma pasta) e preencha-o com suas informações.
+
+O arquivo de exemplo (`backend/.env.example`) contém:
+```env
+# URL de conexão via pooler (usado pela aplicação)
+DATABASE_URL="postgresql://user:password@host:6543/database?pgbouncer=true"
+
+# URL de conexão direta (usado pelo Prisma para migrations)
+DIRECT_URL="postgresql://user:password@host:5432/database"
+
+# Chave secreta para assinatura dos tokens JWT
+JWT_SECRET="sua_chave_secreta_aqui"
+
+# Porta onde o servidor backend irá rodar (opcional, padrão: 3000)
+PORT=3000
+```
+
+> [!IMPORTANT]  
+> **Nota sobre o Supabase e Prisma**: O Prisma precisa da conexão direta (`DIRECT_URL` na porta 5432) para conseguir realizar as migrations (`npx prisma db push`). Para a comunicação da aplicação (`DATABASE_URL`), utilize a porta do connection pooler (geralmente 6543) acompanhada de `?pgbouncer=true`.
+
+## Instalação e Execução
+
+### 1. Configurando e rodando o Backend
 
 1. Acesse a pasta do backend:
    ```bash
    cd backend
    ```
-2. Configure as variáveis de ambiente:
-   Abra o arquivo `.env` localizado na pasta `backend` e substitua a URL da variável `DATABASE_URL` pela sua connection string do Supabase. Exemplo:
-   ```env
-   DATABASE_URL="postgresql://postgres:[SUA_SENHA]@aws-1-sa-east-1.pooler.supabase.com:5432/postgres"
-   JWT_SECRET="super-secret-key-change-me"
-   PORT=3000
-   ```
-   > [!IMPORTANT]
-   > **Nota sobre o Supabase**: Para sincronizar o banco de dados (`npx prisma db push`), utilize a porta **5432** (conexão direta). A porta **6543** (pooler) pode causar travamentos durante a sincronização.
-3. Instale as dependências do backend:
+
+2. Instale as dependências:
    ```bash
    npm install
    ```
-4. Execute as Migrations do Prisma para criar as tabelas `User` no banco de dados:
+
+3. Certifique-se de que o arquivo `.env` foi criado corretamente com suas credenciais do banco de dados (conforme detalhado na seção acima).
+
+4. Sincronize o banco de dados (isso criará as tabelas necessárias baseadas no seu *schema* Prisma):
    ```bash
    npx prisma db push
    ```
 
-### 2. Rodando o Backend
+5. Inicie o servidor:
+   ```bash
+   npx nodemon src/index.ts
+   ```
+   > O servidor backend deverá iniciar e ficar escutando na porta configurada (padrão: `3000`).
 
-Com as dependências instaladas e o banco configurado, inicie o servidor:
+### 2. Configurando e rodando o Frontend
 
-```bash
-npx nodemon src/index.ts
-```
+1. Abra um novo terminal e certifique-se de estar na **raiz do projeto** (`fragrancehub/`). Se preferir, vá para a pasta raiz:
+   ```bash
+   cd ..
+   ```
 
-O backend estará rodando na porta `3000`.
-
-### 3. Rodando o Frontend
-
-1. Em um novo terminal, abra a raiz do projeto (onde está o frontend):
+2. Instale as dependências:
    ```bash
    npm install
    ```
-2. Inicie o ambiente de desenvolvimento do Vite:
+
+3. Inicie a aplicação Vite em modo de desenvolvimento:
    ```bash
    npm run dev
    ```
-   O frontend estará acessível no navegador (geralmente em `http://localhost:5173`). O contexto de autenticação do Frontend (`AuthContext.tsx`) já está configurado para fazer requisições para a porta `3000` do Backend.
+   > O frontend estará acessível no navegador (geralmente em `http://localhost:5173`). O sistema já está configurado para apontar as requisições da API para o backend rodando em `localhost:3000`.
 
----
-
-### Funcionalidades Implementadas
+## Funcionalidades Implementadas
 
 - **Backend API**:
   - `POST /api/auth/register`: Cadastro de usuários.
@@ -70,5 +90,5 @@ O backend estará rodando na porta `3000`.
   - `GET /api/auth/profile`: Visualizar dados do próprio usuário autenticado.
   - `PUT /api/auth/profile`: Atualizar dados do usuário.
 - **Frontend**:
-  - Telas de Login e Rotas Protegidas (Ex.: Área administrativa `/admin` só pode ser acessada por usuários autenticados via componente `<ProtectedRoute>`).
-- **Banco de Dados**: Configurado para funcionar nativamente com Supabase via **Prisma ORM 6**.
+  - Telas de Login e Rotas Protegidas (Ex.: Área administrativa `/admin` que só pode ser acessada por usuários autenticados via componente `<ProtectedRoute>`).
+- **Banco de Dados**: Configurado para funcionar nativamente com Supabase (PostgreSQL) utilizando o **Prisma ORM 6**.

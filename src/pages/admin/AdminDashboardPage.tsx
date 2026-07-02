@@ -1,42 +1,63 @@
 import { Link } from 'react-router';
-import { perfumes, brands, perfumists, users, reviews } from '../../data/mockData';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
 import { Droplet, Building2, User, Users, MessageSquare } from 'lucide-react';
 import AdminLayout from '../../components/AdminLayout';
+import { useState, useEffect } from 'react';
 
 export default function AdminDashboardPage() {
+  const [statsData, setStatsData] = useState({
+    stats: { perfumes: 0, brands: 0, perfumists: 0, users: 0, reviews: 0 },
+    recentReviews: [] as any[]
+  });
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    fetch("http://localhost:3000/api/dashboard/stats", {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.stats) {
+          setStatsData(data);
+        }
+      })
+      .catch(err => console.error("Error fetching dashboard stats:", err));
+  }, []);
+
   const stats = [
     {
       title: 'Perfumes',
-      value: perfumes.length,
+      value: statsData.stats.perfumes,
       icon: Droplet,
       color: 'purple',
       link: '/admin/perfumes',
     },
     {
       title: 'Marcas',
-      value: brands.length,
+      value: statsData.stats.brands,
       icon: Building2,
       color: 'blue',
       link: '/admin/marcas',
     },
     {
       title: 'Perfumistas',
-      value: perfumists.length,
+      value: statsData.stats.perfumists,
       icon: User,
       color: 'pink',
       link: '/admin/perfumistas',
     },
     {
       title: 'Usuários',
-      value: users.length,
+      value: statsData.stats.users,
       icon: Users,
       color: 'green',
       link: '/admin/usuarios',
     },
     {
       title: 'Resenhas',
-      value: reviews.length,
+      value: statsData.stats.reviews,
       icon: MessageSquare,
       color: 'orange',
       link: '/admin/perfumes',
@@ -55,8 +76,8 @@ export default function AdminDashboardPage() {
     <AdminLayout>
       <div className="space-y-6">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Dashboard Administrativo</h1>
-          <p className="text-gray-600">Visão geral do sistema FragranceHub</p>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Dashboard Administrativo</h1>
+          <p className="text-muted-foreground">Visão geral do sistema FragranceHub</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -66,7 +87,7 @@ export default function AdminDashboardPage() {
               <Link key={stat.title} to={stat.link}>
                 <Card className="hover:shadow-lg transition-shadow cursor-pointer">
                   <CardHeader className="flex flex-row items-center justify-between pb-2">
-                    <CardTitle className="text-sm font-medium text-gray-600">
+                    <CardTitle className="text-sm font-medium text-muted-foreground">
                       {stat.title}
                     </CardTitle>
                     <div className={`p-2 rounded-lg ${colorClasses[stat.color as keyof typeof colorClasses]}`}>
@@ -88,8 +109,7 @@ export default function AdminDashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {reviews.slice(0, 5).map((review) => {
-                const perfume = perfumes.find(p => p.id === review.perfumeId);
+              {statsData.recentReviews.map((review: any) => {
                 return (
                   <div key={review.id} className="flex items-start gap-4 pb-4 border-b last:border-0">
                     <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
@@ -99,11 +119,11 @@ export default function AdminDashboardPage() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="font-medium text-sm">{review.userName}</p>
-                      <p className="text-sm text-gray-600 truncate">
-                        {perfume?.name} - {review.rating} estrelas
+                      <p className="text-sm text-muted-foreground truncate">
+                        {review.perfumeName} - {review.rating} estrelas
                       </p>
-                      <p className="text-sm text-gray-500 mt-1 line-clamp-2">{review.comment}</p>
-                      <p className="text-xs text-gray-400 mt-1">{review.date}</p>
+                      <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{review.comment}</p>
+                      <p className="text-xs text-muted-foreground mt-1">{review.date}</p>
                     </div>
                   </div>
                 );

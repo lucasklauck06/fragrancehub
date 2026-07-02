@@ -1,0 +1,109 @@
+import { History, UserCircle, Snowflake, Leaf, Umbrella, CloudRain, Sun, Moon, Star } from 'lucide-react';
+
+interface SliderProps {
+  value: number;
+  onChange: (val: number) => void;
+}
+
+export const occasionOptions = [
+  { id: "Inverno", icon: Snowflake, color: "text-blue-500", bg: "bg-blue-50", border: "border-blue-100" },
+  { id: "Primavera", icon: Leaf, color: "text-green-500", bg: "bg-green-50", border: "border-green-100" },
+  { id: "Verão", icon: Umbrella, color: "text-red-500", bg: "bg-red-50", border: "border-red-100" },
+  { id: "Outono", icon: CloudRain, color: "text-orange-500", bg: "bg-orange-50", border: "border-orange-100" },
+  { id: "Dia", icon: Sun, color: "text-yellow-500", bg: "bg-yellow-50", border: "border-yellow-100" },
+  { id: "Noite", icon: Moon, color: "text-sky-300", bg: "bg-sky-50", border: "border-sky-100" },
+  { id: "Assinatura", icon: Star, color: "text-amber-500", bg: "bg-amber-50", border: "border-amber-100" },
+];
+
+export const LongevitySlider = ({ value, onChange }: SliderProps) => {
+  const labels = ["sem voto", "muito fraca", "fraca", "moderada", "longa", "eterna"];
+
+  return (
+    <div className="flex flex-col items-center w-full py-4 mt-2">
+      <History className="w-8 h-8 text-slate-500 mb-1" />
+      <span className="text-xs font-bold text-slate-600 tracking-wider mb-8 uppercase">Longevidade</span>
+
+      <div className="relative w-[calc(100%-2rem)] max-w-sm flex items-center h-1.5 bg-muted rounded-full mt-2">
+        {/* Fill bar */}
+        <div
+          className="absolute h-full bg-primary rounded-full transition-all duration-300"
+          style={{ width: `${(value / 5) * 100}%` }}
+        ></div>
+
+        {/* Points */}
+        {[0, 1, 2, 3, 4, 5].map(step => (
+          <div
+            key={step}
+            className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col items-center cursor-pointer group"
+            style={{ left: `${(step / 5) * 100}%` }}
+            onClick={() => onChange(step)}
+          >
+            <div className={`rounded-full z-10 transition-all duration-300 ${(value === step ? 'w-4 h-4 bg-background border-2 z-10 transition-colors border-primary' : value > step ? 'w-2.5 h-2.5 bg-primary' : 'w-2.5 h-2.5 bg-teal-200')}`} />
+
+            {/* Label */}
+            <span className={`absolute -top-7 whitespace-nowrap text-[10px] transition-opacity ${value === step ? 'opacity-100 font-bold text-primary' : 'opacity-0 group-hover:opacity-100 text-muted-foreground'}`}>
+              {labels[step]}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export const SillageSlider = ({ value, onChange }: SliderProps) => {
+  const labels = ["sem voto", "íntimo", "suave", "moderado", "forte", "enorme"];
+
+  return (
+    <div className="flex flex-col items-center w-full py-4 mt-2">
+      <UserCircle className="w-8 h-8 text-slate-500 mb-1" />
+      <span className="text-xs font-bold text-slate-600 tracking-wider mb-8 uppercase">Rastro</span>
+
+      <div className="relative w-[calc(100%-2rem)] max-w-sm flex items-center h-1.5 bg-muted rounded-full mt-2">
+        <div
+          className="absolute h-full bg-purple-500 rounded-full transition-all duration-300"
+          style={{ width: `${(value / 5) * 100}%` }}
+        ></div>
+
+        {[0, 1, 2, 3, 4, 5].map(step => (
+          <div
+            key={step}
+            className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col items-center cursor-pointer group"
+            style={{ left: `${(step / 5) * 100}%` }}
+            onClick={() => onChange(step)}
+          >
+            <div className={`rounded-full z-10 transition-all duration-300 ${value === step ? 'w-4 h-4 bg-background border-2 z-10 transition-colors border-purple-500' : value > step ? 'w-2.5 h-2.5 bg-purple-500' : 'w-2.5 h-2.5 bg-purple-200'}`} />
+
+            <span className={`absolute -top-7 whitespace-nowrap text-[10px] transition-opacity ${value === step ? 'opacity-100 font-bold text-purple-700' : 'opacity-0 group-hover:opacity-100 text-muted-foreground'}`}>
+              {labels[step]}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export const OccasionSelector = ({ selected, onChange }: { selected: string, onChange: (val: string) => void }) => {
+  return (
+    <div className="flex flex-wrap justify-center gap-6 py-2">
+      {occasionOptions.map(occ => {
+        const Icon = occ.icon;
+        const isSingleActive = selected === occ.id;
+
+        return (
+          <div
+            key={occ.id}
+            className="flex flex-col items-center gap-1.5 cursor-pointer group"
+            onClick={() => onChange(occ.id)}
+          >
+            <Icon className={`w-8 h-8 transition-colors ${isSingleActive ? occ.color : 'text-gray-300 group-hover:text-muted-foreground'}`} />
+            <span className={`text-[11px] font-bold transition-colors ${isSingleActive ? occ.color : 'text-muted-foreground'}`}>
+              {occ.id}
+            </span>
+          </div>
+        );
+      })}
+    </div>
+  );
+};

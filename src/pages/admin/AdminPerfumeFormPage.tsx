@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router';
-import { perfumes, brands, perfumists } from '../../data/mockData';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { Label } from '../../components/ui/label';
@@ -14,23 +13,74 @@ export default function AdminPerfumeFormPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const isEdit = id !== 'novo';
-  const perfume = isEdit ? perfumes.find(p => p.id === id) : null;
+
+  const [brands, setBrands] = useState<any[]>([]);
+  const [perfumists, setPerfumists] = useState<any[]>([]);
+  const [aromaticGroups, setAromaticGroups] = useState<any[]>([]);
 
   const [formData, setFormData] = useState({
-    name: perfume?.name || '',
-    brandId: perfume?.brandId || '',
-    perfumistId: perfume?.perfumistId || '',
-    gender: perfume?.gender || 'Masculino',
-    price: perfume?.price || 0,
-    year: perfume?.year || new Date().getFullYear(),
-    image: perfume?.image || '',
-    topNotes: perfume?.topNotes.join(', ') || '',
-    heartNotes: perfume?.heartNotes.join(', ') || '',
-    baseNotes: perfume?.baseNotes.join(', ') || '',
-    description: perfume?.description || '',
+    name: '',
+    brandId: '',
+    perfumistId: '',
+    aromaticGroupId: '',
+    gender: 'Masculino',
+    price: 0,
+    year: new Date().getFullYear(),
+    image: '',
+    topNotes: '',
+    heartNotes: '',
+    baseNotes: '',
+    description: '',
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    fetchBrandsAndPerfumists();
+    if (isEdit) {
+      fetchPerfume();
+    }
+  }, [id, isEdit]);
+
+  const fetchBrandsAndPerfumists = async () => {
+    try {
+      const [resBrands, resPerfumists, resGroups] = await Promise.all([
+        fetch("http://localhost:3000/api/brands"),
+        fetch("http://localhost:3000/api/perfumists"),
+        fetch("http://localhost:3000/api/aromatic-groups")
+      ]);
+      if (resBrands.ok) setBrands(await resBrands.json());
+      if (resPerfumists.ok) setPerfumists(await resPerfumists.json());
+      if (resGroups.ok) setAromaticGroups(await resGroups.json());
+    } catch (error) {
+      toast.error("Erro ao carregar marcas e perfumistas.");
+    }
+  };
+
+  const fetchPerfume = async () => {
+    try {
+      const res = await fetch(`http://localhost:3000/api/perfumes/${id}`);
+      if (res.ok) {
+        const perfume = await res.json();
+        setFormData({
+          name: perfume.name || '',
+          brandId: perfume.brandId || '',
+          perfumistId: perfume.perfumistId || '',
+          aromaticGroupId: perfume.aromaticGroupId || '',
+          gender: perfume.gender || 'Masculino',
+          price: perfume.price || 0,
+          year: perfume.year || new Date().getFullYear(),
+          image: perfume.image || '',
+          topNotes: perfume.topNotes ? perfume.topNotes.join(', ') : '',
+          heartNotes: perfume.heartNotes ? perfume.heartNotes.join(', ') : '',
+          baseNotes: perfume.baseNotes ? perfume.baseNotes.join(', ') : '',
+          description: perfume.description || '',
+        });
+      }
+    } catch (error) {
+      toast.error("Erro ao carregar perfume.");
+    }
+  };
 
   const handleChange = (field: string, value: string | number) => {
     setFormData({ ...formData, [field]: value });
@@ -45,14 +95,15 @@ export default function AdminPerfumeFormPage() {
     if (!formData.name.trim()) newErrors.name = 'Nome é obrigatório';
     if (!formData.brandId) newErrors.brandId = 'Marca é obrigatória';
     if (!formData.perfumistId) newErrors.perfumistId = 'Perfumista é obrigatório';
-    if (formData.price < 0) newErrors.price = 'Preço não pode ser negativo';
+    if (formData.price <= 0) newErrors.price = 'Preço deve ser maior que zero';
+    if (!formData.gender) newErrors.gender = 'Gênero é obrigatório';
     if (!formData.description.trim()) newErrors.description = 'Descrição é obrigatória';
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!validate()) {
@@ -60,17 +111,12 @@ export default function AdminPerfumeFormPage() {
       return;
     }
 
-    const brand = brands.find(b => b.id === formData.brandId);
-    const perfumist = perfumists.find(p => p.id === formData.perfumistId);
-
     const perfumeData = {
-      id: isEdit ? id : String(perfumes.length + 1),
       name: formData.name,
-      brand: brand?.name || '',
       brandId: formData.brandId,
-      perfumist: perfumist?.name || '',
       perfumistId: formData.perfumistId,
-      gender: formData.gender as 'Masculino' | 'Feminino' | 'Unissex',
+      aromaticGroupId: formData.aromaticGroupId || undefined,
+      gender: formData.gender,
       price: Number(formData.price),
       year: Number(formData.year),
       image: formData.image || 'https://images.unsplash.com/photo-1541643600914-78b084683601?w=400&h=600&fit=crop',
@@ -80,18 +126,31 @@ export default function AdminPerfumeFormPage() {
       description: formData.description,
     };
 
-    if (isEdit) {
-      const index = perfumes.findIndex(p => p.id === id);
-      perfumes[index] = perfumeData;
-    } else {
-      perfumes.push(perfumeData);
+    try {
+      const token = localStorage.getItem("token");
+      const url = isEdit ? `http://localhost:3000/api/perfumes/${id}` : `http://localhost:3000/api/perfumes`;
+      const method = isEdit ? 'PUT' : 'POST';
+
+      const res = await fetch(url, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(perfumeData)
+      });
+
+      if (res.ok) {
+        toast.success('Registro salvo com sucesso!', {
+          className: 'bg-green-50 border-green-200',
+        });
+        navigate('/admin/perfumes');
+      } else {
+        toast.error('Erro ao salvar o registro.');
+      }
+    } catch (error) {
+      toast.error('Erro ao salvar o registro.');
     }
-
-    toast.success('Registro salvo com sucesso!', {
-      className: 'bg-green-50 border-green-200',
-    });
-
-    navigate('/admin/perfumes');
   };
 
   return (
@@ -149,6 +208,22 @@ export default function AdminPerfumeFormPage() {
               </div>
 
               <div className="space-y-2">
+                <Label htmlFor="aromaticGroup">Grupo Aromático</Label>
+                <Select value={formData.aromaticGroupId} onValueChange={(v) => handleChange('aromaticGroupId', v)}>
+                  <SelectTrigger id="aromaticGroup">
+                    <SelectValue placeholder="Opcional: Selecione um grupo" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {aromaticGroups.map(group => (
+                      <SelectItem key={group.id} value={group.id}>
+                        {group.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
                 <Label htmlFor="gender">Gênero *</Label>
                 <Select value={formData.gender} onValueChange={(v) => handleChange('gender', v)}>
                   <SelectTrigger id="gender">
@@ -196,11 +271,13 @@ export default function AdminPerfumeFormPage() {
                 onChange={(e) => handleChange('image', e.target.value)}
                 placeholder="https://exemplo.com/imagem.jpg"
               />
+              <p className="text-xs text-muted-foreground">Exemplo: https://images.unsplash.com/photo-1541643600914-78b084683601?w=400&h=600&fit=crop</p>
+              {formData.image && <img src={formData.image} alt="Preview" className="w-24 h-24 object-cover mt-2" />}
             </div>
 
             <div className="space-y-4">
               <h3 className="font-semibold text-lg">Pirâmide Olfativa</h3>
-              <p className="text-sm text-gray-600">Separe as notas por vírgula (ex: Bergamota, Lavanda, Cedro)</p>
+              <p className="text-sm text-muted-foreground">Separe as notas por vírgula (ex: Bergamota, Lavanda, Cedro)</p>
 
               <div className="space-y-2">
                 <Label htmlFor="topNotes">Notas de Topo</Label>
@@ -245,12 +322,16 @@ export default function AdminPerfumeFormPage() {
               {errors.description && <p className="text-sm text-red-600">{errors.description}</p>}
             </div>
 
-            <div className="flex gap-4">
-              <Button type="submit" className="bg-green-600 hover:bg-green-700">
-                Salvar
-              </Button>
+            <div className="flex justify-end gap-4 pt-4 border-t">
               <Button type="button" variant="outline" onClick={() => navigate('/admin/perfumes')}>
-                Voltar / Cancelar
+                Cancelar
+              </Button>
+              <Button 
+                type="submit" 
+                className="bg-green-600 hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+                disabled={!isEdit && (!formData.name.trim() || !formData.brandId || !formData.perfumistId || formData.price <= 0 || !formData.gender || !formData.description.trim())}
+              >
+                {isEdit ? "Salvar Alterações" : "Criar Perfume"}
               </Button>
             </div>
           </form>
