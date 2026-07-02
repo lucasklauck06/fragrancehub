@@ -1,8 +1,8 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router';
 import { useAuth } from '../contexts/AuthContext';
 import { Button } from './ui/button';
-import { Home, Droplet, Building2, User, Users, Shield, LogOut } from 'lucide-react';
+import { Home, Droplet, Building2, User, Users, Shield, LogOut, MessageSquare } from 'lucide-react';
 
 interface AdminLayoutProps {
   children: ReactNode;
@@ -30,6 +30,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     { path: '/admin/marcas', icon: Building2, label: 'Marcas' },
     { path: '/admin/perfumistas', icon: User, label: 'Perfumistas' },
     { path: '/admin/usuarios', icon: Users, label: 'Usuários' },
+    { path: '/admin/resenhas', icon: MessageSquare, label: 'Resenhas' },
     { path: '/admin/permissoes', icon: Shield, label: 'Permissões' },
   ];
 
@@ -59,11 +60,10 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               <Link
                 key={item.path}
                 to={item.path}
-                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                  isActive
+                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${isActive
                     ? 'bg-purple-50 text-purple-700 font-medium'
                     : 'text-muted-foreground hover:bg-muted/50'
-                }`}
+                  }`}
               >
                 <Icon className="w-5 h-5" />
                 {item.label}

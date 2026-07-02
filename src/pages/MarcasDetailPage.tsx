@@ -1,7 +1,7 @@
 import { Button } from "../components/ui/button";
 import { useParams, Link, useNavigate } from "react-router";
 import { useState, useEffect } from "react";
-import { Kanban, LayoutGrid, List, Mars, Star, Venus } from "lucide-react";
+import { Kanban, LayoutGrid, List, Mars, Star, Venus, MapPin } from "lucide-react";
 import SidebarResenhasPerfumes from "../components/SidebarResenhasPerfumes";
 export default function BrandDetailPage() {
   const navigate = useNavigate();
@@ -42,16 +42,31 @@ export default function BrandDetailPage() {
       <main className="relative bg-background shadow-md rounded-lg w-full max-w-7xl mx-auto px-4 py-8">
         <div className="flex gap-2">
           <div className="flex-2">
-            <h1 className="text-3xl font-bold justify-center flex text-foreground">
-              {brand?.name}
-            </h1>
-            <div className="flex gap-4 mt-4">
-              <img
-                src={brand?.image}
-                alt={brand?.name}
-                className="w-full rounded-md object-cover max-h-96"
-              />
-              <p>{brand?.description}</p>
+            <div className="flex flex-col items-center justify-center gap-2 mb-4">
+              <h1 className="text-3xl font-bold text-foreground">
+                {brand?.name}
+              </h1>
+              {brand?.country && (
+                <div className="flex items-center text-muted-foreground gap-1 bg-muted px-3 py-1 rounded-full text-sm font-medium">
+                  <MapPin className="w-4 h-4" />
+                  <span>{brand.country}</span>
+                </div>
+              )}
+            </div>
+            <div className="flex flex-col md:flex-row gap-8 mt-6 items-start">
+              <div className="w-full md:w-1/3 lg:w-1/4 flex-shrink-0 flex justify-center">
+                <img
+                  src={brand?.image}
+                  alt={brand?.name}
+                  className="w-full max-w-[250px] rounded-lg object-contain bg-white shadow-sm border border-border p-2"
+                />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-lg font-semibold text-foreground mb-2">Sobre a marca</h3>
+                <p className="text-muted-foreground leading-relaxed text-justify">
+                  {brand?.description}
+                </p>
+              </div>
             </div>
             <div className="flex gap-10 mt-4 border-b border-border">
               <p

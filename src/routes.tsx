@@ -26,6 +26,7 @@ import FilteredParfumNotes from "./pages/FilteredParfumNotes";
 import GroupsPage from "./pages/GroupsPage";
 import NotesPage from "./pages/NotesPage";
 import SearchByNotesPage from "./pages/SearchByNotesPage";
+import AdminReviewsPage from "./pages/admin/AdminReviewsPage";
 
 export const router = createBrowserRouter([
   {
@@ -137,6 +138,10 @@ export const router = createBrowserRouter([
       {
         path: "usuarios",
         Component: AdminUsersPage,
+      },
+      {
+        path: "resenhas",
+        Component: AdminReviewsPage,
       },
     ],
   },
